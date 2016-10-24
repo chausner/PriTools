@@ -1,0 +1,73 @@
+﻿<Window x:Class="PRIExplorer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PRIExplorer"
+        mc:Ignorable="d"
+        Title="PRIExplorer" Width="1000" Height="600" AllowDrop="True"
+        PreviewDragOver="Window_PreviewDragOver"
+        Drop="Window_Drop">
+    <Window.Resources>
+        <ContextMenu x:Key="CandidatesListViewContextMenu">
+            <MenuItem Header="Go to location" Command="{Binding GoToLocationCommand}" />
+            <MenuItem Header="Save as..." Command="{Binding SaveAsCommand}" />
+        </ContextMenu>
+        <Style x:Key="CandidatesListViewStyle" TargetType="{x:Type ListView}">
+            <Setter Property="View">
+                <Setter.Value>
+                    <GridView>
+                        <GridViewColumn Header="Qualifiers" DisplayMemberBinding="{Binding QualifiersDescription}" Width="300" />
+                        <GridViewColumn Header="Location" DisplayMemberBinding="{Binding Location}" Width="300" />
+                    </GridView>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="ContextMenu" Value="{StaticResource CandidatesListViewContextMenu}" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <HierarchicalDataTemplate x:Key="ResourceMapTreeViewItemTemplate" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal" Margin="0,1,0,1">
+                <Image Source="{Binding Icon}" Margin="0,0,4,0" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Menu Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" />
+                <Separator />
+                <MenuItem Header="_Close" Command="{Binding CloseCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="Set resource _root path..." Command="{Binding SetResourceRootPathCommand}" />
+            </MenuItem>
+        </Menu>        
+        <TreeView Name="resourceMapTreeView" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" SelectedItemChanged="resourceMapTreeView_SelectedItemChanged"
+                  ItemsSource="{Binding Entries}" ItemTemplate="{StaticResource ResourceMapTreeViewItemTemplate}" />
+        <GridSplitter Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="3" />
+        <ListView Name="candidatesListView" Grid.Column="2" Grid.Row="1" SelectionMode="Single"
+                  Style="{StaticResource CandidatesListViewStyle}" ItemsSource="{Binding Candidates}"
+                  SelectedItem="{Binding SelectedCandidate, Mode=TwoWay}" />
+        <GridSplitter Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="3" />
+        <Frame Name="previewFrame" Grid.Column="2" Grid.Row="3" NavigationUIVisibility="Hidden" 
+               Content="{Binding PreviewContent, Mode=TwoWay}" />
+        <Frame Name="scopeDetailFrame" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" NavigationUIVisibility="Hidden" />
+    </Grid>
+</Window>

@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{311CE9BD-2B75-4A7C-A228-FBE02DCB4416}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PRIExplorer</RootNamespace>
+    <AssemblyName>PRIExplorer</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\CheckerboardImage.xaml.cs">
+      <DependentUpon>CheckerboardImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BinaryPreviewViewModel.cs" />
+    <Compile Include="ViewModels\CandidateViewModel.cs" />
+    <Compile Include="ViewModels\ImagePreviewViewModel.cs" />
+    <Compile Include="ViewModels\EntryViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PathNotFoundPreviewViewModel.cs" />
+    <Compile Include="ViewModels\RelayCommand.cs" />
+    <Compile Include="ViewModels\TextPreviewViewModel.cs" />
+    <Compile Include="ViewModels\XbfPreviewViewModel.cs" />
+    <Compile Include="Views\BinaryPreviewPage.xaml.cs">
+      <DependentUpon>BinaryPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImagePreviewPage.xaml.cs">
+      <DependentUpon>ImagePreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PathNotFoundPreviewPage.xaml.cs">
+      <DependentUpon>PathNotFoundPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScopeDetailPage.xaml.cs">
+      <DependentUpon>ScopeDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TextPreviewPage.xaml.cs">
+      <DependentUpon>TextPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\XbfPreviewPage.xaml.cs">
+      <DependentUpon>XbfPreviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="XBF2\BinaryReaderEx.cs" />
+    <Compile Include="XBF2\XbfAssembly.cs" />
+    <Compile Include="XBF2\XbfFrameworkTypes.cs" />
+    <Compile Include="XBF2\XbfHeader.cs" />
+    <Compile Include="XBF2\XbfNodeSection.cs" />
+    <Compile Include="XBF2\XbfObject.cs" />
+    <Compile Include="XBF2\XbfObjectCollection.cs" />
+    <Compile Include="XBF2\XbfObjectProperty.cs" />
+    <Compile Include="XBF2\XbfProperty.cs" />
+    <Compile Include="XBF2\XbfReader.cs" />
+    <Compile Include="XBF2\XbfType.cs" />
+    <Compile Include="XBF2\XbfTypeNamespace.cs" />
+    <Page Include="Controls\CheckerboardImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BinaryPreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImagePreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\PathNotFoundPreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScopeDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextPreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\XbfPreviewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PriFormat\PriFormat.csproj">
+      <Project>{a7228ec9-acd6-4b18-bdca-65160149b83a}</Project>
+      <Name>PriFormat</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-document-code.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-document-binary.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-document-attribute-s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\folder-horizontal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-document-attribute-x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\blue-document-xaml.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="XBF2\License.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

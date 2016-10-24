@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="PRIExplorer.Controls.CheckerboardImage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PRIExplorer.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="UserControl">
+    <Grid>
+        <Grid.Background>
+            <DrawingBrush Stretch="None" TileMode="Tile" Viewport="0,0,20,20" ViewportUnits="Absolute">
+                <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                        <GeometryDrawing Brush="White">
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="0,0,20,20" />
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="Gray">
+                            <GeometryDrawing.Geometry>
+                                <GeometryGroup>
+                                    <RectangleGeometry Rect="0,0,10,10" />
+                                    <RectangleGeometry Rect="10,10,10,10" />
+                                </GeometryGroup>
+                            </GeometryDrawing.Geometry>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+                </DrawingBrush.Drawing>
+            </DrawingBrush>
+        </Grid.Background>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ContentPresenter Content="{Binding ElementName=UserControl, Path=AdditionalContent}"
+                          HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+        <!--<ContentPresenter Content="{Binding ElementName=UserControl, Path=AdditionalContent}"
+                          HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+    </Grid>
+</UserControl>

@@ -1,0 +1,19 @@
+﻿<Page x:Class="PRIExplorer.Views.ScopeDetailPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PRIExplorer.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="300"
+      Title="ScopeDetailPage">
+    <ListView Name="keyValueListView">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="Key" Width="Auto" DisplayMemberBinding="{Binding Key}" />
+                <GridViewColumn Header="Value" Width="Auto" DisplayMemberBinding="{Binding Value}" />
+                <GridViewColumn Header="Qualifiers" Width="Auto" DisplayMemberBinding="{Binding Qualifiers}" />
+            </GridView>
+        </ListView.View>
+    </ListView>
+</Page>
