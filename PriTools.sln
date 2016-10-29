@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRIExplorer", "PRIExplorer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriFormat", "PriFormat\PriFormat.csproj", "{A7228EC9-ACD6-4B18-BDCA-65160149B83A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriInfo", "PriInfo\PriInfo.csproj", "{589AC1F3-3524-4E26-A2BE-8ED3C93607B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A7228EC9-ACD6-4B18-BDCA-65160149B83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7228EC9-ACD6-4B18-BDCA-65160149B83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7228EC9-ACD6-4B18-BDCA-65160149B83A}.Release|Any CPU.Build.0 = Release|Any CPU	
+		{589AC1F3-3524-4E26-A2BE-8ED3C93607B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{589AC1F3-3524-4E26-A2BE-8ED3C93607B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{589AC1F3-3524-4E26-A2BE-8ED3C93607B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{589AC1F3-3524-4E26-A2BE-8ED3C93607B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
