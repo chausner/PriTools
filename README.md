@@ -19,7 +19,7 @@ using (FileStream stream = File.OpenRead(path))
     }
 }
 ```
-For more sample code, see the PriInfo project.
+For more sample code, see the [PriInfo project](PriInfo/Program.cs).
 
 License
 -------
