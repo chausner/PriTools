@@ -65,7 +65,7 @@ namespace XbfAnalyzer.Xbf
         }
 
         // mappings are hard-coded in GenXbf.dll from Windows SDK
-        // up-to-date as of Anniversary Update (build 14393)
+        // up-to-date as of SDK version 10.0.18362.1
 
         private static readonly string[] typeNames = {
             /* 0x0001 */ "Byte", // Windows.Foundation.Byte
@@ -907,6 +907,139 @@ namespace XbfAnalyzer.Xbf
             /* 0x0345 */ null,
             /* 0x0346 */ "BrushCollection", // Windows.UI.Xaml.Media.BrushCollection
             /* 0x0347 */ "CalendarViewHeaderAutomationPeer", // Windows.UI.Xaml.Automation.Peers.CalendarViewHeaderAutomationPeer
+            /* 0x0348 */ "TextDecorations", // Windows.UI.Text.TextDecorations
+            /* 0x0349 */ "KeyTipPlacementMode", // Windows.UI.Xaml.Input.KeyTipPlacementMode
+            /* 0x034A */ "XYFocusKeyboardNavigationMode", // Windows.UI.Xaml.Input.XYFocusKeyboardNavigationMode
+            /* 0x034B */ null,
+            /* 0x034C */ null,
+            /* 0x034D */ "AutomationComponentProperties", // Windows.UI.Xaml.Automation.AutomationComponentProperties
+            /* 0x034E */ "ComponentPropertyValue", // Windows.UI.Xaml.Automation.ComponentPropertyValue
+            /* 0x034F */ "XamlMarkupHelper", // Windows.UI.Xaml.Markup.XamlMarkupHelper
+            /* 0x0350 */ null,
+            /* 0x0351 */ null,
+            /* 0x0352 */ "ContentDialogButton", // Windows.UI.Xaml.Controls.ContentDialogButton
+            /* 0x0353 */ null,
+            /* 0x0354 */ null,
+            /* 0x0355 */ null,
+            /* 0x0356 */ null,
+            /* 0x0357 */ "XamlLight", // Windows.UI.Xaml.Media.XamlLight
+            /* 0x0358 */ null,
+            /* 0x0359 */ "XamlLightCollection", // Windows.UI.Xaml.Media.XamlLightCollection
+            /* 0x035A */ null,
+            /* 0x035B */ "ConnectedAnimationComponent", // Windows.UI.Xaml.Media.Animation.ConnectedAnimationComponent
+            /* 0x035C */ "SvgImageSource", // Windows.UI.Xaml.Media.Imaging.SvgImageSource
+            /* 0x035D */ "SvgImageSourceLoadStatus", // Windows.UI.Xaml.Media.Imaging.SvgImageSourceLoadStatus
+            /* 0x035E */ "LoadedImageSurface", // Windows.UI.Xaml.Media.LoadedImageSurface
+            /* 0x035F */ "LoadedImageSourceLoadStatus", // Windows.UI.Xaml.Media.LoadedImageSourceLoadStatus
+            /* 0x0360 */ "FocusInputDeviceKind", // Windows.UI.Xaml.Input.FocusInputDeviceKind
+            /* 0x0361 */ "ComboBoxSelectionChangedTrigger", // Windows.UI.Xaml.Controls.ComboBoxSelectionChangedTrigger
+            /* 0x0362 */ null,
+            /* 0x0363 */ "XamlCompositionBrushBase", // Windows.UI.Xaml.Media.XamlCompositionBrushBase
+            /* 0x0364 */ "XYFocusNavigationStrategy", // Windows.UI.Xaml.Input.XYFocusNavigationStrategy
+            /* 0x0365 */ "XYFocusNavigationStrategyOverride", // Windows.UI.Xaml.Input.XYFocusNavigationStrategyOverride
+            /* 0x0366 */ "XamlIsland", // Windows.UI.Xaml.Hosting.XamlIsland
+            /* 0x0367 */ "XamlIslandRootCollection", // Windows.UI.Xaml.XamlIslandRootCollection
+            /* 0x0368 */ "NamedContainerAutomationPeer", // Windows.UI.Xaml.Automation.Peers.NamedContainerAutomationPeer
+            /* 0x0369 */ "IsApiContractNotPresent", // Windows.UI.Xaml.Markup.IsApiContractNotPresent
+            /* 0x036A */ "IsApiContractPresent", // Windows.UI.Xaml.Markup.IsApiContractPresent
+            /* 0x036B */ "IsPropertyNotPresent", // Windows.UI.Xaml.Markup.IsPropertyNotPresent
+            /* 0x036C */ "IsPropertyPresent", // Windows.UI.Xaml.Markup.IsPropertyPresent
+            /* 0x036D */ "IsTypeNotPresent", // Windows.UI.Xaml.Markup.IsTypeNotPresent
+            /* 0x036E */ "IsTypePresent", // Windows.UI.Xaml.Markup.IsTypePresent
+            /* 0x036F */ "ApplicationHighContrastAdjustment", // Windows.UI.Xaml.ApplicationHighContrastAdjustment
+            /* 0x0370 */ "ElementHighContrastAdjustment", // Windows.UI.Xaml.ElementHighContrastAdjustment
+            /* 0x0371 */ "WebViewElement", // Windows.UI.Xaml.Internal.WebViewElement
+            /* 0x0372 */ "MarkupExtension", // Windows.UI.Xaml.Markup.MarkupExtension
+            /* 0x0373 */ null,
+            /* 0x0374 */ null,
+            /* 0x0375 */ "AutomationNotificationKind", // Windows.UI.Xaml.Automation.Peers.AutomationNotificationKind
+            /* 0x0376 */ "AutomationNotificationProcessing", // Windows.UI.Xaml.Automation.Peers.AutomationNotificationProcessing
+            /* 0x0377 */ "CharacterCasing", // Windows.UI.Xaml.Controls.CharacterCasing
+            /* 0x0378 */ "DisabledFormattingAccelerators", // Windows.UI.Xaml.Controls.DisabledFormattingAccelerators
+            /* 0x0379 */ "TextHighlighterBase", // Windows.UI.Xaml.Documents.TextHighlighterBase
+            /* 0x037A */ "TextRange", // Windows.UI.Xaml.Documents.TextRange
+            /* 0x037B */ null,
+            /* 0x037C */ null,
+            /* 0x037D */ "TextHighlighter", // Windows.UI.Xaml.Documents.TextHighlighter
+            /* 0x037E */ "TextHighlighterCollection", // Windows.UI.Xaml.Documents.TextHighlighterCollection
+            /* 0x037F */ "TextRangeCollection", // Windows.UI.Xaml.Documents.TextRangeCollection
+            /* 0x0380 */ "ContentDialogPlacement", // Windows.UI.Xaml.Controls.ContentDialogPlacement
+            /* 0x0381 */ "KeyboardAccelerator", // Windows.UI.Xaml.Input.KeyboardAccelerator
+            /* 0x0382 */ null,
+            /* 0x0383 */ "KeyboardAcceleratorCollection", // Windows.UI.Xaml.Input.KeyboardAcceleratorCollection
+            /* 0x0384 */ "XamlRenderingBackgroundTask", // Windows.UI.Xaml.Media.Imaging.XamlRenderingBackgroundTask
+            /* 0x0385 */ "AppBarButtonTemplateSettings", // Windows.UI.Xaml.Controls.Primitives.AppBarButtonTemplateSettings
+            /* 0x0386 */ "AppBarToggleButtonTemplateSettings", // Windows.UI.Xaml.Controls.Primitives.AppBarToggleButtonTemplateSettings
+            /* 0x0387 */ "MenuFlyoutItemTemplateSettings", // Windows.UI.Xaml.Controls.Primitives.MenuFlyoutItemTemplateSettings
+            /* 0x0388 */ "KeyboardAcceleratorPlacementMode", // Windows.UI.Xaml.Input.KeyboardAcceleratorPlacementMode
+            /* 0x0389 */ null,
+            /* 0x038A */ "ElementSpatialAudioMode", // Windows.UI.Xaml.ElementSpatialAudioMode
+            /* 0x038B */ null,
+            /* 0x038C */ "FrameworkElementEx", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x038D */ "PanelEx", // Windows.UI.Xaml.PanelEx
+            /* 0x038E */ "Matrix4x4", // Windows.Foundation.Numerics.Matrix4x4
+            /* 0x038F */ "Vector3", // Windows.Foundation.Numerics.Vector3
+            /* 0x0390 */ "InteractionBase", // Windows.UI.Xaml.InteractionBase
+            /* 0x0391 */ "AutomationHeadingLevel", // Windows.UI.Xaml.Automation.Peers.AutomationHeadingLevel
+            /* 0x0392 */ "ContentLinkProvider", // Windows.UI.Xaml.Documents.ContentLinkProvider
+            /* 0x0393 */ null,
+            /* 0x0394 */ "ContactContentLinkProvider", // Windows.UI.Xaml.Documents.ContactContentLinkProvider
+            /* 0x0395 */ "PlaceContentLinkProvider", // Windows.UI.Xaml.Documents.PlaceContentLinkProvider
+            /* 0x0396 */ "ContentLinkProviderCollection", // Windows.UI.Xaml.Documents.ContentLinkProviderCollection
+            /* 0x0397 */ "ContentLinkChangeKind", // Windows.UI.Xaml.Controls.ContentLinkChangeKind
+            /* 0x0398 */ "HandwritingView", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0399 */ "HandwritingControlView", // Windows.UI.Xaml.Internal.HandwritingControlView
+            /* 0x039A */ null,
+            /* 0x039B */ "HandwritingPanelPlacementAlignment", // Windows.UI.Xaml.Controls.HandwritingPanelPlacementAlignment
+            /* 0x039C */ "ContentLinkAutomationPeer", // Windows.UI.Xaml.Automation.Peers.ContentLinkAutomationPeer
+            /* 0x039D */ "ContentLink", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x039E */ "CoreCursorType", // Windows.UI.Core.CoreCursorType
+            /* 0x039F */ "CommandBase", // Windows.UI.Xaml.Input.CommandBase
+            /* 0x03A0 */ "IconSource", // Windows.UI.Xaml.Controls.IconSource
+            /* 0x03A1 */ "BitmapIconSource", // Windows.UI.Xaml.Controls.BitmapIconSource
+            /* 0x03A2 */ "FontIconSource", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x03A3 */ "PathIconSource", // Windows.UI.Xaml.Controls.PathIconSource
+            /* 0x03A4 */ "RelayCommand", // Windows.UI.Xaml.Input.RelayCommand
+            /* 0x03A5 */ "SymbolIconSource", // Windows.UI.Xaml.Controls.SymbolIconSource
+            /* 0x03A6 */ "Commands", // Windows.UI.Xaml.Input.Commands
+            /* 0x03A7 */ "Matrix3x2", // Windows.Foundation.Numerics.Matrix3x2
+            /* 0x03A8 */ "Vector2", // Windows.Foundation.Numerics.Vector2
+            /* 0x03A9 */ "Shadow", // Windows.UI.Xaml.Media.Shadow
+            /* 0x03AA */ "SmartShadow", // Windows.UI.Xaml.Media.SmartShadow
+            /* 0x03AB */ "IconSourceElement", // Windows.UI.Xaml.Controls.IconSourceElement
+            /* 0x03AC */ "CommandingContainer", // Windows.UI.Xaml.Controls.CommandingContainer
+            /* 0x03AD */ "NullKeyedResource", // Windows.UI.Xaml.Internal.NullKeyedResource
+            /* 0x03AE */ null,
+            /* 0x03AF */ "FlyoutShowMode", // Windows.UI.Xaml.Controls.Primitives.FlyoutShowMode
+            /* 0x03B0 */ "ValidationErrorsCollection", // Windows.UI.Xaml.Internal.ValidationErrorsCollection
+            /* 0x03B1 */ "AppBarElementContainer", // Windows.UI.Xaml.Controls.AppBarElementContainer
+            /* 0x03B2 */ null,
+            /* 0x03B3 */ null,
+            /* 0x03B4 */ "InputValidationErrorEventAction", // Windows.UI.Xaml.Controls.InputValidationErrorEventAction
+            /* 0x03B5 */ null,
+            /* 0x03B6 */ "InputValidationKind", // Windows.UI.Xaml.Controls.InputValidationKind
+            /* 0x03B7 */ "InputValidationMode", // Windows.UI.Xaml.Controls.InputValidationMode
+            /* 0x03B8 */ "ColorPaletteResources", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x03B9 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.BackgroundSizing
+            /* 0x03BA */ null,
+            /* 0x03BB */ "BrushTransition", // Windows.UI.Xaml.BrushTransition
+            /* 0x03BC */ null,
+            /* 0x03BD */ null,
+            /* 0x03BE */ "Vector3Transition", // Windows.UI.Xaml.Vector3Transition
+            /* 0x03BF */ "ScalarTransition", // Windows.UI.Xaml.ScalarTransition
+            /* 0x03C0 */ null,
+            /* 0x03C1 */ "StandardUICommand", // Windows.UI.Xaml.Input.StandardUICommand
+            /* 0x03C2 */ "StandardUICommandKind", // Windows.UI.Xaml.Input.StandardUICommandKind
+            /* 0x03C3 */ "UIElementWeakCollection", // Windows.UI.Xaml.UIElementWeakCollection
+            /* 0x03C4 */ "ThemeShadow", // Windows.UI.Xaml.Media.ThemeShadow
+            /* 0x03C5 */ "Vector3TransitionComponents", // Windows.UI.Xaml.Vector3TransitionComponents
+            /* 0x03C6 */ "ControlHeaderPlacement", // Windows.UI.Xaml.Controls.ControlHeaderPlacement
+            /* 0x03C7 */ "InputValidationContext", // Windows.UI.Xaml.Controls.InputValidationContext
+            /* 0x03C8 */ "InputValidationCommand", // Windows.UI.Xaml.Controls.InputValidationCommand
+            /* 0x03C9 */ "XamlUICommand", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x03CA */ "Quaternion", // Windows.Foundation.Numerics.Quaternion
+            /* 0x03CB */ "CaretBrowsingCaret", // Windows.UI.Xaml.Internal.CaretBrowsingCaret
+            /* 0x03CC */ "ParserServiceProvider" // Windows.UI.Xaml.Markup.ParserServiceProvider
         };
 
         private static readonly string[] propertyNames = {
@@ -2788,6 +2921,519 @@ namespace XbfAnalyzer.Xbf
             /* 0x0754 */ "FlowsFrom", // Windows.UI.Xaml.Automation.AutomationProperties
             /* 0x0755 */ "FlowsTo", // Windows.UI.Xaml.Automation.AutomationProperties
             /* 0x0756 */ "RequiresPointerMode", // Windows.UI.Xaml.Application
+            /* 0x0757 */ "TextDecorations", // Windows.UI.Xaml.Documents.TextElement
+            /* 0x0758 */ "ColorAnimation", // Windows.UI.Xaml.Media.SolidColorBrush
+            /* 0x0759 */ "TextDecorations", // Windows.UI.Xaml.Controls.RichTextBlock
+            /* 0x075A */ "DefaultStyleResourceUri", // Windows.UI.Xaml.Controls.Control
+            /* 0x075B */ null,
+            /* 0x075C */ "PrimaryButtonStyle", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x075D */ "SecondaryButtonStyle", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x075E */ null,
+            /* 0x075F */ null,
+            /* 0x0760 */ null,
+            /* 0x0761 */ null,
+            /* 0x0762 */ "KeyTipHorizontalOffset", // Windows.UI.Xaml.Documents.TextElement
+            /* 0x0763 */ "KeyTipPlacementMode", // Windows.UI.Xaml.Documents.TextElement
+            /* 0x0764 */ "KeyTipVerticalOffset", // Windows.UI.Xaml.Documents.TextElement
+            /* 0x0765 */ "KeyTipHorizontalOffset", // Windows.UI.Xaml.UIElement
+            /* 0x0766 */ "KeyTipPlacementMode", // Windows.UI.Xaml.UIElement
+            /* 0x0767 */ "KeyTipVerticalOffset", // Windows.UI.Xaml.UIElement
+            /* 0x0768 */ "OverlayInputPassThroughElement", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x0769 */ "XYFocusKeyboardNavigation", // Windows.UI.Xaml.UIElement
+            /* 0x076A */ "Culture", // Windows.UI.Xaml.Automation.AutomationProperties
+            /* 0x076B */ "HandOffVisualClip", // Windows.UI.Xaml.UIElement
+            /* 0x076C */ null,
+            /* 0x076D */ null,
+            /* 0x076E */ null,
+            /* 0x076F */ null,
+            /* 0x0770 */ null,
+            /* 0x0771 */ null,
+            /* 0x0772 */ null,
+            /* 0x0773 */ null,
+            /* 0x0774 */ null,
+            /* 0x0775 */ null,
+            /* 0x0776 */ null,
+            /* 0x0777 */ null,
+            /* 0x0778 */ null,
+            /* 0x0779 */ null,
+            /* 0x077A */ null,
+            /* 0x077B */ null,
+            /* 0x077C */ null,
+            /* 0x077D */ null,
+            /* 0x077E */ "XYFocusDownNavigationStrategy", // Windows.UI.Xaml.UIElement
+            /* 0x077F */ "XYFocusLeftNavigationStrategy", // Windows.UI.Xaml.UIElement
+            /* 0x0780 */ "XYFocusRightNavigationStrategy", // Windows.UI.Xaml.UIElement
+            /* 0x0781 */ "XYFocusUpNavigationStrategy", // Windows.UI.Xaml.UIElement
+            /* 0x0782 */ "XYFocusDownNavigationStrategy", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x0783 */ "XYFocusLeftNavigationStrategy", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x0784 */ "XYFocusRightNavigationStrategy", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x0785 */ "XYFocusUpNavigationStrategy", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x0786 */ "AccessKeyScopeOwner", // Windows.UI.Xaml.Documents.TextElement
+            /* 0x0787 */ "IsAccessKeyScope", // Windows.UI.Xaml.Documents.TextElement
+            /* 0x0788 */ "ControlledPeers", // Windows.UI.Xaml.Automation.AutomationComponentProperties
+            /* 0x0789 */ "DescribedBy", // Windows.UI.Xaml.Automation.AutomationComponentProperties
+            /* 0x078A */ "LabeledBy", // Windows.UI.Xaml.Automation.AutomationComponentProperties
+            /* 0x078B */ "ElementId", // Windows.UI.Xaml.Automation.ComponentPropertyValue
+            /* 0x078C */ "Site", // Windows.UI.Xaml.Automation.ComponentPropertyValue
+            /* 0x078D */ "HandOffVisualTransformMatrix3D", // Windows.UI.Xaml.UIElement
+            /* 0x078E */ "FocusState", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x078F */ null,
+            /* 0x0790 */ "CloseButtonCommand", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x0791 */ "CloseButtonCommandParameter", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x0792 */ "CloseButtonStyle", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x0793 */ "CloseButtonText", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x0794 */ "DefaultButton", // Windows.UI.Xaml.Controls.ContentDialog
+            /* 0x0795 */ "SelectionHighlightColorWhenNotFocused", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0796 */ "SelectionHighlightColorWhenNotFocused", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0797 */ null,
+            /* 0x0798 */ null,
+            /* 0x0799 */ null,
+            /* 0x079A */ "ContentProperty", // Windows.UI.Xaml.Media.XamlLightCollection
+            /* 0x079B */ null,
+            /* 0x079C */ "RasterizePixelHeight", // Windows.UI.Xaml.Media.Imaging.SvgImageSource
+            /* 0x079D */ "RasterizePixelWidth", // Windows.UI.Xaml.Media.Imaging.SvgImageSource
+            /* 0x079E */ "UriSource", // Windows.UI.Xaml.Media.Imaging.SvgImageSource
+            /* 0x079F */ null,
+            /* 0x07A0 */ null,
+            /* 0x07A1 */ null,
+            /* 0x07A2 */ null,
+            /* 0x07A3 */ "DecodedPhysicalSize", // Windows.UI.Xaml.Media.LoadedImageSurface
+            /* 0x07A4 */ "DecodedSize", // Windows.UI.Xaml.Media.LoadedImageSurface
+            /* 0x07A5 */ "NaturalSize", // Windows.UI.Xaml.Media.LoadedImageSurface
+            /* 0x07A6 */ "SelectionChangedTrigger", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x07A7 */ null,
+            /* 0x07A8 */ "FallbackColor", // Windows.UI.Xaml.Media.XamlCompositionBrushBase
+            /* 0x07A9 */ "Size", // Windows.UI.Xaml.Hosting.XamlIsland
+            /* 0x07AA */ "Lights", // Windows.UI.Xaml.UIElement
+            /* 0x07AB */ "Icon", // Windows.UI.Xaml.Controls.MenuFlyoutItem
+            /* 0x07AC */ "Icon", // Windows.UI.Xaml.Controls.MenuFlyoutSubItem
+            /* 0x07AD */ "ShowAsMonochrome", // Windows.UI.Xaml.Controls.BitmapIcon
+            /* 0x07AE */ "HighContrastAdjustment", // Windows.UI.Xaml.Application
+            /* 0x07AF */ "HighContrastAdjustment", // Windows.UI.Xaml.UIElement
+            /* 0x07B0 */ "MaxLength", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x07B1 */ "TabFocusNavigation", // Windows.UI.Xaml.UIElement
+            /* 0x07B2 */ "IsTemplateKeyTipTarget", // Windows.UI.Xaml.Controls.Control
+            /* 0x07B3 */ "TemplateKeyTipTarget", // Windows.UI.Xaml.Controls.Control
+            /* 0x07B4 */ "IsTabStop", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x07B5 */ "TabIndex", // Windows.UI.Xaml.Documents.Hyperlink
+            /* 0x07B6 */ "IsRepeatButtonVisible", // Windows.UI.Xaml.Controls.MediaTransportControls
+            /* 0x07B7 */ "IsRepeatEnabled", // Windows.UI.Xaml.Controls.MediaTransportControls
+            /* 0x07B8 */ "ShowAndHideAutomatically", // Windows.UI.Xaml.Controls.MediaTransportControls
+            /* 0x07B9 */ "DisabledFormattingAccelerators", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x07BA */ "CharacterCasing", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x07BB */ "CharacterCasing", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x07BC */ "IsTextTrimmed", // Windows.UI.Xaml.Controls.RichTextBlock
+            /* 0x07BD */ "IsTextTrimmed", // Windows.UI.Xaml.Controls.RichTextBlockOverflow
+            /* 0x07BE */ "IsTextTrimmed", // Windows.UI.Xaml.Controls.TextBlock
+            /* 0x07BF */ "Length", // Windows.UI.Xaml.Documents.TextRange
+            /* 0x07C0 */ "StartIndex", // Windows.UI.Xaml.Documents.TextRange
+            /* 0x07C1 */ "Background", // Windows.UI.Xaml.Documents.TextHighlighter
+            /* 0x07C2 */ "Foreground", // Windows.UI.Xaml.Documents.TextHighlighter
+            /* 0x07C3 */ "Ranges", // Windows.UI.Xaml.Documents.TextHighlighter
+            /* 0x07C4 */ "TextHighlighters", // Windows.UI.Xaml.Controls.RichTextBlock
+            /* 0x07C5 */ "TextHighlighters", // Windows.UI.Xaml.Controls.TextBlock
+            /* 0x07C6 */ "ContentProperty", // Windows.UI.Xaml.Documents.TextHighlighterCollection
+            /* 0x07C7 */ "ContentProperty", // Windows.UI.Xaml.Documents.TextRangeCollection
+            /* 0x07C8 */ "ActualTheme", // Windows.UI.Xaml.FrameworkElement
+            /* 0x07C9 */ "ColumnSpacing", // Windows.UI.Xaml.Controls.Grid
+            /* 0x07CA */ "RowSpacing", // Windows.UI.Xaml.Controls.Grid
+            /* 0x07CB */ "Spacing", // Windows.UI.Xaml.Controls.StackPanel
+            /* 0x07CC */ "HorizontalTextAlignment", // Windows.UI.Xaml.Documents.Block
+            /* 0x07CD */ "HorizontalTextAlignment", // Windows.UI.Xaml.Controls.RichTextBlock
+            /* 0x07CE */ "HorizontalTextAlignment", // Windows.UI.Xaml.Controls.TextBlock
+            /* 0x07CF */ "HorizontalTextAlignment", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x07D0 */ "HorizontalTextAlignment", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x07D1 */ "PlaceholderForeground", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x07D2 */ "PlaceholderForeground", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x07D3 */ "IsEnabled", // Windows.UI.Xaml.Input.KeyboardAccelerator
+            /* 0x07D4 */ "Key", // Windows.UI.Xaml.Input.KeyboardAccelerator
+            /* 0x07D5 */ "Modifiers", // Windows.UI.Xaml.Input.KeyboardAccelerator
+            /* 0x07D6 */ "ScopeOwner", // Windows.UI.Xaml.Input.KeyboardAccelerator
+            /* 0x07D7 */ "KeyboardAccelerators", // Windows.UI.Xaml.UIElement
+            /* 0x07D8 */ "ContentProperty", // Windows.UI.Xaml.Input.KeyboardAcceleratorCollection
+            /* 0x07D9 */ "RevealBackground", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x07DA */ "RevealBackgroundShowsAboveContent", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x07DB */ "RevealBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x07DC */ "RevealBorderThickness", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x07DD */ null,
+            /* 0x07DE */ "KeyTipTarget", // Windows.UI.Xaml.UIElement
+            /* 0x07DF */ "KeyboardAcceleratorTextMinWidth", // Windows.UI.Xaml.Controls.Primitives.AppBarButtonTemplateSettings
+            /* 0x07E0 */ "KeyboardAcceleratorTextMinWidth", // Windows.UI.Xaml.Controls.Primitives.AppBarToggleButtonTemplateSettings
+            /* 0x07E1 */ "KeyboardAcceleratorTextMinWidth", // Windows.UI.Xaml.Controls.Primitives.MenuFlyoutItemTemplateSettings
+            /* 0x07E2 */ null,
+            /* 0x07E3 */ "TemplateSettings", // Windows.UI.Xaml.Controls.MenuFlyoutItem
+            /* 0x07E4 */ null,
+            /* 0x07E5 */ "TemplateSettings", // Windows.UI.Xaml.Controls.AppBarButton
+            /* 0x07E6 */ null,
+            /* 0x07E7 */ "TemplateSettings", // Windows.UI.Xaml.Controls.AppBarToggleButton
+            /* 0x07E8 */ "BringIntoViewDistanceX", // Windows.UI.Xaml.FrameworkElement
+            /* 0x07E9 */ "BringIntoViewDistanceY", // Windows.UI.Xaml.FrameworkElement
+            /* 0x07EA */ "EffectiveViewport", // Windows.UI.Xaml.FrameworkElement
+            /* 0x07EB */ "MaxViewport", // Windows.UI.Xaml.FrameworkElement
+            /* 0x07EC */ "KeyboardAcceleratorPlacementMode", // Windows.UI.Xaml.UIElement
+            /* 0x07ED */ null,
+            /* 0x07EE */ null,
+            /* 0x07EF */ "IsResponsiveToOcclusions", // Windows.UI.Xaml.Controls.ScrollViewer
+            /* 0x07F0 */ "IsCompactOverlayButtonVisible", // Windows.UI.Xaml.Controls.MediaTransportControls
+            /* 0x07F1 */ "IsCompactOverlayEnabled", // Windows.UI.Xaml.Controls.MediaTransportControls
+            /* 0x07F2 */ null,
+            /* 0x07F3 */ "ActualHeight", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07F4 */ "ActualWidth", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07F5 */ "Children", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07F6 */ "Height", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07F7 */ "HorizontalAlignment", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07F8 */ "Margin", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07F9 */ "MaxHeight", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07FA */ "MaxWidth", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07FB */ "MinHeight", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07FC */ "MinWidth", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07FD */ "VerticalAlignment", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07FE */ "Width", // Windows.UI.Xaml.FrameworkElementEx
+            /* 0x07FF */ "ActualHeight", // Windows.UI.Xaml.PanelEx
+            /* 0x0800 */ "ActualWidth", // Windows.UI.Xaml.PanelEx
+            /* 0x0801 */ "Children", // Windows.UI.Xaml.PanelEx
+            /* 0x0802 */ "Height", // Windows.UI.Xaml.PanelEx
+            /* 0x0803 */ "HorizontalAlignment", // Windows.UI.Xaml.PanelEx
+            /* 0x0804 */ "Margin", // Windows.UI.Xaml.PanelEx
+            /* 0x0805 */ "MaxHeight", // Windows.UI.Xaml.PanelEx
+            /* 0x0806 */ "MaxWidth", // Windows.UI.Xaml.PanelEx
+            /* 0x0807 */ "MinHeight", // Windows.UI.Xaml.PanelEx
+            /* 0x0808 */ "MinWidth", // Windows.UI.Xaml.PanelEx
+            /* 0x0809 */ "VerticalAlignment", // Windows.UI.Xaml.PanelEx
+            /* 0x080A */ "Width", // Windows.UI.Xaml.PanelEx
+            /* 0x080B */ "KeyboardAcceleratorToolTip", // Windows.UI.Xaml.Controls.ToolTipService
+            /* 0x080C */ "KeyboardAcceleratorToolTipObject", // Windows.UI.Xaml.Controls.ToolTipService
+            /* 0x080D */ "KeyboardAcceleratorPlacementTarget", // Windows.UI.Xaml.UIElement
+            /* 0x080E */ "CenterPoint", // Windows.UI.Xaml.UIElement
+            /* 0x080F */ "Rotation", // Windows.UI.Xaml.UIElement
+            /* 0x0810 */ "RotationAxis", // Windows.UI.Xaml.UIElement
+            /* 0x0811 */ "Scale", // Windows.UI.Xaml.UIElement
+            /* 0x0812 */ "TransformMatrix", // Windows.UI.Xaml.UIElement
+            /* 0x0813 */ "Translation", // Windows.UI.Xaml.UIElement
+            /* 0x0814 */ "HandwritingView", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0815 */ "HeadingLevel", // Windows.UI.Xaml.Automation.AutomationProperties
+            /* 0x0816 */ null,
+            /* 0x0817 */ null,
+            /* 0x0818 */ null,
+            /* 0x0819 */ null,
+            /* 0x081A */ null,
+            /* 0x081B */ null,
+            /* 0x081C */ "IsHandwritingViewEnabled", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x081D */ "ContentProperty", // Windows.UI.Xaml.Documents.ContentLinkProviderCollection
+            /* 0x081E */ "ContentLinkProviders", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x081F */ "ContentLinkBackgroundColor", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0820 */ "ContentLinkForegroundColor", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0821 */ "AreCandidatesEnabled", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0822 */ "IsOpen", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0823 */ null,
+            /* 0x0824 */ "PlacementTarget", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0825 */ "PlacementAlignment", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0826 */ "HandwritingView", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0827 */ "IsHandwritingViewEnabled", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0828 */ "KeepAliveCount", // Windows.UI.Xaml.UIElement
+            /* 0x0829 */ "AttachedView", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x082A */ "KeyboardAcceleratorTextOverride", // Windows.UI.Xaml.Controls.MenuFlyoutItem
+            /* 0x082B */ "KeyboardAcceleratorTextOverride", // Windows.UI.Xaml.Controls.AppBarButton
+            /* 0x082C */ "KeyboardAcceleratorTextOverride", // Windows.UI.Xaml.Controls.AppBarToggleButton
+            /* 0x082D */ "Background", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x082E */ "Cursor", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x082F */ "ElementSoundMode", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0830 */ "FocusState", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0831 */ "IsTabStop", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0832 */ "TabIndex", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0833 */ "XYFocusDown", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0834 */ "XYFocusDownNavigationStrategy", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0835 */ "XYFocusLeft", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0836 */ "XYFocusLeftNavigationStrategy", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0837 */ "XYFocusRight", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0838 */ "XYFocusRightNavigationStrategy", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x0839 */ "XYFocusUp", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x083A */ "XYFocusUpNavigationStrategy", // Windows.UI.Xaml.Documents.ContentLink
+            /* 0x083B */ "AccessKey", // Windows.UI.Xaml.Input.CommandBase
+            /* 0x083C */ "Description", // Windows.UI.Xaml.Input.CommandBase
+            /* 0x083D */ "IconSource", // Windows.UI.Xaml.Input.CommandBase
+            /* 0x083E */ "KeyboardAccelerators", // Windows.UI.Xaml.Input.CommandBase
+            /* 0x083F */ "Label", // Windows.UI.Xaml.Input.CommandBase
+            /* 0x0840 */ "Foreground", // Windows.UI.Xaml.Controls.IconSource
+            /* 0x0841 */ "ShowAsMonochrome", // Windows.UI.Xaml.Controls.BitmapIconSource
+            /* 0x0842 */ "UriSource", // Windows.UI.Xaml.Controls.BitmapIconSource
+            /* 0x0843 */ "FontFamily", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x0844 */ "FontSize", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x0845 */ "FontStyle", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x0846 */ "FontWeight", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x0847 */ "Glyph", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x0848 */ "IsTextScaleFactorEnabled", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x0849 */ "MirroredWhenRightToLeft", // Windows.UI.Xaml.Controls.FontIconSource
+            /* 0x084A */ "Data", // Windows.UI.Xaml.Controls.PathIconSource
+            /* 0x084B */ "Symbol", // Windows.UI.Xaml.Controls.SymbolIconSource
+            /* 0x084C */ "UseStrict", // Windows.UI.Xaml.DependencyObject
+            /* 0x084D */ "CenterPoint", // Windows.UI.Xaml.Media.LinearGradientBrush
+            /* 0x084E */ "Rotation", // Windows.UI.Xaml.Media.LinearGradientBrush
+            /* 0x084F */ "Scale", // Windows.UI.Xaml.Media.LinearGradientBrush
+            /* 0x0850 */ "TransformMatrix", // Windows.UI.Xaml.Media.LinearGradientBrush
+            /* 0x0851 */ "Translation", // Windows.UI.Xaml.Media.LinearGradientBrush
+            /* 0x0852 */ "Shadow", // Windows.UI.Xaml.UIElement
+            /* 0x0853 */ "IconSource", // Windows.UI.Xaml.Controls.IconSourceElement
+            /* 0x0854 */ "CommandingContainer", // Windows.UI.Xaml.Controls.CommandingContainer
+            /* 0x0855 */ "CommandingTarget", // Windows.UI.Xaml.Controls.CommandingContainer
+            /* 0x0856 */ "IsTelemetryCollectionEnabled", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0857 */ "IsTelemetryCollectionEnabled", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0858 */ "IsTelemetryCollectionEnabled", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0859 */ "CanPasteClipboardContent", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x085A */ "CanPasteClipboardContent", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x085B */ "CanRedo", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x085C */ "CanUndo", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x085D */ "ShowMode", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x085E */ "Target", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x085F */ "CornerRadius", // Windows.UI.Xaml.Controls.Control
+            /* 0x0860 */ null,
+            /* 0x0861 */ null,
+            /* 0x0862 */ null,
+            /* 0x0863 */ null,
+            /* 0x0864 */ null,
+            /* 0x0865 */ "IsDialog", // Windows.UI.Xaml.Automation.AutomationProperties
+            /* 0x0866 */ "DynamicOverflowOrder", // Windows.UI.Xaml.Controls.AppBarElementContainer
+            /* 0x0867 */ "IsCompact", // Windows.UI.Xaml.Controls.AppBarElementContainer
+            /* 0x0868 */ "IsInOverflow", // Windows.UI.Xaml.Controls.AppBarElementContainer
+            /* 0x0869 */ "UseOverflowStyle", // Windows.UI.Xaml.Controls.AppBarElementContainer
+            /* 0x086A */ "BorderBrushProtected", // Windows.UI.Xaml.Controls.Panel
+            /* 0x086B */ "BorderThicknessProtected", // Windows.UI.Xaml.Controls.Panel
+            /* 0x086C */ "CornerRadiusProtected", // Windows.UI.Xaml.Controls.Panel
+            /* 0x086D */ "CanContentRenderOutsideBounds", // Windows.UI.Xaml.Controls.ScrollContentPresenter
+            /* 0x086E */ "CanContentRenderOutsideBounds", // Windows.UI.Xaml.Controls.ScrollViewer
+            /* 0x086F */ "SelectionFlyout", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x0870 */ "SelectionFlyout", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0871 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.Border
+            /* 0x0872 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.ContentPresenter
+            /* 0x0873 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.Control
+            /* 0x0874 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.Grid
+            /* 0x0875 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.RelativePanel
+            /* 0x0876 */ "BackgroundSizing", // Windows.UI.Xaml.Controls.StackPanel
+            /* 0x0877 */ null,
+            /* 0x0878 */ null,
+            /* 0x0879 */ null,
+            /* 0x087A */ "HorizontalAnchorRatio", // Windows.UI.Xaml.Controls.ScrollViewer
+            /* 0x087B */ "VerticalAnchorRatio", // Windows.UI.Xaml.Controls.ScrollViewer
+            /* 0x087C */ null,
+            /* 0x087D */ null,
+            /* 0x087E */ null,
+            /* 0x087F */ null,
+            /* 0x0880 */ null,
+            /* 0x0881 */ null,
+            /* 0x0882 */ null,
+            /* 0x0883 */ null,
+            /* 0x0884 */ null,
+            /* 0x0885 */ null,
+            /* 0x0886 */ null,
+            /* 0x0887 */ null,
+            /* 0x0888 */ null,
+            /* 0x0889 */ null,
+            /* 0x088A */ null,
+            /* 0x088B */ null,
+            /* 0x088C */ null,
+            /* 0x088D */ null,
+            /* 0x088E */ null,
+            /* 0x088F */ null,
+            /* 0x0890 */ null,
+            /* 0x0891 */ null,
+            /* 0x0892 */ null,
+            /* 0x0893 */ null,
+            /* 0x0894 */ null,
+            /* 0x0895 */ null,
+            /* 0x0896 */ null,
+            /* 0x0897 */ null,
+            /* 0x0898 */ null,
+            /* 0x0899 */ null,
+            /* 0x089A */ null,
+            /* 0x089B */ null,
+            /* 0x089C */ null,
+            /* 0x089D */ null,
+            /* 0x089E */ null,
+            /* 0x089F */ null,
+            /* 0x08A0 */ "Text", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x08A1 */ null,
+            /* 0x08A2 */ null,
+            /* 0x08A3 */ null,
+            /* 0x08A4 */ null,
+            /* 0x08A5 */ null,
+            /* 0x08A6 */ null,
+            /* 0x08A7 */ null,
+            /* 0x08A8 */ null,
+            /* 0x08A9 */ "Description", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x08AA */ "PlacementRect", // Windows.UI.Xaml.Controls.ToolTip
+            /* 0x08AB */ "SelectionFlyout", // Windows.UI.Xaml.Controls.RichTextBlock
+            /* 0x08AC */ "SelectionFlyout", // Windows.UI.Xaml.Controls.TextBlock
+            /* 0x08AD */ "SelectionFlyout", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x08AE */ "BackgroundTransition", // Windows.UI.Xaml.Controls.Border
+            /* 0x08AF */ "BackgroundTransition", // Windows.UI.Xaml.Controls.ContentPresenter
+            /* 0x08B0 */ "BackgroundTransition", // Windows.UI.Xaml.Controls.Panel
+            /* 0x08B1 */ null,
+            /* 0x08B2 */ null,
+            /* 0x08B3 */ "Accent", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08B4 */ "AltHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08B5 */ "AltLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08B6 */ "AltMedium", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08B7 */ "AltMediumHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08B8 */ "AltMediumLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08B9 */ "BaseHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08BA */ "BaseLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08BB */ "BaseMedium", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08BC */ "BaseMediumHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08BD */ "BaseMediumLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08BE */ "ChromeAltLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08BF */ "ChromeBlackHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C0 */ "ChromeBlackLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C1 */ "ChromeBlackMedium", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C2 */ "ChromeBlackMediumLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C3 */ "ChromeDisabledHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C4 */ "ChromeDisabledLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C5 */ "ChromeGray", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C6 */ "ChromeHigh", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C7 */ "ChromeLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C8 */ "ChromeMedium", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08C9 */ "ChromeMediumLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08CA */ "ChromeWhite", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08CB */ null,
+            /* 0x08CC */ "ErrorText", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08CD */ "ListLow", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08CE */ "ListMedium", // Windows.UI.Xaml.ColorPaletteResources
+            /* 0x08CF */ "TranslationTransition", // Windows.UI.Xaml.UIElement
+            /* 0x08D0 */ "OpacityTransition", // Windows.UI.Xaml.UIElement
+            /* 0x08D1 */ "RotationTransition", // Windows.UI.Xaml.UIElement
+            /* 0x08D2 */ "ScaleTransition", // Windows.UI.Xaml.UIElement
+            /* 0x08D3 */ null,
+            /* 0x08D4 */ null,
+            /* 0x08D5 */ "Duration", // Windows.UI.Xaml.BrushTransition
+            /* 0x08D6 */ "Duration", // Windows.UI.Xaml.ScalarTransition
+            /* 0x08D7 */ "Duration", // Windows.UI.Xaml.Vector3Transition
+            /* 0x08D8 */ null,
+            /* 0x08D9 */ null,
+            /* 0x08DA */ "Components", // Windows.UI.Xaml.Vector3Transition
+            /* 0x08DB */ "IsOpen", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x08DC */ null,
+            /* 0x08DD */ null,
+            /* 0x08DE */ null,
+            /* 0x08DF */ null,
+            /* 0x08E0 */ null,
+            /* 0x08E1 */ null,
+            /* 0x08E2 */ null,
+            /* 0x08E3 */ "Kind", // Windows.UI.Xaml.Input.StandardUICommand
+            /* 0x08E4 */ "CanBeScrollAnchor", // Windows.UI.Xaml.UIElement
+            /* 0x08E5 */ null,
+            /* 0x08E6 */ null,
+            /* 0x08E7 */ "Receivers", // Windows.UI.Xaml.Media.ThemeShadow
+            /* 0x08E8 */ "SizesContentToTemplatedParent", // Windows.UI.Xaml.Controls.ScrollContentPresenter
+            /* 0x08E9 */ "TextBoxStyle", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x08EA */ "IsNavigationStackEnabled", // Windows.UI.Xaml.Controls.Frame
+            /* 0x08EB */ "ProofingMenuFlyout", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x08EC */ "ProofingMenuFlyout", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x08ED */ "HeaderPlacement", // Windows.UI.Xaml.Controls.CalendarDatePicker
+            /* 0x08EE */ "HeaderPlacement", // Windows.UI.Xaml.Controls.DatePicker
+            /* 0x08EF */ "HeaderPlacement", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x08F0 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x08F1 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x08F2 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.TimePicker
+            /* 0x08F3 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.ToggleSwitch
+            /* 0x08F4 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x08F5 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.Slider
+            /* 0x08F6 */ "HeaderPlacement", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x08F7 */ "ReduceViewportForCoreInputViewOcclusions", // Windows.UI.Xaml.Controls.ScrollViewer
+            /* 0x08F8 */ "AreOpenCloseAnimationsEnabled", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x08F9 */ "InputDevicePrefersPrimaryCommands", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x08FA */ "InputValidationKind", // Windows.UI.Xaml.Controls.InputValidationCommand
+            /* 0x08FB */ "InputValidationMode", // Windows.UI.Xaml.Controls.InputValidationCommand
+            /* 0x08FC */ "Description", // Windows.UI.Xaml.Controls.CalendarDatePicker
+            /* 0x08FD */ null,
+            /* 0x08FE */ null,
+            /* 0x08FF */ null,
+            /* 0x0900 */ null,
+            /* 0x0901 */ null,
+            /* 0x0902 */ null,
+            /* 0x0903 */ null,
+            /* 0x0904 */ "Description", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x0905 */ "ErrorTemplate", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x0906 */ "HasValidationErrors", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x0907 */ "InputValidationKind", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x0908 */ "InputValidationMode", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x0909 */ "ValidationCommand", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x090A */ "ValidationContext", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x090B */ "ValidationErrors", // Windows.UI.Xaml.Controls.PasswordBox
+            /* 0x090C */ "Description", // Windows.UI.Xaml.Controls.RichEditBox
+            /* 0x090D */ null,
+            /* 0x090E */ null,
+            /* 0x090F */ null,
+            /* 0x0910 */ null,
+            /* 0x0911 */ null,
+            /* 0x0912 */ null,
+            /* 0x0913 */ null,
+            /* 0x0914 */ "ErrorTemplate", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0915 */ "HasValidationErrors", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0916 */ "InputValidationKind", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0917 */ "InputValidationMode", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0918 */ "ValidationCommand", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x0919 */ "ValidationContext", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x091A */ "ValidationErrors", // Windows.UI.Xaml.Controls.TextBox
+            /* 0x091B */ "Description", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x091C */ "ErrorTemplate", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x091D */ "HasValidationErrors", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x091E */ "InputValidationKind", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x091F */ "InputValidationMode", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x0920 */ "ValidationCommand", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x0921 */ "ValidationContext", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x0922 */ "ValidationErrors", // Windows.UI.Xaml.Controls.AutoSuggestBox
+            /* 0x0923 */ "Description", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x0924 */ "ErrorTemplate", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x0925 */ "HasValidationErrors", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x0926 */ "InputValidationKind", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x0927 */ "InputValidationMode", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x0928 */ "ValidationCommand", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x0929 */ "ValidationContext", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x092A */ "ValidationErrors", // Windows.UI.Xaml.Controls.ComboBox
+            /* 0x092B */ "AccessKey", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x092C */ "Command", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x092D */ "Description", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x092E */ "IconSource", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x092F */ "KeyboardAccelerators", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x0930 */ "Label", // Windows.UI.Xaml.Input.XamlUICommand
+            /* 0x0931 */ "ThemeShadowReceiverCount", // Windows.UI.Xaml.UIElement
+            /* 0x0932 */ "OverlayInputPassThroughElement", // Windows.UI.Xaml.Controls.Primitives.Popup
+            /* 0x0933 */ "SelectedDate", // Windows.UI.Xaml.Controls.DatePicker
+            /* 0x0934 */ "SelectedTime", // Windows.UI.Xaml.Controls.TimePicker
+            /* 0x0935 */ null,
+            /* 0x0936 */ null,
+            /* 0x0937 */ "ColorCloseThreshold", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0938 */ "HostElement", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0939 */ "PreventAutomaticDismiss", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x093A */ "ShouldInjectEnterKeyPress", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x093B */ "ShowEmojiButtonInPlaceOfSwitchToKeyboard", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x093C */ "ShowEnterButtonForSingleLineTextBox", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x093D */ null,
+            /* 0x093E */ "PreventDismissOnPointer", // Windows.UI.Xaml.Controls.MenuFlyoutItem
+            /* 0x093F */ "NegativeCompactVerticalDelta", // Windows.UI.Xaml.Controls.Primitives.AppBarTemplateSettings
+            /* 0x0940 */ "NegativeHiddenVerticalDelta", // Windows.UI.Xaml.Controls.Primitives.AppBarTemplateSettings
+            /* 0x0941 */ "NegativeMinimalVerticalDelta", // Windows.UI.Xaml.Controls.Primitives.AppBarTemplateSettings
+            /* 0x0942 */ null,
+            /* 0x0943 */ null,
+            /* 0x0944 */ null,
+            /* 0x0945 */ null,
+            /* 0x0946 */ null,
+            /* 0x0947 */ null,
+            /* 0x0948 */ null,
+            /* 0x0949 */ null,
+            /* 0x094A */ "ShouldConstrainToRootBounds", // Windows.UI.Xaml.Controls.Primitives.FlyoutBase
+            /* 0x094B */ "ShouldConstrainToRootBounds", // Windows.UI.Xaml.Controls.Primitives.Popup
+            /* 0x094C */ "IsDefaultShadowEnabled", // Windows.UI.Xaml.Controls.FlyoutPresenter
+            /* 0x094D */ "IsDefaultShadowEnabled", // Windows.UI.Xaml.Controls.MenuFlyoutPresenter
+            /* 0x094E */ "ActualOffset", // Windows.UI.Xaml.UIElement
+            /* 0x094F */ "ActualSize", // Windows.UI.Xaml.UIElement
+            /* 0x0950 */ "OverflowContentCompactYTranslation", // Windows.UI.Xaml.Controls.Primitives.CommandBarTemplateSettings
+            /* 0x0951 */ "OverflowContentHiddenYTranslation", // Windows.UI.Xaml.Controls.Primitives.CommandBarTemplateSettings
+            /* 0x0952 */ "OverflowContentMinimalYTranslation", // Windows.UI.Xaml.Controls.Primitives.CommandBarTemplateSettings
+            /* 0x0953 */ "BaseUri", // Windows.UI.Xaml.Markup.ParserServiceProvider
+            /* 0x0954 */ "RootObject", // Windows.UI.Xaml.Markup.ParserServiceProvider
+            /* 0x0955 */ "TargetObject", // Windows.UI.Xaml.Markup.ParserServiceProvider
+            /* 0x0956 */ "TargetProperty", // Windows.UI.Xaml.Markup.ParserServiceProvider
+            /* 0x0957 */ "ShouldConstrainToRootBounds" // Windows.UI.Xaml.Controls.HandwritingView
         };
 
         private static readonly Dictionary<int, string>[] enumValues = {
@@ -2825,7 +3471,7 @@ namespace XbfAnalyzer.Xbf
             /* 0x025B */ new Dictionary<int, string> { { 0, "HoldEnd" }, { 1, "Stop" } }, // Windows.UI.Xaml.Media.Animation.FillBehavior
             /* 0x025C */ new Dictionary<int, string> { { 0, "EvenOdd" }, { 1, "Nonzero" } }, // Windows.UI.Xaml.Media.FillRule
             /* 0x025D */ new Dictionary<int, string> { { 0, "LeftToRight" }, { 1, "RightToLeft" } }, // Windows.UI.Xaml.FlowDirection
-            /* 0x025E */ new Dictionary<int, string> { { 0, "Top" }, { 1, "Bottom" }, { 2, "Left" }, { 3, "Right" }, { 4, "Full" } }, // Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode
+            /* 0x025E */ new Dictionary<int, string> { { 0, "Top" }, { 1, "Bottom" }, { 2, "Left" }, { 3, "Right" }, { 4, "Full" }, { 5, "TopEdgeAlignedLeft" }, { 6, "TopEdgeAlignedRight" }, { 7, "BottomEdgeAlignedLeft" }, { 8, "BottomEdgeAlignedRight" }, { 9, "LeftEdgeAlignedTop" }, { 10, "LeftEdgeAlignedBottom" }, { 11, "RightEdgeAlignedTop" }, { 12, "RightEdgeAlignedBottom" }, { 13, "Auto" } }, // Windows.UI.Xaml.Controls.Primitives.FlyoutPlacementMode
             /* 0x025F */ new Dictionary<int, string> { { 0, "Next" }, { 1, "Previous" }, { 2, "Up" }, { 3, "Down" }, { 4, "Left" }, { 5, "Right" }, { 6, "None" } }, // Windows.UI.Xaml.Input.FocusNavigationDirection
             /* 0x0260 */ new Dictionary<int, string> { { 0, "Unfocused" }, { 1, "Pointer" }, { 2, "Keyboard" }, { 3, "Programmatic" } }, // Windows.UI.Xaml.FocusState
             /* 0x0261 */ new Dictionary<int, string> { { 0, "Normal" }, { 1, "AllSmallCaps" }, { 2, "SmallCaps" }, { 3, "AllPetiteCaps" }, { 4, "PetiteCaps" }, { 5, "Unicase" }, { 6, "Titling" } }, // Windows.UI.Xaml.FontCapitals
@@ -2889,7 +3535,7 @@ namespace XbfAnalyzer.Xbf
             /* 0x029B */ new Dictionary<int, string> { { 0, "None" }, { 1, "BoldSimulation" }, { 2, "ItalicSimulation" }, { 3, "BoldItalicSimulation" } }, // Windows.UI.Xaml.Media.StyleSimulations
             /* 0x029C */ new Dictionary<int, string> { { 0, "None" }, { 1, "Single" }, { 2, "Multiple" } }, // Windows.UI.Xaml.Automation.SupportedTextSelection
             /* 0x029D */ new Dictionary<int, string> { { 0, "Counterclockwise" }, { 1, "Clockwise" } }, // Windows.UI.Xaml.Media.SweepDirection
-            /* 0x029E */ new Dictionary<int, string> { { 57600, "Previous" }, { 57601, "Next" }, { 57602, "Play" }, { 57603, "Pause" }, { 57604, "Edit" }, { 57605, "Save" }, { 57606, "Clear" }, { 57607, "Delete" }, { 57608, "Remove" }, { 57609, "Add" }, { 57610, "Cancel" }, { 57611, "Accept" }, { 57612, "More" }, { 57613, "Redo" }, { 57614, "Undo" }, { 57615, "Home" }, { 57616, "Up" }, { 57617, "Forward" }, { 57618, "Back" }, { 57619, "Favorite" }, { 57620, "Camera" }, { 57621, "Setting" }, { 57622, "Video" }, { 57623, "Sync" }, { 57624, "Download" }, { 57625, "Mail" }, { 57626, "Find" }, { 57627, "Help" }, { 57628, "Upload" }, { 57629, "Emoji" }, { 57630, "TwoPage" }, { 57631, "LeaveChat" }, { 57632, "MailForward" }, { 57633, "Clock" }, { 57634, "Send" }, { 57635, "Crop" }, { 57636, "RotateCamera" }, { 57637, "People" }, { 57638, "OpenPane" }, { 57639, "ClosePane" }, { 57640, "World" }, { 57641, "Flag" }, { 57642, "PreviewLink" }, { 57643, "Globe" }, { 57644, "Trim" }, { 57645, "AttachCamera" }, { 57646, "ZoomIn" }, { 57647, "Bookmarks" }, { 57648, "Document" }, { 57649, "ProtectedDocument" }, { 57650, "Page" }, { 57651, "Bullets" }, { 57652, "Comment" }, { 57653, "MailFilled" }, { 57654, "ContactInfo" }, { 57655, "HangUp" }, { 57656, "ViewAll" }, { 57657, "MapPin" }, { 57658, "Phone" }, { 57659, "VideoChat" }, { 57660, "Switch" }, { 57661, "Contact" }, { 57662, "Rename" }, { 57665, "Pin" }, { 57666, "MusicInfo" }, { 57667, "Go" }, { 57668, "Keyboard" }, { 57669, "DockLeft" }, { 57670, "DockRight" }, { 57671, "DockBottom" }, { 57672, "Remote" }, { 57673, "Refresh" }, { 57674, "Rotate" }, { 57675, "Shuffle" }, { 57676, "List" }, { 57677, "Shop" }, { 57678, "SelectAll" }, { 57679, "Orientation" }, { 57680, "Import" }, { 57681, "ImportAll" }, { 57685, "BrowsePhotos" }, { 57686, "WebCam" }, { 57688, "Pictures" }, { 57689, "SaveLocal" }, { 57690, "Caption" }, { 57691, "Stop" }, { 57692, "ShowResults" }, { 57693, "Volume" }, { 57694, "Repair" }, { 57695, "Message" }, { 57696, "Page2" }, { 57697, "CalendarDay" }, { 57698, "CalendarWeek" }, { 57699, "Calendar" }, { 57700, "Character" }, { 57701, "MailReplyAll" }, { 57702, "Read" }, { 57703, "Link" }, { 57704, "Account" }, { 57705, "ShowBcc" }, { 57706, "HideBcc" }, { 57707, "Cut" }, { 57708, "Attach" }, { 57709, "Paste" }, { 57710, "Filter" }, { 57711, "Copy" }, { 57712, "Emoji2" }, { 57713, "Important" }, { 57714, "MailReply" }, { 57715, "SlideShow" }, { 57716, "Sort" }, { 57720, "Manage" }, { 57721, "AllApps" }, { 57722, "DisconnectDrive" }, { 57723, "MapDrive" }, { 57724, "NewWindow" }, { 57725, "OpenWith" }, { 57729, "ContactPresence" }, { 57730, "Priority" }, { 57732, "GoToToday" }, { 57733, "Font" }, { 57734, "FontColor" }, { 57735, "Contact2" }, { 57736, "Folder" }, { 57737, "Audio" }, { 57738, "Placeholder" }, { 57739, "View" }, { 57740, "SetLockScreen" }, { 57741, "SetTile" }, { 57744, "ClosedCaption" }, { 57745, "StopSlideShow" }, { 57746, "Permissions" }, { 57747, "Highlight" }, { 57748, "DisableUpdates" }, { 57749, "UnFavorite" }, { 57750, "UnPin" }, { 57751, "OpenLocal" }, { 57752, "Mute" }, { 57753, "Italic" }, { 57754, "Underline" }, { 57755, "Bold" }, { 57756, "MoveToFolder" }, { 57757, "LikeDislike" }, { 57758, "Dislike" }, { 57759, "Like" }, { 57760, "AlignRight" }, { 57761, "AlignCenter" }, { 57762, "AlignLeft" }, { 57763, "Zoom" }, { 57764, "ZoomOut" }, { 57765, "OpenFile" }, { 57766, "OtherUser" }, { 57767, "Admin" }, { 57795, "Street" }, { 57796, "Map" }, { 57797, "ClearSelection" }, { 57798, "FontDecrease" }, { 57799, "FontIncrease" }, { 57800, "FontSize" }, { 57801, "CellPhone" }, { 57802, "ReShare" }, { 57803, "Tag" }, { 57804, "RepeatOne" }, { 57805, "RepeatAll" }, { 57806, "OutlineStar" }, { 57807, "SolidStar" }, { 57808, "Calculator" }, { 57809, "Directions" }, { 57810, "Target" }, { 57811, "Library" }, { 57812, "PhoneBook" }, { 57813, "Memo" }, { 57814, "Microphone" }, { 57815, "PostUpdate" }, { 57816, "BackToWindow" }, { 57817, "FullScreen" }, { 57818, "NewFolder" }, { 57819, "CalendarReply" }, { 57821, "UnSyncFolder" }, { 57822, "ReportHacked" }, { 57823, "SyncFolder" }, { 57824, "BlockContact" }, { 57825, "SwitchApps" }, { 57826, "AddFriend" }, { 57827, "TouchPointer" }, { 57828, "GoToStart" }, { 57829, "ZeroBars" }, { 57830, "OneBar" }, { 57831, "TwoBars" }, { 57832, "ThreeBars" }, { 57833, "FourBars" }, { 58004, "Scan" }, { 58005, "Preview" } }, // Windows.UI.Xaml.Controls.Symbol
+            /* 0x029E */ new Dictionary<int, string> { { 57600, "Previous" }, { 57601, "Next" }, { 57602, "Play" }, { 57603, "Pause" }, { 57604, "Edit" }, { 57605, "Save" }, { 57606, "Clear" }, { 57607, "Delete" }, { 57608, "Remove" }, { 57609, "Add" }, { 57610, "Cancel" }, { 57611, "Accept" }, { 57612, "More" }, { 57613, "Redo" }, { 57614, "Undo" }, { 57615, "Home" }, { 57616, "Up" }, { 57617, "Forward" }, { 57618, "Back" }, { 57619, "Favorite" }, { 57620, "Camera" }, { 57621, "Setting" }, { 57622, "Video" }, { 57623, "Sync" }, { 57624, "Download" }, { 57625, "Mail" }, { 57626, "Find" }, { 57627, "Help" }, { 57628, "Upload" }, { 57629, "Emoji" }, { 57630, "TwoPage" }, { 57631, "LeaveChat" }, { 57632, "MailForward" }, { 57633, "Clock" }, { 57634, "Send" }, { 57635, "Crop" }, { 57636, "RotateCamera" }, { 57637, "People" }, { 57638, "OpenPane" }, { 57639, "ClosePane" }, { 57640, "World" }, { 57641, "Flag" }, { 57642, "PreviewLink" }, { 57643, "Globe" }, { 57644, "Trim" }, { 57645, "AttachCamera" }, { 57646, "ZoomIn" }, { 57647, "Bookmarks" }, { 57648, "Document" }, { 57649, "ProtectedDocument" }, { 57650, "Page" }, { 57651, "Bullets" }, { 57652, "Comment" }, { 57653, "MailFilled" }, { 57654, "ContactInfo" }, { 57655, "HangUp" }, { 57656, "ViewAll" }, { 57657, "MapPin" }, { 57658, "Phone" }, { 57659, "VideoChat" }, { 57660, "Switch" }, { 57661, "Contact" }, { 57662, "Rename" }, { 57665, "Pin" }, { 57666, "MusicInfo" }, { 57667, "Go" }, { 57668, "Keyboard" }, { 57669, "DockLeft" }, { 57670, "DockRight" }, { 57671, "DockBottom" }, { 57672, "Remote" }, { 57673, "Refresh" }, { 57674, "Rotate" }, { 57675, "Shuffle" }, { 57676, "List" }, { 57677, "Shop" }, { 57678, "SelectAll" }, { 57679, "Orientation" }, { 57680, "Import" }, { 57681, "ImportAll" }, { 57685, "BrowsePhotos" }, { 57686, "WebCam" }, { 57688, "Pictures" }, { 57689, "SaveLocal" }, { 57690, "Caption" }, { 57691, "Stop" }, { 57692, "ShowResults" }, { 57693, "Volume" }, { 57694, "Repair" }, { 57695, "Message" }, { 57696, "Page2" }, { 57697, "CalendarDay" }, { 57698, "CalendarWeek" }, { 57699, "Calendar" }, { 57700, "Character" }, { 57701, "MailReplyAll" }, { 57702, "Read" }, { 57703, "Link" }, { 57704, "Account" }, { 57705, "ShowBcc" }, { 57706, "HideBcc" }, { 57707, "Cut" }, { 57708, "Attach" }, { 57709, "Paste" }, { 57710, "Filter" }, { 57711, "Copy" }, { 57712, "Emoji2" }, { 57713, "Important" }, { 57714, "MailReply" }, { 57715, "SlideShow" }, { 57716, "Sort" }, { 57720, "Manage" }, { 57721, "AllApps" }, { 57722, "DisconnectDrive" }, { 57723, "MapDrive" }, { 57724, "NewWindow" }, { 57725, "OpenWith" }, { 57729, "ContactPresence" }, { 57730, "Priority" }, { 57732, "GoToToday" }, { 57733, "Font" }, { 57734, "FontColor" }, { 57735, "Contact2" }, { 57736, "Folder" }, { 57737, "Audio" }, { 57738, "Placeholder" }, { 57739, "View" }, { 57740, "SetLockScreen" }, { 57741, "SetTile" }, { 57744, "ClosedCaption" }, { 57745, "StopSlideShow" }, { 57746, "Permissions" }, { 57747, "Highlight" }, { 57748, "DisableUpdates" }, { 57749, "UnFavorite" }, { 57750, "UnPin" }, { 57751, "OpenLocal" }, { 57752, "Mute" }, { 57753, "Italic" }, { 57754, "Underline" }, { 57755, "Bold" }, { 57756, "MoveToFolder" }, { 57757, "LikeDislike" }, { 57758, "Dislike" }, { 57759, "Like" }, { 57760, "AlignRight" }, { 57761, "AlignCenter" }, { 57762, "AlignLeft" }, { 57763, "Zoom" }, { 57764, "ZoomOut" }, { 57765, "OpenFile" }, { 57766, "OtherUser" }, { 57767, "Admin" }, { 57795, "Street" }, { 57796, "Map" }, { 57797, "ClearSelection" }, { 57798, "FontDecrease" }, { 57799, "FontIncrease" }, { 57800, "FontSize" }, { 57801, "CellPhone" }, { 57802, "ReShare" }, { 57803, "Tag" }, { 57804, "RepeatOne" }, { 57805, "RepeatAll" }, { 57806, "OutlineStar" }, { 57807, "SolidStar" }, { 57808, "Calculator" }, { 57809, "Directions" }, { 57810, "Target" }, { 57811, "Library" }, { 57812, "PhoneBook" }, { 57813, "Memo" }, { 57814, "Microphone" }, { 57815, "PostUpdate" }, { 57816, "BackToWindow" }, { 57817, "FullScreen" }, { 57818, "NewFolder" }, { 57819, "CalendarReply" }, { 57821, "UnSyncFolder" }, { 57822, "ReportHacked" }, { 57823, "SyncFolder" }, { 57824, "BlockContact" }, { 57825, "SwitchApps" }, { 57826, "AddFriend" }, { 57827, "TouchPointer" }, { 57828, "GoToStart" }, { 57829, "ZeroBars" }, { 57830, "OneBar" }, { 57831, "TwoBars" }, { 57832, "ThreeBars" }, { 57833, "FourBars" }, { 58004, "Scan" }, { 58005, "Preview" }, { 59136, "GlobalNavigationButton" }, { 59181, "Share" }, { 59209, "Print" }, { 59792, "XboxOneConsole" } }, // Windows.UI.Xaml.Controls.Symbol
             /* 0x029F */ new Dictionary<int, string> { { 1, "KeyUp" }, { 2, "KeyDown" }, { 4, "LeftMouseUp" }, { 8, "LeftMouseDown" }, { 16, "RightMouseUp" }, { 32, "RightMouseDown" } }, // Windows.UI.Xaml.Automation.SynchronizedInputType
             /* 0x02A0 */ new Dictionary<int, string> { { 0, "Center" }, { 1, "Left" }, { 2, "Right" }, { 3, "Justify" }, { 4, "DetectFromContent" } }, // Windows.UI.Xaml.TextAlignment
             /* 0x02A1 */ new Dictionary<int, string> { { 0, "Ideal" }, { 1, "Display" } }, // Windows.UI.Xaml.Media.TextFormattingMode
@@ -2902,7 +3548,7 @@ namespace XbfAnalyzer.Xbf
             /* 0x02A8 */ new Dictionary<int, string> { { 0, "None" }, { 1, "TopLeft" }, { 2, "BottomRight" }, { 3, "Outside" }, { 4, "Inline" } }, // Windows.UI.Xaml.Controls.Primitives.TickPlacement
             /* 0x02A9 */ new Dictionary<int, string> { { 0, "Off" }, { 1, "On" }, { 2, "Indeterminate" } }, // Windows.UI.Xaml.Automation.ToggleState
             /* 0x02AA */ new Dictionary<int, string> { { 0, "Primitive" }, { 1, "Metadata" }, { 2, "Custom" } }, // Windows.UI.Xaml.Interop.TypeKind
-            /* 0x02AB */ new Dictionary<int, string> { { 0, "Default" }, { 1, "PropertyChanged" }, { 2, "Explicit" } }, // Windows.UI.Xaml.Data.UpdateSourceTrigger
+            /* 0x02AB */ new Dictionary<int, string> { { 0, "Default" }, { 1, "PropertyChanged" }, { 2, "Explicit" }, { 3, "LostFocus" } }, // Windows.UI.Xaml.Data.UpdateSourceTrigger
             /* 0x02AC */ new Dictionary<int, string> { { 0, "Top" }, { 1, "Center" }, { 2, "Bottom" }, { 3, "Stretch" } }, // Windows.UI.Xaml.VerticalAlignment
             /* 0x02AD */ new Dictionary<int, string> { { 0, "Standard" }, { 1, "Recycling" } }, // Windows.UI.Xaml.Controls.VirtualizationMode
             /* 0x02AE */ new Dictionary<int, string> { { 0, "None" }, { 1, "LeftButton" }, { 2, "RightButton" }, { 3, "Cancel" }, { 4, "MiddleButton" }, { 5, "XButton1" }, { 6, "XButton2" }, { 8, "Back" }, { 9, "Tab" }, { 12, "Clear" }, { 13, "Enter" }, { 16, "Shift" }, { 17, "Control" }, { 18, "Menu" }, { 19, "Pause" }, { 20, "CapitalLock" }, { 21, "Kana" }, { 23, "Junja" }, { 24, "Final" }, { 25, "Kanji" }, { 27, "Escape" }, { 28, "Convert" }, { 29, "NonConvert" }, { 30, "Accept" }, { 31, "ModeChange" }, { 32, "Space" }, { 33, "PageUp" }, { 34, "PageDown" }, { 35, "End" }, { 36, "Home" }, { 37, "Left" }, { 38, "Up" }, { 39, "Right" }, { 40, "Down" }, { 41, "Select" }, { 42, "Print" }, { 43, "Execute" }, { 44, "Snapshot" }, { 45, "Insert" }, { 46, "Delete" }, { 47, "Help" }, { 48, "Number0" }, { 49, "Number1" }, { 50, "Number2" }, { 51, "Number3" }, { 52, "Number4" }, { 53, "Number5" }, { 54, "Number6" }, { 55, "Number7" }, { 56, "Number8" }, { 57, "Number9" }, { 65, "A" }, { 66, "B" }, { 67, "C" }, { 68, "D" }, { 69, "E" }, { 70, "F" }, { 71, "G" }, { 72, "H" }, { 73, "I" }, { 74, "J" }, { 75, "K" }, { 76, "L" }, { 77, "M" }, { 78, "N" }, { 79, "O" }, { 80, "P" }, { 81, "Q" }, { 82, "R" }, { 83, "S" }, { 84, "T" }, { 85, "U" }, { 86, "V" }, { 87, "W" }, { 88, "X" }, { 89, "Y" }, { 90, "Z" }, { 91, "LeftWindows" }, { 92, "RightWindows" }, { 93, "Application" }, { 95, "Sleep" }, { 96, "NumberPad0" }, { 97, "NumberPad1" }, { 98, "NumberPad2" }, { 99, "NumberPad3" }, { 100, "NumberPad4" }, { 101, "NumberPad5" }, { 102, "NumberPad6" }, { 103, "NumberPad7" }, { 104, "NumberPad8" }, { 105, "NumberPad9" }, { 106, "Multiply" }, { 107, "Add" }, { 108, "Separator" }, { 109, "Subtract" }, { 110, "Decimal" }, { 111, "Divide" }, { 112, "F1" }, { 113, "F2" }, { 114, "F3" }, { 115, "F4" }, { 116, "F5" }, { 117, "F6" }, { 118, "F7" }, { 119, "F8" }, { 120, "F9" }, { 121, "F10" }, { 122, "F11" }, { 123, "F12" }, { 124, "F13" }, { 125, "F14" }, { 126, "F15" }, { 127, "F16" }, { 128, "F17" }, { 129, "F18" }, { 130, "F19" }, { 131, "F20" }, { 132, "F21" }, { 133, "F22" }, { 134, "F23" }, { 135, "F24" }, { 144, "NumberKeyLock" }, { 145, "Scroll" }, { 160, "LeftShift" }, { 161, "RightShift" }, { 162, "LeftControl" }, { 163, "RightControl" }, { 164, "LeftMenu" }, { 165, "RightMenu" } }, // Windows.System.VirtualKey
@@ -2987,10 +3633,10 @@ namespace XbfAnalyzer.Xbf
             /* 0x02FD */ null,
             /* 0x02FE */ null,
             /* 0x02FF */ null,
-            /* 0x0300 */ new Dictionary<int, string> { { 0, "SameThread" }, { 1, "SeparateThread" } }, // Windows.UI.Xaml.Controls.WebViewExecutionMode
+            /* 0x0300 */ new Dictionary<int, string> { { 0, "SameThread" }, { 1, "SeparateThread" }, { 2, "SeparateProcess" } }, // Windows.UI.Xaml.Controls.WebViewExecutionMode
             /* 0x0301 */ null,
             /* 0x0302 */ new Dictionary<int, string> { { 0, "Unknown" }, { 1, "Defer" }, { 2, "Allow" }, { 3, "Deny" } }, // Windows.UI.Xaml.Controls.WebViewPermissionState
-            /* 0x0303 */ new Dictionary<int, string> { { 0, "Geolocation" }, { 1, "UnlimitedIndexedDBQuota" }, { 2, "Media" }, { 3, "PointerLock" }, { 4, "WebNotifications" } }, // Windows.UI.Xaml.Controls.WebViewPermissionType
+            /* 0x0303 */ new Dictionary<int, string> { { 0, "Geolocation" }, { 1, "UnlimitedIndexedDBQuota" }, { 2, "Media" }, { 3, "PointerLock" }, { 4, "WebNotifications" }, { 5, "Screen" }, { 6, "ImmersiveView" } }, // Windows.UI.Xaml.Controls.WebViewPermissionType
             /* 0x0304 */ null,
             /* 0x0305 */ new Dictionary<int, string> { { 0, "Default" }, { 1, "BottomEdge" } }, // Windows.UI.Xaml.Controls.CandidateWindowAlignment
             /* 0x0306 */ null,
@@ -3042,7 +3688,7 @@ namespace XbfAnalyzer.Xbf
             /* 0x0334 */ null,
             /* 0x0335 */ null,
             /* 0x0336 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "On" }, { 2, "Off" } }, // Windows.UI.Xaml.Controls.LightDismissOverlayMode
-            /* 0x0337 */ new Dictionary<int, string> { { 0, "DottedLine" }, { 1, "HighVisibility" } }, // Windows.UI.Xaml.FocusVisualKind
+            /* 0x0337 */ new Dictionary<int, string> { { 0, "DottedLine" }, { 1, "HighVisibility" }, { 2, "Reveal" } }, // Windows.UI.Xaml.FocusVisualKind
             /* 0x0338 */ new Dictionary<int, string> { { 0, "Never" }, { 1, "WhenEngaged" }, { 2, "WhenFocused" } }, // Windows.UI.Xaml.Controls.RequiresPointer
             /* 0x0339 */ null,
             /* 0x033A */ null,
@@ -3054,7 +3700,138 @@ namespace XbfAnalyzer.Xbf
             /* 0x0340 */ new Dictionary<int, string> { { 0, "Default" }, { 1, "FocusOnly" }, { 2, "Off" } }, // Windows.UI.Xaml.ElementSoundMode
             /* 0x0341 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Off" }, { 2, "On" } }, // Windows.UI.Xaml.ElementSoundPlayerState
             /* 0x0342 */ null,
-            /* 0x0343 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "WhenRequested" } } // Windows.UI.Xaml.ApplicationRequiresPointerMode
+            /* 0x0343 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "WhenRequested" } }, // Windows.UI.Xaml.ApplicationRequiresPointerMode
+            /* 0x0344 */ null,
+            /* 0x0345 */ null,
+            /* 0x0346 */ null,
+            /* 0x0347 */ null,
+            /* 0x0348 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Underline" }, { 2, "Strikethrough" } }, // Windows.UI.Text.TextDecorations
+            /* 0x0349 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Bottom" }, { 2, "Top" }, { 3, "Left" }, { 4, "Right" }, { 5, "Center" }, { 6, "Hidden" } }, // Windows.UI.Xaml.Input.KeyTipPlacementMode
+            /* 0x034A */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Enabled" }, { 2, "Disabled" } }, // Windows.UI.Xaml.Input.XYFocusKeyboardNavigationMode
+            /* 0x034B */ null,
+            /* 0x034C */ null,
+            /* 0x034D */ null,
+            /* 0x034E */ null,
+            /* 0x034F */ null,
+            /* 0x0350 */ null,
+            /* 0x0351 */ null,
+            /* 0x0352 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Primary" }, { 2, "Secondary" }, { 3, "Close" } }, // Windows.UI.Xaml.Controls.ContentDialogButton
+            /* 0x0353 */ null,
+            /* 0x0354 */ null,
+            /* 0x0355 */ null,
+            /* 0x0356 */ null,
+            /* 0x0357 */ null,
+            /* 0x0358 */ null,
+            /* 0x0359 */ null,
+            /* 0x035A */ null,
+            /* 0x035B */ new Dictionary<int, string> { { 0, "OffsetX" }, { 1, "OffsetY" }, { 2, "CrossFade" }, { 3, "Scale" } }, // Windows.UI.Xaml.Media.Animation.ConnectedAnimationComponent
+            /* 0x035C */ null,
+            /* 0x035D */ new Dictionary<int, string> { { 0, "Success" }, { 1, "NetworkError" }, { 2, "InvalidFormat" }, { 3, "Other" } }, // Windows.UI.Xaml.Media.Imaging.SvgImageSourceLoadStatus
+            /* 0x035E */ null,
+            /* 0x035F */ new Dictionary<int, string> { { 0, "Success" }, { 1, "NetworkError" }, { 2, "InvalidFormat" }, { 3, "Other" } }, // Windows.UI.Xaml.Media.LoadedImageSourceLoadStatus
+            /* 0x0360 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Mouse" }, { 2, "Touch" }, { 3, "Pen" }, { 4, "Keyboard" }, { 5, "GameController" } }, // Windows.UI.Xaml.Input.FocusInputDeviceKind
+            /* 0x0361 */ new Dictionary<int, string> { { 0, "Committed" }, { 1, "Always" } }, // Windows.UI.Xaml.Controls.ComboBoxSelectionChangedTrigger
+            /* 0x0362 */ null,
+            /* 0x0363 */ null,
+            /* 0x0364 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Projection" }, { 2, "NavigationDirectionDistance" }, { 3, "RectilinearDistance" } }, // Windows.UI.Xaml.Input.XYFocusNavigationStrategy
+            /* 0x0365 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Auto" }, { 2, "Projection" }, { 3, "NavigationDirectionDistance" }, { 4, "RectilinearDistance" } }, // Windows.UI.Xaml.Input.XYFocusNavigationStrategyOverride
+            /* 0x0366 */ null,
+            /* 0x0367 */ null,
+            /* 0x0368 */ null,
+            /* 0x0369 */ null,
+            /* 0x036A */ null,
+            /* 0x036B */ null,
+            /* 0x036C */ null,
+            /* 0x036D */ null,
+            /* 0x036E */ null,
+            /* 0x036F */ new Dictionary<int, string> { { -1, "Auto" }, { 0, "None" } }, // Windows.UI.Xaml.ApplicationHighContrastAdjustment
+            /* 0x0370 */ new Dictionary<int, string> { { -2147483648, "Application" }, { -1, "Auto" }, { 0, "None" } }, // Windows.UI.Xaml.ElementHighContrastAdjustment
+            /* 0x0371 */ null,
+            /* 0x0372 */ null,
+            /* 0x0373 */ null,
+            /* 0x0374 */ null,
+            /* 0x0375 */ new Dictionary<int, string> { { 0, "ItemAdded" }, { 1, "ItemRemoved" }, { 2, "ActionCompleted" }, { 3, "ActionAborted" }, { 4, "Other" } }, // Windows.UI.Xaml.Automation.Peers.AutomationNotificationKind
+            /* 0x0376 */ new Dictionary<int, string> { { 0, "ImportantAll" }, { 1, "ImportantMostRecent" }, { 2, "All" }, { 3, "MostRecent" }, { 4, "CurrentThenMostRecent" } }, // Windows.UI.Xaml.Automation.Peers.AutomationNotificationProcessing
+            /* 0x0377 */ new Dictionary<int, string> { { 0, "Normal" }, { 1, "Lower" }, { 2, "Upper" } }, // Windows.UI.Xaml.Controls.CharacterCasing
+            /* 0x0378 */ new Dictionary<int, string> { { -1, "All" }, { 0, "None" }, { 1, "Bold" }, { 2, "Italic" }, { 4, "Underline" } }, // Windows.UI.Xaml.Controls.DisabledFormattingAccelerators
+            /* 0x0379 */ null,
+            /* 0x037A */ null,
+            /* 0x037B */ null,
+            /* 0x037C */ null,
+            /* 0x037D */ null,
+            /* 0x037E */ null,
+            /* 0x037F */ null,
+            /* 0x0380 */ new Dictionary<int, string> { { 0, "Popup" }, { 1, "InPlace" } }, // Windows.UI.Xaml.Controls.ContentDialogPlacement
+            /* 0x0381 */ null,
+            /* 0x0382 */ null,
+            /* 0x0383 */ null,
+            /* 0x0384 */ null,
+            /* 0x0385 */ null,
+            /* 0x0386 */ null,
+            /* 0x0387 */ null,
+            /* 0x0388 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Hidden" } }, // Windows.UI.Xaml.Input.KeyboardAcceleratorPlacementMode
+            /* 0x0389 */ null,
+            /* 0x038A */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Off" }, { 2, "On" } }, // Windows.UI.Xaml.ElementSpatialAudioMode
+            /* 0x038B */ null,
+            /* 0x038C */ null,
+            /* 0x038D */ null,
+            /* 0x038E */ null,
+            /* 0x038F */ null,
+            /* 0x0390 */ null,
+            /* 0x0391 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Level1" }, { 2, "Level2" }, { 3, "Level3" }, { 4, "Level4" }, { 5, "Level5" }, { 6, "Level6" }, { 7, "Level7" }, { 8, "Level8" }, { 9, "Level9" } }, // Windows.UI.Xaml.Automation.Peers.AutomationHeadingLevel
+            /* 0x0392 */ null,
+            /* 0x0393 */ null,
+            /* 0x0394 */ null,
+            /* 0x0395 */ null,
+            /* 0x0396 */ null,
+            /* 0x0397 */ new Dictionary<int, string> { { 0, "Inserted" }, { 1, "Removed" }, { 2, "Edited" } }, // Windows.UI.Xaml.Controls.ContentLinkChangeKind
+            /* 0x0398 */ null,
+            /* 0x0399 */ null,
+            /* 0x039A */ null,
+            /* 0x039B */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "TopLeft" }, { 2, "TopRight" }, { 3, "BottomLeft" }, { 4, "BottomRight" } }, // Windows.UI.Xaml.Controls.HandwritingPanelPlacementAlignment
+            /* 0x039C */ null,
+            /* 0x039D */ null,
+            /* 0x039E */ new Dictionary<int, string> { { 0, "Arrow" }, { 1, "Cross" }, { 2, "Custom" }, { 3, "Hand" }, { 4, "Help" }, { 5, "IBeam" }, { 6, "SizeAll" }, { 7, "SizeNortheastSouthwest" }, { 8, "SizeNorthSouth" }, { 9, "SizeNorthwestSoutheast" }, { 10, "SizeWestEast" }, { 11, "UniversalNo" }, { 12, "UpArrow" }, { 13, "Wait" }, { 14, "Pin" }, { 15, "Person" } }, // Windows.UI.Core.CoreCursorType
+            /* 0x039F */ null,
+            /* 0x03A0 */ null,
+            /* 0x03A1 */ null,
+            /* 0x03A2 */ null,
+            /* 0x03A3 */ null,
+            /* 0x03A4 */ null,
+            /* 0x03A5 */ null,
+            /* 0x03A6 */ null,
+            /* 0x03A7 */ null,
+            /* 0x03A8 */ null,
+            /* 0x03A9 */ null,
+            /* 0x03AA */ null,
+            /* 0x03AB */ null,
+            /* 0x03AC */ null,
+            /* 0x03AD */ null,
+            /* 0x03AE */ null,
+            /* 0x03AF */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Standard" }, { 2, "Transient" }, { 3, "TransientWithDismissOnPointerMoveAway" } }, // Windows.UI.Xaml.Controls.Primitives.FlyoutShowMode
+            /* 0x03B0 */ null,
+            /* 0x03B1 */ null,
+            /* 0x03B2 */ null,
+            /* 0x03B3 */ null,
+            /* 0x03B4 */ new Dictionary<int, string> { { 0, "Added" }, { 1, "Removed" } }, // Windows.UI.Xaml.Controls.InputValidationErrorEventAction
+            /* 0x03B5 */ null,
+            /* 0x03B6 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Compact" }, { 2, "Inline" } }, // Windows.UI.Xaml.Controls.InputValidationKind
+            /* 0x03B7 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Default" }, { 2, "Disabled" } }, // Windows.UI.Xaml.Controls.InputValidationMode
+            /* 0x03B8 */ null,
+            /* 0x03B9 */ new Dictionary<int, string> { { 0, "InnerBorderEdge" }, { 1, "OuterBorderEdge" } }, // Windows.UI.Xaml.Controls.BackgroundSizing
+            /* 0x03BA */ null,
+            /* 0x03BB */ null,
+            /* 0x03BC */ null,
+            /* 0x03BD */ null,
+            /* 0x03BE */ null,
+            /* 0x03BF */ null,
+            /* 0x03C0 */ null,
+            /* 0x03C1 */ null,
+            /* 0x03C2 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Cut" }, { 2, "Copy" }, { 3, "Paste" }, { 4, "SelectAll" }, { 5, "Delete" }, { 6, "Share" }, { 7, "Save" }, { 8, "Open" }, { 9, "Close" }, { 10, "Pause" }, { 11, "Play" }, { 12, "Stop" }, { 13, "Forward" }, { 14, "Backward" }, { 15, "Undo" }, { 16, "Redo" } }, // Windows.UI.Xaml.Input.StandardUICommandKind
+            /* 0x03C3 */ null,
+            /* 0x03C4 */ null,
+            /* 0x03C5 */ new Dictionary<int, string> { { 1, "X" }, { 2, "Y" }, { 4, "Z" } }, // Windows.UI.Xaml.Vector3TransitionComponents
+            /* 0x03C6 */ new Dictionary<int, string> { { 0, "Top" }, { 1, "Left" } } // Windows.UI.Xaml.Controls.ControlHeaderPlacement
         };
     }
 }
