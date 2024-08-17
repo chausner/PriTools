@@ -65,7 +65,7 @@ namespace XbfAnalyzer.Xbf
         }
 
         // mappings are hard-coded in GenXbf.dll from Windows SDK
-        // up-to-date as of SDK version 10.0.18362.1
+        // up-to-date as of SDK version 10.0.26100.0
 
         private static readonly string[] typeNames = {
             /* 0x0001 */ "Byte", // Windows.Foundation.Byte
@@ -1039,7 +1039,12 @@ namespace XbfAnalyzer.Xbf
             /* 0x03C9 */ "XamlUICommand", // Windows.UI.Xaml.Input.XamlUICommand
             /* 0x03CA */ "Quaternion", // Windows.Foundation.Numerics.Quaternion
             /* 0x03CB */ "CaretBrowsingCaret", // Windows.UI.Xaml.Internal.CaretBrowsingCaret
-            /* 0x03CC */ "ParserServiceProvider" // Windows.UI.Xaml.Markup.ParserServiceProvider
+            /* 0x03CC */ "ParserServiceProvider", // Windows.UI.Xaml.Markup.ParserServiceProvider
+            /* 0x03CD */ null,
+            /* 0x03CE */ null,
+            /* 0x03CF */ "ListViewItemPresenterSelectionIndicatorMode", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenterSelectionIndicatorMode
+            /* 0x03D0 */ "PopupPlacementMode", // Windows.UI.Xaml.Controls.Primitives.PopupPlacementMode
+            /* 0x03D1 */ "SeekSliderAutomationPeer", // Windows.UI.Xaml.Automation.Peers.SeekSliderAutomationPeer
         };
 
         private static readonly string[] propertyNames = {
@@ -3433,7 +3438,71 @@ namespace XbfAnalyzer.Xbf
             /* 0x0954 */ "RootObject", // Windows.UI.Xaml.Markup.ParserServiceProvider
             /* 0x0955 */ "TargetObject", // Windows.UI.Xaml.Markup.ParserServiceProvider
             /* 0x0956 */ "TargetProperty", // Windows.UI.Xaml.Markup.ParserServiceProvider
-            /* 0x0957 */ "ShouldConstrainToRootBounds" // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0957 */ "ShouldConstrainToRootBounds", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0958 */ "SuspendInput", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x0959 */ null,
+            /* 0x095A */ "RasterizationScale", // Windows.UI.Xaml.UIElement
+            /* 0x095B */ "IsCommandBarOpen", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x095C */ "IsSwitchToKeyboardEnabled", // Windows.UI.Xaml.Controls.HandwritingView
+            /* 0x095D */ null,
+            /* 0x095E */ null,
+            /* 0x095F */ "SelectionIndicatorVisualEnabled", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0960 */ "SelectionIndicatorBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0961 */ "SelectionIndicatorMode", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0962 */ "SelectionIndicatorPointerOverBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0963 */ "SelectionIndicatorPressedBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0964 */ null,
+            /* 0x0965 */ null,
+            /* 0x0966 */ null,
+            /* 0x0967 */ null,
+            /* 0x0968 */ null,
+            /* 0x0969 */ null,
+            /* 0x096A */ "SelectedBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x096B */ "SelectedInnerBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x096C */ "CheckBoxCornerRadius", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x096D */ "SelectionIndicatorCornerRadius", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x096E */ "SelectedDisabledBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x096F */ "SelectedPressedBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0970 */ "SelectedDisabledBackground", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0971 */ "PointerOverBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0972 */ "CheckBoxPointerOverBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0973 */ "CheckBoxPressedBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0974 */ "CheckDisabledBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0975 */ "CheckPressedBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0976 */ "CheckBoxBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0977 */ "CheckBoxDisabledBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0978 */ "CheckBoxPressedBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0979 */ "CheckBoxDisabledBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x097A */ "CheckBoxSelectedBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x097B */ "CheckBoxSelectedDisabledBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x097C */ "CheckBoxSelectedPointerOverBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x097D */ "CheckBoxSelectedPressedBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x097E */ "CheckBoxPointerOverBorderBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x097F */ "SelectionIndicatorDisabledBrush", // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenter
+            /* 0x0980 */ "BlackoutBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0981 */ "BlackoutStrikethroughBrush", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0982 */ "CalendarItemCornerRadius", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0983 */ "CalendarItemDisabledBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0984 */ "CalendarItemHoverBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0985 */ "CalendarItemPressedBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0986 */ "DayItemMargin", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0987 */ "FirstOfMonthLabelMargin", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0988 */ "FirstOfYearDecadeLabelMargin", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0989 */ "MonthYearItemMargin", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x098A */ "OutOfScopeHoverForeground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x098B */ "OutOfScopePressedForeground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x098C */ "SelectedDisabledBorderBrush", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x098D */ "SelectedDisabledForeground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x098E */ "SelectedHoverForeground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x098F */ "SelectedPressedForeground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0990 */ "TodayBlackoutForeground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0991 */ "TodayDisabledBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0992 */ "TodayHoverBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0993 */ "TodayPressedBackground", // Windows.UI.Xaml.Controls.CalendarView
+            /* 0x0994 */ "ActualPlacement", // Windows.UI.Xaml.Controls.Primitives.Popup
+            /* 0x0995 */ "DesiredPlacement", // Windows.UI.Xaml.Controls.Primitives.Popup
+            /* 0x0996 */ "PlacementTarget", // Windows.UI.Xaml.Controls.Primitives.Popup
+            /* 0x0997 */ "AutomationControlType", // Windows.UI.Xaml.Automation.AutomationProperties
         };
 
         private static readonly Dictionary<int, string>[] enumValues = {
@@ -3491,7 +3560,7 @@ namespace XbfAnalyzer.Xbf
             /* 0x026F */ new Dictionary<int, string> { { 0, "Started" }, { 1, "Completed" }, { 2, "Canceled" } }, // Windows.UI.Input.HoldingState
             /* 0x0270 */ new Dictionary<int, string> { { 0, "Left" }, { 1, "Center" }, { 2, "Right" }, { 3, "Stretch" } }, // Windows.UI.Xaml.HorizontalAlignment
             /* 0x0271 */ new Dictionary<int, string> { { 0, "None" }, { 1, "Edge" } }, // Windows.UI.Xaml.Controls.IncrementalLoadingTrigger
-            /* 0x0272 */ new Dictionary<int, string> { { 0, "Default" }, { 1, "Url" }, { 5, "EmailSmtpAddress" }, { 7, "PersonalFullName" }, { 20, "CurrencyAmountAndSymbol" }, { 21, "CurrencyAmount" }, { 23, "DateMonthNumber" }, { 24, "DateDayNumber" }, { 25, "DateYear" }, { 28, "Digits" }, { 29, "Number" }, { 31, "Password" }, { 32, "TelephoneNumber" }, { 33, "TelephoneCountryCode" }, { 34, "TelephoneAreaCode" }, { 35, "TelephoneLocalNumber" }, { 37, "TimeHour" }, { 38, "TimeMinutesOrSeconds" }, { 39, "NumberFullWidth" }, { 40, "AlphanumericHalfWidth" }, { 41, "AlphanumericFullWidth" }, { 44, "Hiragana" }, { 45, "KatakanaHalfWidth" }, { 46, "KatakanaFullWidth" }, { 47, "Hanja" }, { 48, "HangulHalfWidth" }, { 49, "HangulFullWidth" }, { 50, "Search" }, { 51, "Formula" }, { 52, "SearchIncremental" }, { 53, "ChineseHalfWidth" }, { 54, "ChineseFullWidth" }, { 55, "NativeScript" }, { 57, "Text" }, { 58, "Chat" }, { 59, "NameOrPhoneNumber" }, { 60, "EmailNameOrAddress" }, { 62, "Maps" }, { 63, "NumericPassword" }, { 64, "NumericPin" }, { 65, "AlphanumericPin" }, { 67, "FormulaNumber" }, { 68, "ChatWithoutEmoji" } }, // Windows.UI.Xaml.Input.InputScopeNameValue
+            /* 0x0272 */ new Dictionary<int, string> { { 0, "Default" }, { 1, "Url" }, { 5, "EmailSmtpAddress" }, { 7, "PersonalFullName" }, { 20, "CurrencyAmountAndSymbol" }, { 21, "CurrencyAmount" }, { 23, "DateMonthNumber" }, { 24, "DateDayNumber" }, { 25, "DateYear" }, { 28, "Digits" }, { 29, "Number" }, { 31, "Password" }, { 32, "TelephoneNumber" }, { 33, "TelephoneCountryCode" }, { 34, "TelephoneAreaCode" }, { 35, "TelephoneLocalNumber" }, { 37, "TimeHour" }, { 38, "TimeMinutesOrSeconds" }, { 39, "NumberFullWidth" }, { 40, "AlphanumericHalfWidth" }, { 41, "AlphanumericFullWidth" }, { 44, "Hiragana" }, { 45, "KatakanaHalfWidth" }, { 46, "KatakanaFullWidth" }, { 47, "Hanja" }, { 48, "HangulHalfWidth" }, { 49, "HangulFullWidth" }, { 50, "Search" }, { 51, "Formula" }, { 52, "SearchIncremental" }, { 53, "ChineseHalfWidth" }, { 54, "ChineseFullWidth" }, { 55, "NativeScript" }, { 57, "Text" }, { 58, "Chat" }, { 59, "NameOrPhoneNumber" }, { 60, "EmailNameOrAddress" }, { 61, "Private" }, { 62, "Maps" }, { 63, "NumericPassword" }, { 64, "NumericPin" }, { 65, "AlphanumericPin" }, { 67, "FormulaNumber" }, { 68, "ChatWithoutEmoji" } }, // Windows.UI.Xaml.Input.InputScopeNameValue
             /* 0x0273 */ new Dictionary<int, string> { { 0, "KeepItemsInView" }, { 1, "KeepScrollOffset" }, { 2, "KeepLastItemInView" } }, // Windows.UI.Xaml.Controls.ItemsUpdatingScrollMode
             /* 0x0274 */ new Dictionary<int, string> { { 0, "Local" }, { 1, "Cycle" }, { 2, "Once" } }, // Windows.UI.Xaml.Input.KeyboardNavigationMode
             /* 0x0275 */ new Dictionary<int, string> { { 0, "MaxHeight" }, { 1, "BlockLineHeight" }, { 2, "BaselineToBaseline" } }, // Windows.UI.Xaml.LineStackingStrategy
@@ -3831,7 +3900,17 @@ namespace XbfAnalyzer.Xbf
             /* 0x03C3 */ null,
             /* 0x03C4 */ null,
             /* 0x03C5 */ new Dictionary<int, string> { { 1, "X" }, { 2, "Y" }, { 4, "Z" } }, // Windows.UI.Xaml.Vector3TransitionComponents
-            /* 0x03C6 */ new Dictionary<int, string> { { 0, "Top" }, { 1, "Left" } } // Windows.UI.Xaml.Controls.ControlHeaderPlacement
+            /* 0x03C6 */ new Dictionary<int, string> { { 0, "Top" }, { 1, "Left" } }, // Windows.UI.Xaml.Controls.ControlHeaderPlacement
+            /* 0x03C7 */ null,
+            /* 0x03C8 */ null,
+            /* 0x03C9 */ null,
+            /* 0x03CA */ null,
+            /* 0x03CB */ null,
+            /* 0x03CC */ null,
+            /* 0x03CD */ null,
+            /* 0x03CE */ null,
+            /* 0x03CF */ new Dictionary<int, string> { { 0, "Inline" }, { 1, "Overlay" } }, // Windows.UI.Xaml.Controls.Primitives.ListViewItemPresenterSelectionIndicatorMode
+            /* 0x03D0 */ new Dictionary<int, string> { { 0, "Auto" }, { 1, "Top" }, { 2, "Bottom" }, { 3, "Left" }, { 4, "Right" }, { 5, "TopEdgeAlignedLeft" }, { 6, "TopEdgeAlignedRight" }, { 7, "BottomEdgeAlignedLeft" }, { 8, "BottomEdgeAlignedRight" }, { 9, "LeftEdgeAlignedTop" }, { 10, "LeftEdgeAlignedBottom" }, { 11, "RightEdgeAlignedTop" }, { 12, "RightEdgeAlignedBottom" } }, // Windows.UI.Xaml.Controls.Primitives.PopupPlacementMode
         };
     }
 }
