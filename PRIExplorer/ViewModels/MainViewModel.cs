@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using PRIExplorer.Views;
 using PriFormat;
 using System;
@@ -67,17 +66,16 @@ namespace PRIExplorer.ViewModels
 
         private void SetResourceRootPathCommand_Execute()
         {
-            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog();
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
 
-            openFileDialog.IsFolderPicker = true;
-            openFileDialog.Title = "Set resource path root";
-            openFileDialog.Multiselect = false;
-            openFileDialog.InitialDirectory = ResourceRootPath;
+            openFolderDialog.Title = "Set resource path root";
+            openFolderDialog.Multiselect = false;
+            openFolderDialog.InitialDirectory = ResourceRootPath;
 
-            if (openFileDialog.ShowDialog() != CommonFileDialogResult.Ok)
+            if (openFolderDialog.ShowDialog() != true)
                 return;
 
-            ResourceRootPath = openFileDialog.FileName;
+            ResourceRootPath = openFolderDialog.FolderName;
 
             GetEntries();
         }

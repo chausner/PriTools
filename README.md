@@ -25,4 +25,4 @@ License
 -------
 Apache 2.0, see LICENSE.
 
-XBF2 decompilation code is by [misenhower](https://github.com/misenhower/XbfAnalyzer).
+XBF2 decompilation code is originally based on the implementation by [misenhower](https://github.com/misenhower/XbfAnalyzer).
