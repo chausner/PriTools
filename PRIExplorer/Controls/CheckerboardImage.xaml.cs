@@ -2,26 +2,25 @@
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace PRIExplorer.Controls
+namespace PRIExplorer.Controls;
+
+/// <summary>
+/// Interaktionslogik für CheckerboardImage.xaml
+/// </summary>
+[ContentProperty("AdditionalContent")]
+public partial class CheckerboardImage : UserControl
 {
-    /// <summary>
-    /// Interaktionslogik für CheckerboardImage.xaml
-    /// </summary>
-    [ContentProperty("AdditionalContent")]
-    public partial class CheckerboardImage : UserControl
+    public object AdditionalContent
     {
-        public object AdditionalContent
-        {
-            get { return (object)GetValue(AdditionalContentProperty); }
-            set { SetValue(AdditionalContentProperty, value); }
-        }
+        get => GetValue(AdditionalContentProperty);
+        set => SetValue(AdditionalContentProperty, value);
+    }
 
-        public static readonly DependencyProperty AdditionalContentProperty =
-            DependencyProperty.Register("AdditionalContent", typeof(object), typeof(CheckerboardImage), new PropertyMetadata(null));
+    public static readonly DependencyProperty AdditionalContentProperty =
+        DependencyProperty.Register("AdditionalContent", typeof(object), typeof(CheckerboardImage), new PropertyMetadata(null));
 
-        public CheckerboardImage()
-        {
-            InitializeComponent();
-        }
+    public CheckerboardImage()
+    {
+        InitializeComponent();
     }
 }

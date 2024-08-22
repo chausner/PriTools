@@ -1,14 +1,13 @@
-﻿namespace PriFormat
-{
-    public struct ByteSpan
-    {
-        public long Offset;
-        public uint Length;
+﻿namespace PriFormat;
 
-        internal ByteSpan(long offset, uint length)
-        {
-            Offset = offset;
-            Length = length;
-        }
+public struct ByteSpan
+{
+    public long Offset;
+    public uint Length;
+
+    internal ByteSpan(long offset, uint length)
+    {
+        Offset = offset;
+        Length = length;
     }
 }

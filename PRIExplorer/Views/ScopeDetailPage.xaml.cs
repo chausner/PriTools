@@ -5,145 +5,144 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 
-namespace PRIExplorer.Views
+namespace PRIExplorer.Views;
+
+/// <summary>
+/// Interaktionslogik für ScopeDetailPage.xaml
+/// </summary>
+public partial class ScopeDetailPage : Page
 {
-    /// <summary>
-    /// Interaktionslogik für ScopeDetailPage.xaml
-    /// </summary>
-    public partial class ScopeDetailPage : Page
+    PriFile priFile;
+    Stream priStream;
+
+    public ScopeDetailPage(PriFile priFile, Stream priStream, ResourceMapScope scope)
     {
-        PriFile priFile;
-        Stream priStream;
+        InitializeComponent();
 
-        public ScopeDetailPage(PriFile priFile, Stream priStream, ResourceMapScope scope)
+        this.priFile = priFile;
+        this.priStream = priStream;
+
+        bool dotAsPathSeparator = scope.FullName.Contains(@"\Resources");
+
+        List<StringResource> stringResources = new List<StringResource>();
+
+        EnumerateStringResources(scope, string.Empty, dotAsPathSeparator, stringResources);
+
+        keyValueListView.ItemsSource = stringResources;
+    }
+
+    private void EnumerateStringResources(ResourceMapScope scope, string pathPrefix, bool dotAsPathSeparator, List<StringResource> stringResources)
+    {
+        foreach (ResourceMapItem childItem in scope.Children.OfType<ResourceMapItem>())
         {
-            InitializeComponent();
+            string path;
+            
+            if (dotAsPathSeparator)
+                path = pathPrefix == string.Empty ? childItem.Name : pathPrefix + "." + childItem.Name;
+            else
+                path = childItem.FullName;
 
-            this.priFile = priFile;
-            this.priStream = priStream;
-
-            bool dotAsPathSeparator = scope.FullName.Contains(@"\Resources");
-
-            List<StringResource> stringResources = new List<StringResource>();
-
-            EnumerateStringResources(scope, string.Empty, dotAsPathSeparator, stringResources);
-
-            keyValueListView.ItemsSource = stringResources;
+            AddStringResources(childItem, path, stringResources);
         }
 
-        private void EnumerateStringResources(ResourceMapScope scope, string pathPrefix, bool dotAsPathSeparator, List<StringResource> stringResources)
+        foreach (ResourceMapScope childScope in scope.Children.OfType<ResourceMapScope>())
         {
-            foreach (ResourceMapItem childItem in scope.Children.OfType<ResourceMapItem>())
+            string path = pathPrefix == string.Empty ? childScope.Name : pathPrefix + "." + childScope.Name;
+
+            EnumerateStringResources(childScope, path, dotAsPathSeparator, stringResources);
+        }
+    }
+
+    private void AddStringResources(ResourceMapItem item, string path, List<StringResource> stringResources)
+    {
+        ResourceMapSection primaryResourceMapSection =
+            priFile.GetSectionByRef(priFile.PriDescriptorSection.PrimaryResourceMapSection.Value);
+
+        DecisionInfoSection decisionInfoSection =
+            priFile.GetSectionByRef(priFile.PriDescriptorSection.DecisionInfoSections.First());
+
+        CandidateSet candidateSet;
+
+        if (!primaryResourceMapSection.CandidateSets.TryGetValue(item.Index, out candidateSet))
+            return;
+
+        foreach (Candidate candidate in candidateSet.Candidates)
+        {
+            if (candidate != null)
             {
-                string path;
-                
-                if (dotAsPathSeparator)
-                    path = pathPrefix == string.Empty ? childItem.Name : pathPrefix + "." + childItem.Name;
+                string value;
+
+                if (candidate.SourceFile != null)
+                    value = "external at " + priFile.GetReferencedFileByRef(candidate.SourceFile.Value).FullName;
                 else
-                    path = childItem.FullName;
-
-                AddStringResources(childItem, path, stringResources);
-            }
-
-            foreach (ResourceMapScope childScope in scope.Children.OfType<ResourceMapScope>())
-            {
-                string path = pathPrefix == string.Empty ? childScope.Name : pathPrefix + "." + childScope.Name;
-
-                EnumerateStringResources(childScope, path, dotAsPathSeparator, stringResources);
-            }
-        }
-
-        private void AddStringResources(ResourceMapItem item, string path, List<StringResource> stringResources)
-        {
-            ResourceMapSection primaryResourceMapSection =
-                priFile.GetSectionByRef(priFile.PriDescriptorSection.PrimaryResourceMapSection.Value);
-
-            DecisionInfoSection decisionInfoSection =
-                priFile.GetSectionByRef(priFile.PriDescriptorSection.DecisionInfoSections.First());
-
-            CandidateSet candidateSet;
-
-            if (!primaryResourceMapSection.CandidateSets.TryGetValue(item.Index, out candidateSet))
-                return;
-
-            foreach (Candidate candidate in candidateSet.Candidates)
-            {
-                if (candidate != null)
                 {
-                    string value;
+                    ByteSpan byteSpan;
 
-                    if (candidate.SourceFile != null)
-                        value = "external at " + priFile.GetReferencedFileByRef(candidate.SourceFile.Value).FullName;
+                    if (candidate.DataItem != null)
+                        byteSpan = priFile.GetDataItemByRef(candidate.DataItem.Value);
                     else
-                    {
-                        ByteSpan byteSpan;
+                        byteSpan = candidate.Data.Value;
 
-                        if (candidate.DataItem != null)
-                            byteSpan = priFile.GetDataItemByRef(candidate.DataItem.Value);
-                        else
-                            byteSpan = candidate.Data.Value;
+                    byte[] data;
 
-                        byte[] data;
+                    priStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
 
-                        priStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
+                    using (BinaryReader binaryReader = new BinaryReader(priStream, Encoding.Default, true))
+                        data = binaryReader.ReadBytes((int)byteSpan.Length);
 
-                        using (BinaryReader binaryReader = new BinaryReader(priStream, Encoding.Default, true))
-                            data = binaryReader.ReadBytes((int)byteSpan.Length);
-
-                        value = GetCandidateDataAsString(candidate, data);
-                    }
-
-                    IReadOnlyList<Qualifier> qualifiers = decisionInfoSection.QualifierSets[candidate.QualifierSet].Qualifiers;
-
-                    string qualifiersDescription = string.Join(", ", qualifiers.Select(q => q.Type + "=" + q.Value));
-
-                    StringResource stringResource = new StringResource(path, value, qualifiersDescription);
-
-                    stringResources.Add(stringResource);
+                    value = GetCandidateDataAsString(candidate, data);
                 }
+
+                IReadOnlyList<Qualifier> qualifiers = decisionInfoSection.QualifierSets[candidate.QualifierSet].Qualifiers;
+
+                string qualifiersDescription = string.Join(", ", qualifiers.Select(q => q.Type + "=" + q.Value));
+
+                StringResource stringResource = new StringResource(path, value, qualifiersDescription);
+
+                stringResources.Add(stringResource);
             }
         }
+    }
 
-        private string GetCandidateDataAsString(Candidate candidate, byte[] data)
+    private string GetCandidateDataAsString(Candidate candidate, byte[] data)
+    {
+        string stringData = null;
+
+        switch (candidate.Type)
         {
-            string stringData = null;
-
-            switch (candidate.Type)
-            {
-                case ResourceValueType.AsciiString:
-                    stringData = Encoding.ASCII.GetString(data);
-                    break;
-                case ResourceValueType.Utf8String:
-                    stringData = Encoding.UTF8.GetString(data);
-                    break;
-                case ResourceValueType.String:
-                    stringData = Encoding.Unicode.GetString(data);
-                    break;
-                case ResourceValueType.AsciiPath:
-                case ResourceValueType.Utf8Path:
-                case ResourceValueType.Path:
-                    return "(external)";
-                case ResourceValueType.EmbeddedData:
-                    return "(embedded)";
-            }
-
-            stringData = stringData.TrimEnd('\0');
-
-            return stringData;
+            case ResourceValueType.AsciiString:
+                stringData = Encoding.ASCII.GetString(data);
+                break;
+            case ResourceValueType.Utf8String:
+                stringData = Encoding.UTF8.GetString(data);
+                break;
+            case ResourceValueType.String:
+                stringData = Encoding.Unicode.GetString(data);
+                break;
+            case ResourceValueType.AsciiPath:
+            case ResourceValueType.Utf8Path:
+            case ResourceValueType.Path:
+                return "(external)";
+            case ResourceValueType.EmbeddedData:
+                return "(embedded)";
         }
 
-        class StringResource
-        {
-            public string Key { get; }
-            public string Value { get; }
-            public string Qualifiers { get; }
+        stringData = stringData.TrimEnd('\0');
 
-            public StringResource(string key, string value, string qualifiers)
-            {
-                Key = key;
-                Value = value;
-                Qualifiers = qualifiers;
-            }
+        return stringData;
+    }
+
+    class StringResource
+    {
+        public string Key { get; }
+        public string Value { get; }
+        public string Qualifiers { get; }
+
+        public StringResource(string key, string value, string qualifiers)
+        {
+            Key = key;
+            Value = value;
+            Qualifiers = qualifiers;
         }
     }
 }

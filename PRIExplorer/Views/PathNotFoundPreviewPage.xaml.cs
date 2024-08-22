@@ -1,20 +1,19 @@
 ﻿using PRIExplorer.ViewModels;
 using System.Windows.Controls;
 
-namespace PRIExplorer.Views
+namespace PRIExplorer.Views;
+
+/// <summary>
+/// Interaktionslogik für PathNotFoundPreviewPage.xaml
+/// </summary>
+public partial class PathNotFoundPreviewPage : Page
 {
-    /// <summary>
-    /// Interaktionslogik für PathNotFoundPreviewPage.xaml
-    /// </summary>
-    public partial class PathNotFoundPreviewPage : Page
+    public PathNotFoundPreviewPage(PathNotFoundPreviewViewModel viewModel, MainViewModel mainViewModel)
     {
-        public PathNotFoundPreviewPage(PathNotFoundPreviewViewModel viewModel, MainViewModel mainViewModel)
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            DataContext = viewModel;
+        DataContext = viewModel;
 
-            setResourceRootPathButton.DataContext = mainViewModel;
-        }
+        setResourceRootPathButton.DataContext = mainViewModel;
     }
 }

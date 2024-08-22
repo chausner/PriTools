@@ -3,135 +3,133 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace PriFormat
+namespace PriFormat;
+
+public class PriFile
 {
-    public class PriFile
+    public string Version { get; private set; }
+    public uint TotalFileSize { get; private set; }
+    public IReadOnlyList<TocEntry> TableOfContents { get; private set; }
+    public IReadOnlyList<Section> Sections { get; private set; }
+
+    private PriFile()
     {
-        public string Version { get; private set; }
-        public uint TotalFileSize { get; private set; }
-        public IReadOnlyList<TocEntry> TableOfContents { get; private set; }
-        public IReadOnlyList<Section> Sections { get; private set; }
+    }
 
-        private PriFile()
+    public static PriFile Parse(Stream stream)
+    {
+        PriFile priFile = new PriFile();
+
+        priFile.ParseInternal(stream);
+
+        return priFile;
+    }
+
+    private void ParseInternal(Stream stream)
+    {
+        using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.ASCII, true))
         {
-        }
+            long fileStartOffset = binaryReader.BaseStream.Position;
 
-        public static PriFile Parse(Stream stream)
-        {
-            PriFile priFile = new PriFile();
+            string magic = new string(binaryReader.ReadChars(8));
 
-            priFile.ParseInternal(stream);
-
-            return priFile;
-        }
-
-        private void ParseInternal(Stream stream)
-        {
-            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.ASCII, true))
+            switch (magic)
             {
-                long fileStartOffset = binaryReader.BaseStream.Position;
+                case "mrm_pri0":
+                case "mrm_pri1":
+                case "mrm_pri2":
+                case "mrm_prif":
+                    Version = magic;
+                    break;
+                default:
+                    throw new InvalidDataException("Data does not start with a PRI file header.");
+            }
 
-                string magic = new string(binaryReader.ReadChars(8));
+            binaryReader.ExpectUInt16(0);
+            binaryReader.ExpectUInt16(1);
+            TotalFileSize = binaryReader.ReadUInt32();
+            uint tocOffset = binaryReader.ReadUInt32();
+            uint sectionStartOffset = binaryReader.ReadUInt32();
+            ushort numSections = binaryReader.ReadUInt16();
 
-                switch (magic)
-                {
-                    case "mrm_pri0":
-                    case "mrm_pri1":
-                    case "mrm_pri2":
-                    case "mrm_prif":
-                        Version = magic;
-                        break;
-                    default:
-                        throw new InvalidDataException("Data does not start with a PRI file header.");
-                }
+            binaryReader.ExpectUInt16(0xFFFF);
+            binaryReader.ExpectUInt32(0);
 
-                binaryReader.ExpectUInt16(0);
-                binaryReader.ExpectUInt16(1);
-                TotalFileSize = binaryReader.ReadUInt32();
-                uint tocOffset = binaryReader.ReadUInt32();
-                uint sectionStartOffset = binaryReader.ReadUInt32();
-                ushort numSections = binaryReader.ReadUInt16();
+            binaryReader.BaseStream.Seek(fileStartOffset + TotalFileSize - 16, SeekOrigin.Begin);
 
-                binaryReader.ExpectUInt16(0xFFFF);
-                binaryReader.ExpectUInt32(0);
+            binaryReader.ExpectUInt32(0xDEFFFADE);
+            binaryReader.ExpectUInt32(TotalFileSize);
+            binaryReader.ExpectString(magic);
 
-                binaryReader.BaseStream.Seek(fileStartOffset + TotalFileSize - 16, SeekOrigin.Begin);
+            binaryReader.BaseStream.Seek(tocOffset, SeekOrigin.Begin);
 
-                binaryReader.ExpectUInt32(0xDEFFFADE);
-                binaryReader.ExpectUInt32(TotalFileSize);
-                binaryReader.ExpectString(magic);
+            List<TocEntry> toc = new List<TocEntry>(numSections);
 
-                binaryReader.BaseStream.Seek(tocOffset, SeekOrigin.Begin);
+            for (int i = 0; i < numSections; i++)
+                toc.Add(TocEntry.Parse(binaryReader));
 
-                List<TocEntry> toc = new List<TocEntry>(numSections);
+            TableOfContents = toc;
 
-                for (int i = 0; i < numSections; i++)
-                    toc.Add(TocEntry.Parse(binaryReader));
+            Section[] sections = new Section[numSections];
 
-                TableOfContents = toc;
+            Sections = sections;
 
-                Section[] sections = new Section[numSections];
+            bool parseSuccess = false;
+            bool parseFailure = false;
 
-                Sections = sections;
+            do
+            {
+                for (int i = 0; i < sections.Length; i++)
+                    if (sections[i] == null)
+                    {
+                        binaryReader.BaseStream.Seek(sectionStartOffset + toc[i].SectionOffset, SeekOrigin.Begin);
 
-                bool parseSuccess = false;
-                bool parseFailure = false;
+                        Section section = Section.CreateForIdentifier(toc[i].SectionIdentifier, this);
 
-                do
-                {
-                    for (int i = 0; i < sections.Length; i++)
-                        if (sections[i] == null)
+                        if (section.Parse(binaryReader))
                         {
-                            binaryReader.BaseStream.Seek(sectionStartOffset + toc[i].SectionOffset, SeekOrigin.Begin);
-
-                            Section section = Section.CreateForIdentifier(toc[i].SectionIdentifier, this);
-
-                            if (section.Parse(binaryReader))
-                            {
-                                sections[i] = section;
-                                parseSuccess = true;
-                            }
-                            else
-                                parseFailure = true;
+                            sections[i] = section;
+                            parseSuccess = true;
                         }
-                } while (parseFailure && parseSuccess);
+                        else
+                            parseFailure = true;
+                    }
+            } while (parseFailure && parseSuccess);
 
-                if (parseFailure)
-                    throw new InvalidDataException();
-            }
+            if (parseFailure)
+                throw new InvalidDataException();
         }
+    }
 
-        PriDescriptorSection priDescriptorSection;
+    PriDescriptorSection priDescriptorSection;
 
-        public PriDescriptorSection PriDescriptorSection
+    public PriDescriptorSection PriDescriptorSection
+    {
+        get
         {
-            get
-            {
-                if (priDescriptorSection == null)
-                    priDescriptorSection = Sections.OfType<PriDescriptorSection>().Single();
+            priDescriptorSection ??= Sections.OfType<PriDescriptorSection>().Single();
 
-                return priDescriptorSection;
-            }
+            return priDescriptorSection;
         }
+    }
 
-        public T GetSectionByRef<T>(SectionRef<T> sectionRef) where T : Section
-        {
-            return (T)Sections[sectionRef.sectionIndex];
-        }
+    public T GetSectionByRef<T>(SectionRef<T> sectionRef) where T : Section
+    {
+        return (T)Sections[sectionRef.sectionIndex];
+    }
 
-        public ResourceMapItem GetResourceMapItemByRef(ResourceMapItemRef resourceMapItemRef)
-        {
-            return GetSectionByRef(resourceMapItemRef.schemaSection).Items[resourceMapItemRef.itemIndex];
-        }
+    public ResourceMapItem GetResourceMapItemByRef(ResourceMapItemRef resourceMapItemRef)
+    {
+        return GetSectionByRef(resourceMapItemRef.schemaSection).Items[resourceMapItemRef.itemIndex];
+    }
 
-        public ByteSpan GetDataItemByRef(DataItemRef dataItemRef)
-        {
-            return GetSectionByRef(dataItemRef.dataItemSection).DataItems[dataItemRef.itemIndex];
-        }
+    public ByteSpan GetDataItemByRef(DataItemRef dataItemRef)
+    {
+        return GetSectionByRef(dataItemRef.dataItemSection).DataItems[dataItemRef.itemIndex];
+    }
 
-        public ReferencedFile GetReferencedFileByRef(ReferencedFileRef referencedFileRef)
-        {
-            return GetSectionByRef(PriDescriptorSection.ReferencedFileSections.First()).ReferencedFiles[referencedFileRef.fileIndex];
-        }
+    public ReferencedFile GetReferencedFileByRef(ReferencedFileRef referencedFileRef)
+    {
+        return GetSectionByRef(PriDescriptorSection.ReferencedFileSections.First()).ReferencedFiles[referencedFileRef.fileIndex];
     }
 }

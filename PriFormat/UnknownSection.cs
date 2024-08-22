@@ -1,22 +1,21 @@
 ﻿using System.IO;
 
-namespace PriFormat
+namespace PriFormat;
+
+public class UnknownSection : Section
 {
-    public class UnknownSection : Section
+    public byte[] SectionContent { get; private set; }
+
+    internal UnknownSection(string sectionIdentifier, PriFile priFile) : base(sectionIdentifier, priFile)
     {
-        public byte[] SectionContent { get; private set; }
+    }
 
-        internal UnknownSection(string sectionIdentifier, PriFile priFile) : base(sectionIdentifier, priFile)
-        {
-        }
+    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    {
+        int contentLength = (int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position);
 
-        protected override bool ParseSectionContent(BinaryReader binaryReader)
-        {
-            int contentLength = (int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position);
+        SectionContent = binaryReader.ReadBytes(contentLength);
 
-            SectionContent = binaryReader.ReadBytes(contentLength);
-
-            return true;
-        }
+        return true;
     }
 }
