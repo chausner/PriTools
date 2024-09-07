@@ -10,6 +10,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.OutputEncoding = Encoding.UTF8;
+
         if (args.Length != 1)
         {
             Console.WriteLine("Usage: PriInfo <path to PRI file>");
