@@ -1,6 +1,7 @@
 # Package Resource Index File Format
 
-> **DISCLAIMER**: The information in this document has been collected through analysis of files and trial-and-error, and is by no means guaranteed to be correct, complete, or up-to-date. Use at your own risk!
+> [!NOTE]
+> The information in this document has been collected through analysis of files and trial-and-error, and is by no means guaranteed to be correct, complete, or up-to-date. Use at your own risk!
 
 ## Conventions and Data Types
 
@@ -154,7 +155,8 @@ Offset | Data Type | Description
 
 Names of scopes and items are stored in two blocks, a Unicode name block and an ASCII name block, depending on whether the name can be represented in ASCII or not.
 
-> **NOTE**: In the following, any use of the term "index" will refer to the indices of scopes and items as they appear in the following table, while the term "index property" will refer to the property of the same name that each scope and item has.
+> [!NOTE]
+> In the following, any use of the term "index" will refer to the indices of scopes and items as they appear in the following table, while the term "index property" will refer to the property of the same name that each scope and item has.
 
 For each resource name, i.e. scope or item, follows:
 
