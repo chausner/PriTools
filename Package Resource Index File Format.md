@@ -273,7 +273,28 @@ Offset | Data Type | Description
 24     | uint32    | length of embedded data block
 28     | uint32    | length of table extension block
 
-The block of environment references follows. It consists of a sequence of environment references, each 0x22C bytes long. The detailed structure of these is unknown. The number of environment references this block contains must be non-zero for section version 1 ("[mrm_res_map__]\0"), and zero for section version 2 ("[mrm_res_map2_]\0").
+The block of environment references follows. It consists of a sequence of fixed-size records, each 0x22C bytes long, with the following layout:
+
+Offset | Data Type | Description
+------ | --------- | -----------
+0      | wchar[0x102] | environment name (UTF-16, zero-terminated; buffer size 0x204 bytes)
+0x204  | uint16    | major version
+0x206  | uint16    | minor version
+0x208  | uint32    | version checksum
+0x20C  | uint16    | number of qualifier types
+0x20E  | uint16    | number of qualifiers
+0x210  | uint16    | number of item types
+0x212  | uint16    | number of resource value types
+0x214  | uint16    | number of value locators
+0x216  | uint16    | number of condition operators
+0x218  | uint32    | offset (from start of record) of qualifier-type table
+0x21C  | uint32    | offset of qualifier table
+0x220  | uint32    | offset of item-type table
+0x224  | uint32    | offset of resource value type table
+0x228  | uint32    | offset of value locator table
+0x22C  | uint32    | offset of condition-operator table
+
+These offsets let each environment reference embed its qualifier, item-type, and locator data inline. The number of environment references must be non-zero for section version 1 ("[mrm_res_map__]\0") and zero for section version 2 ("[mrm_res_map2_]\0").
 
 The hierarchical schema reference block follows. It has the following structure:
 
@@ -350,6 +371,8 @@ Offset | Data Type | Description
 0      | byte      | candidate type, zero or one
 
 Depending on the candidate type, the resource data is either stored in the embedded data block at the end of this section, or in a Data Item Section in the same or external PRI file.
+
+The embedded data block begins immediately after the candidate metadata and is exactly as long as specified by the "length of embedded data block" field in the section header. Offsets recorded in candidates of type 0 are relative to the start of this block. Even when all candidates point to external data items, the parser must still skip over (and optionally validate) the entire block length before it reaches the table extension block.
 
 If the candidate type is zero, the data that follows for the candidate is:
 
