@@ -54,12 +54,17 @@ public class DecisionInfoSection : Section
         List<DistinctQualifierInfo> distinctQualifierInfos = new List<DistinctQualifierInfo>(numDistinctQualifiers);
         for (int i = 0; i < numDistinctQualifiers; i++)
         {
-            binaryReader.ReadUInt16();
+            ushort attributeAtomIndex = binaryReader.ReadUInt16();
             QualifierType qualifierType = (QualifierType)binaryReader.ReadUInt16();
-            binaryReader.ReadUInt16();
-            binaryReader.ReadUInt16();
+            ushort conditionOperatorIndex = binaryReader.ReadUInt16();
+            ushort valueTypeIndex = binaryReader.ReadUInt16();
             uint operandValueOffset = binaryReader.ReadUInt32();
-            distinctQualifierInfos.Add(new DistinctQualifierInfo(qualifierType, operandValueOffset));
+            distinctQualifierInfos.Add(new DistinctQualifierInfo(
+                attributeAtomIndex,
+                qualifierType,
+                conditionOperatorIndex,
+                valueTypeIndex,
+                operandValueOffset));
         }
 
         ushort[] indexTable = new ushort[numIndexTableEntries];
@@ -81,7 +86,10 @@ public class DecisionInfoSection : Section
 
             qualifiers.Add(new Qualifier(
                 (ushort)i,
+                distinctQualifierInfo.AttributeAtomIndex,
                 distinctQualifierInfo.QualifierType,
+                distinctQualifierInfo.ConditionOperatorIndex,
+                distinctQualifierInfo.ValueTypeIndex,
                 qualifierInfos[i].Priority,
                 qualifierInfos[i].FallbackScore / 1000f,
                 value));
@@ -160,12 +168,23 @@ public class DecisionInfoSection : Section
 
     private struct DistinctQualifierInfo
     {
+        public ushort AttributeAtomIndex;
         public QualifierType QualifierType;
+        public ushort ConditionOperatorIndex;
+        public ushort ValueTypeIndex;
         public uint OperandValueOffset;
 
-        public DistinctQualifierInfo(QualifierType qualifierType, uint operandValueOffset)
+        public DistinctQualifierInfo(
+            ushort attributeAtomIndex,
+            QualifierType qualifierType,
+            ushort conditionOperatorIndex,
+            ushort valueTypeIndex,
+            uint operandValueOffset)
         {
+            AttributeAtomIndex = attributeAtomIndex;
             QualifierType = qualifierType;
+            ConditionOperatorIndex = conditionOperatorIndex;
+            ValueTypeIndex = valueTypeIndex;
             OperandValueOffset = operandValueOffset;
         }
     }
@@ -190,15 +209,29 @@ public enum QualifierType
 public class Qualifier
 {
     public ushort Index { get; }
+    public ushort AttributeAtomIndex { get; }
     public QualifierType Type { get; }
+    public ushort ConditionOperatorIndex { get; }
+    public ushort ValueTypeIndex { get; }
     public ushort Priority { get; }
     public float FallbackScore { get; }
     public string Value { get; }
 
-    internal Qualifier(ushort index, QualifierType type, ushort priority, float fallbackScore, string value)
+    internal Qualifier(
+        ushort index,
+        ushort attributeAtomIndex,
+        QualifierType type,
+        ushort conditionOperatorIndex,
+        ushort valueTypeIndex,
+        ushort priority,
+        float fallbackScore,
+        string value)
     {
         Index = index;
+        AttributeAtomIndex = attributeAtomIndex;
         Type = type;
+        ConditionOperatorIndex = conditionOperatorIndex;
+        ValueTypeIndex = valueTypeIndex;
         Priority = priority;
         FallbackScore = fallbackScore;
         Value = value;
@@ -206,7 +239,7 @@ public class Qualifier
 
     public override string ToString()
     {
-        return $"Index: {Index} Type: {Type} Value: {Value} Priority: {Priority} FallbackScore: {FallbackScore}";
+        return $"Index: {Index} AttributeAtomIndex: {AttributeAtomIndex} Type: {Type} ConditionOperatorIndex: {ConditionOperatorIndex} ValueTypeIndex: {ValueTypeIndex} Value: {Value} Priority: {Priority} FallbackScore: {FallbackScore}";
     }
 }
 

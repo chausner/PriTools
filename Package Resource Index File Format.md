@@ -234,11 +234,11 @@ For each distinct qualifier follows:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
-0      | uint16    | unknown
+0      | uint16    | index of the qualifier within the environment reference qualifier table
 2      | uint16    | qualifier type
-4      | uint16    | unknown
-6      | uint16    | unknown
-8      | uint16    | offset of qualifier value in qualifier value block, in characters
+4      | uint16    | index of the condition-operator within the environment reference condition-operator table
+6      | uint16    | index of the value type within the environment reference value-type table
+8      | uint32    | offset of qualifier value in qualifier value block, in characters
 
 > - **qualifier type**: valid types are
 >   - Language (0)
