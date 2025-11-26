@@ -123,7 +123,7 @@ Offset | Data Type            | Description
 2      | uint16               | length of unique name of resource map in characters, null-terminator included
 4      | uint16               | length of name of resource map in characters, null-terminator included
 6      | uint16               | unknown, zero
-8      | char[16]             | hname identifier
+8      | char[16]             | (extended layout only) hname identifier
 24     | HSCHEMA_VERSION_INFO | hierarchical schema version info
 44     | wcharz               | unique name of resource map
 44 + ? | wcharz               | name of resource map
@@ -133,12 +133,12 @@ Offset | Data Type            | Description
 50 + ? | uint32               | number of resource names, usually number of scopes + items
 54 + ? | uint32               | number of scopes
 58 + ? | uint32               | number of items
-62 + ? | uint32               | length of Unicode name block
-66 + ? | uint32               | unknown
-70 + ? | uint32               | unknown
+62 + ? | uint32               | length of Unicode name block (in UTF-16 code units)
+66 + ? | uint32               | length of ASCII name block in characters
+70 + ? | uint32               | (extended layout only) length of extended name-metadata block
 
 > - **hname identifier**: only present in the extended Hierarchical Schema Section. Observed values are "[def_hnames]   \0" and "[def_hnamesx]  \0".
-> - **unknown at 70 + ?**: only present in the extended Hierarchical Schema Section and if hname identifier is "[def_hnamesx]  \0".
+> - **length of extended name-metadata block:** only present in the extended Hierarchical Schema Section and if hname identifier is "[def_hnamesx]  \0".
 
 HSCHEMA_VERSION_INFO has the following structure:
 
@@ -191,6 +191,8 @@ Offset | Data Type | Description
 0      | uint16    | item index
 
 The Unicode name block and the ASCII name block follow.
+
+If the Hierarchical Schema Section is in the extended layout and the hname identifier is "[def_hnamesx]  \0", the extended name-metadata block follows.
 
 #### Decision Info Section
 
