@@ -50,6 +50,7 @@ Offset | Data Type | Description
 >   - "mrm_pri1": client 6.3.0 (Windows 8.1)
 >   - "mrm_prif": Windows Phone 6.3.1
 >   - "mrm_pri2": Universal 10.0.0 (Windows 10)
+>   - "mrm_pri3": Universal 10.0.0.5
 
 ### Table of Contents
 

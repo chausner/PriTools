@@ -38,6 +38,7 @@ public class PriFile
                 case "mrm_pri0":
                 case "mrm_pri1":
                 case "mrm_pri2":
+                case "mrm_pri3":
                 case "mrm_prif":
                     Version = magic;
                     break;
