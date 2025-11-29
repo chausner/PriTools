@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -7,18 +6,20 @@ namespace PriFormat;
 
 public class HierarchicalSchemaSection : Section
 {
-    public HierarchicalSchemaVersionInfo Version { get; private set; }
-    public string UniqueName { get; private set; }
-    public string Name { get; private set; }
+    public HierarchicalSchemaVersionInfo? Version { get; private set; }
+    public string? UniqueName { get; private set; }
+    public string? Name { get; private set; }
     public IReadOnlyList<ResourceMapScope> Scopes { get; private set; }
     public IReadOnlyList<ResourceMapItem> Items { get; private set; }
 
-    bool extendedVersion;
+    readonly bool extendedVersion;
 
     internal const string Identifier1 = "[mrm_hschema]  \0";
     internal const string Identifier2 = "[mrm_hschemaex] ";
 
+#pragma warning disable CS8618
     internal HierarchicalSchemaSection(PriFile priFile, bool extendedVersion) : base(extendedVersion ? Identifier2 : Identifier1, priFile)
+#pragma warning restore CS8618
     {
         this.extendedVersion = extendedVersion;
     }
@@ -30,8 +31,8 @@ public class HierarchicalSchemaSection : Section
             Version = null;
             UniqueName = null;
             Name = null;                
-            Scopes = Array.Empty<ResourceMapScope>(); 
-            Items = Array.Empty<ResourceMapItem>();
+            Scopes = []; 
+            Items = [];
             return true;
         }
 
@@ -81,7 +82,7 @@ public class HierarchicalSchemaSection : Section
         if (extendedHNames)
             binaryReader.ReadUInt32(); // meaning unknown
 
-        List<ScopeAndItemInfo> scopeAndItemInfos = new List<ScopeAndItemInfo>((int)(numScopes + numItems));
+        List<ScopeAndItemInfo> scopeAndItemInfos = new((int)(numScopes + numItems));
 
         for (int i = 0; i < numScopes + numItems; i++)
         {
@@ -97,7 +98,7 @@ public class HierarchicalSchemaSection : Section
             scopeAndItemInfos.Add(new ScopeAndItemInfo(parent, fullPathLength, isScope, nameInAscii, nameOffset, index));
         }
 
-        List<ScopeExInfo> scopeExInfos = new List<ScopeExInfo>((int)numScopes);
+        List<ScopeExInfo> scopeExInfos = new((int)numScopes);
 
         for (int i = 0; i < numScopes; i++)
         {
@@ -150,7 +151,7 @@ public class HierarchicalSchemaSection : Section
                 if (items[index] != null)
                     throw new InvalidDataException();
 
-                items[index] = new ResourceMapItem(index, null, name);
+                items[index] = new ResourceMapItem(index, null!, name);
             }
         }
 
@@ -172,7 +173,7 @@ public class HierarchicalSchemaSection : Section
 
         for (int i = 0; i < numScopes; i++)
         {
-            List<ResourceMapEntry> children = new List<ResourceMapEntry>(scopeExInfos[i].ChildCount);
+            List<ResourceMapEntry> children = new(scopeExInfos[i].ChildCount);
 
             for (int j = 0; j < scopeExInfos[i].ChildCount; j++)
             {
@@ -196,39 +197,22 @@ public class HierarchicalSchemaSection : Section
         return true;
     }
 
-    private struct ScopeAndItemInfo
-    {
-        public ushort Parent;
-        public ushort FullPathLength;
-        public bool IsScope;
-        public bool NameInAscii;
-        public uint NameOffset;
-        public ushort Index;
+    private record struct ScopeAndItemInfo
+    (
+        ushort Parent,
+        ushort FullPathLength,
+        bool IsScope,
+        bool NameInAscii,
+        uint NameOffset,
+        ushort Index
+    );
 
-        public ScopeAndItemInfo(ushort parent, ushort fullPathLength, bool isScope, bool nameInAscii, uint nameOffset, ushort index)
-        {
-            Parent = parent;
-            FullPathLength = fullPathLength;
-            IsScope = isScope;
-            NameInAscii = nameInAscii;
-            NameOffset = nameOffset;
-            Index = index;
-        }
-    }
-
-    private struct ScopeExInfo
-    {
-        public ushort ScopeIndex;
-        public ushort ChildCount;
-        public ushort FirstChildIndex;
-
-        public ScopeExInfo(ushort scopeIndex, ushort childCount, ushort firstChildIndex)
-        {
-            ScopeIndex = scopeIndex;
-            ChildCount = childCount;
-            FirstChildIndex = firstChildIndex;
-        }
-    }
+    private record struct ScopeExInfo
+    (
+        ushort ScopeIndex,
+        ushort ChildCount,
+        ushort FirstChildIndex
+    );
 
     // Checksum computation is buggy for some files
 
@@ -279,38 +263,29 @@ public class HierarchicalSchemaSection : Section
     //}
 }
 
-public class HierarchicalSchemaVersionInfo
-{
-    public ushort MajorVersion { get; }
-    public ushort MinorVersion { get; }
-    public uint Checksum { get; }
-    public uint NumScopes { get; }
-    public uint NumItems { get; }
+public record HierarchicalSchemaVersionInfo
+(
+    ushort MajorVersion,
+    ushort MinorVersion,
+    uint Checksum,
+    uint NumScopes,
+    uint NumItems
+);
 
-    internal HierarchicalSchemaVersionInfo(ushort majorVersion, ushort minorVersion, uint checksum, uint numScopes, uint numItems)
-    {
-        MajorVersion = majorVersion;
-        MinorVersion = minorVersion;
-        Checksum = checksum;
-        NumScopes = numScopes;
-        NumItems = numItems;
-    }
-}
-
-public class ResourceMapEntry
+public abstract class ResourceMapEntry
 {
     public ushort Index { get; }
-    public ResourceMapScope Parent { get; internal set; }
+    public ResourceMapScope? Parent { get; internal set; }
     public string Name { get; }
 
-    internal ResourceMapEntry(ushort index, ResourceMapScope parent, string name)
+    internal ResourceMapEntry(ushort index, ResourceMapScope? parent, string name)
     {
         Index = index;
         Parent = parent;
         Name = name;
     }
 
-    string fullName;
+    string? fullName;
 
     public string FullName
     {
@@ -327,9 +302,11 @@ public class ResourceMapEntry
     }
 }
 
-public class ResourceMapScope : ResourceMapEntry
+public sealed class ResourceMapScope : ResourceMapEntry
 {
-    internal ResourceMapScope(ushort index, ResourceMapScope parent, string name) : base(index, parent, name)
+#pragma warning disable CS8618
+    internal ResourceMapScope(ushort index, ResourceMapScope? parent, string name) : base(index, parent, name)
+#pragma warning restore CS8618
     {
     }
 
@@ -341,7 +318,7 @@ public class ResourceMapScope : ResourceMapEntry
     }
 }
 
-public class ResourceMapItem : ResourceMapEntry
+public sealed class ResourceMapItem : ResourceMapEntry
 {
     internal ResourceMapItem(ushort index, ResourceMapScope parent, string name) : base(index, parent, name)
     {

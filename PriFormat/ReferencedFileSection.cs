@@ -10,7 +10,9 @@ public class ReferencedFileSection : Section
 
     internal const string Identifier = "[def_file_list]\0";
 
+#pragma warning disable CS8618
     internal ReferencedFileSection(PriFile priFile) : base(Identifier, priFile)
+#pragma warning restore CS8618
     {
     }
 
@@ -22,7 +24,7 @@ public class ReferencedFileSection : Section
         binaryReader.ExpectUInt16(0);
         uint totalDataLength = binaryReader.ReadUInt32();
 
-        List<FolderInfo> folderInfos = new List<FolderInfo>(numFolders);
+        List<FolderInfo> folderInfos = new(numFolders);
 
         for (int i = 0; i < numFolders; i++)
         {
@@ -38,7 +40,7 @@ public class ReferencedFileSection : Section
             folderInfos.Add(new FolderInfo(parentFolder, numFoldersInFolder, firstFolderInFolder, numFilesInFolder, firstFileInFolder, folderNameLength, fullPathLength, folderNameOffset));
         }
 
-        List<FileInfo> fileInfos = new List<FileInfo>(numFiles);
+        List<FileInfo> fileInfos = new(numFiles);
 
         for (int i = 0; i < numFiles; i++)
         {
@@ -52,7 +54,7 @@ public class ReferencedFileSection : Section
 
         long dataStartPosition = binaryReader.BaseStream.Position;
 
-        List<ReferencedFolder> referencedFolders = new List<ReferencedFolder>(numFolders);
+        List<ReferencedFolder> referencedFolders = new(numFolders);
 
         for (int i = 0; i < numFolders; i++)
         {
@@ -67,7 +69,7 @@ public class ReferencedFileSection : Section
             if (folderInfos[i].ParentFolder != 0xFFFF)
                 referencedFolders[i].Parent = referencedFolders[folderInfos[i].ParentFolder];
 
-        List<ReferencedFile> referencedFiles = new List<ReferencedFile>(numFiles);
+        List<ReferencedFile> referencedFiles = new(numFiles);
 
         for (int i = 0; i < numFiles; i++)
         {
@@ -75,7 +77,7 @@ public class ReferencedFileSection : Section
 
             string name = binaryReader.ReadString(Encoding.Unicode, fileInfos[i].FileNameLength);
 
-            ReferencedFolder parentFolder;
+            ReferencedFolder? parentFolder;
 
             if (fileInfos[i].ParentFolder != 0xFFFF)
                 parentFolder = referencedFolders[fileInfos[i].ParentFolder];
@@ -87,7 +89,7 @@ public class ReferencedFileSection : Section
 
         for (int i = 0; i < numFolders; i++)
         {
-            List<ReferencedEntry> children = new List<ReferencedEntry>(folderInfos[i].NumFoldersInFolder + folderInfos[i].NumFilesInFolder);
+            List<ReferencedEntry> children = new(folderInfos[i].NumFoldersInFolder + folderInfos[i].NumFilesInFolder);
 
             for (int j = 0; j < folderInfos[i].NumFoldersInFolder; j++)
                 children.Add(referencedFolders[folderInfos[i].FirstFolderInFolder + j]);
@@ -103,59 +105,39 @@ public class ReferencedFileSection : Section
         return true;
     }
 
-    private struct FolderInfo
-    {
-        public ushort ParentFolder;
-        public ushort NumFoldersInFolder;
-        public ushort FirstFolderInFolder;
-        public ushort NumFilesInFolder;
-        public ushort FirstFileInFolder;
-        public ushort FolderNameLength;
-        public ushort FullPathLength;
-        public uint FolderNameOffset;
+    private record struct FolderInfo
+    (
+        ushort ParentFolder,
+        ushort NumFoldersInFolder,
+        ushort FirstFolderInFolder,
+        ushort NumFilesInFolder,
+        ushort FirstFileInFolder,
+        ushort FolderNameLength,
+        ushort FullPathLength,
+        uint FolderNameOffset
+    );
 
-        public FolderInfo(ushort parentFolder, ushort numFoldersInFolder, ushort firstFolderInFolder, ushort numFilesInFolder, ushort firstFileInFolder, ushort folderNameLength, ushort fullPathLength, uint folderNameOffset)
-        {
-            ParentFolder = parentFolder;
-            NumFoldersInFolder = numFoldersInFolder;
-            FirstFolderInFolder = firstFolderInFolder;
-            NumFilesInFolder = numFilesInFolder;
-            FirstFileInFolder = firstFileInFolder;
-            FolderNameLength = folderNameLength;
-            FullPathLength = fullPathLength;
-            FolderNameOffset = folderNameOffset;
-        }
-    }
-
-    private struct FileInfo
-    {
-        public ushort ParentFolder;
-        public ushort FullPathLength;
-        public ushort FileNameLength;
-        public uint FileNameOffset;
-
-        public FileInfo(ushort parentFolder, ushort fullPathLength, ushort fileNameLength, uint fileNameOffset)
-        {
-            ParentFolder = parentFolder;
-            FullPathLength = fullPathLength;
-            FileNameLength = fileNameLength;
-            FileNameOffset = fileNameOffset;
-        }
-    }
+    private record struct FileInfo
+    (
+        ushort ParentFolder,
+        ushort FullPathLength,
+        ushort FileNameLength,
+        uint FileNameOffset
+    );
 }
 
-public class ReferencedEntry
+public abstract class ReferencedEntry
 {
-    public ReferencedFolder Parent { get; internal set; }
+    public ReferencedFolder? Parent { get; internal set; }
     public string Name { get; }
 
-    internal ReferencedEntry(ReferencedFolder parent, string name)
+    internal ReferencedEntry(ReferencedFolder? parent, string name)
     {
         Parent = parent;
         Name = name;
     }
 
-    string fullName;
+    string? fullName;
 
     public string FullName
     {
@@ -172,18 +154,20 @@ public class ReferencedEntry
     }
 }
 
-public class ReferencedFolder : ReferencedEntry
+public sealed class ReferencedFolder : ReferencedEntry
 {
-    internal ReferencedFolder(ReferencedFolder parent, string name) : base(parent, name)
+#pragma warning disable CS8618
+    internal ReferencedFolder(ReferencedFolder? parent, string name) : base(parent, name)
+#pragma warning restore CS8618
     {
     }
 
     public IReadOnlyList<ReferencedEntry> Children { get; internal set; }
 }
 
-public class ReferencedFile : ReferencedEntry
+public sealed class ReferencedFile : ReferencedEntry
 {
-    internal ReferencedFile(ReferencedFolder parent, string name) : base(parent, name)
+    internal ReferencedFile(ReferencedFolder? parent, string name) : base(parent, name)
     {
     }
 }

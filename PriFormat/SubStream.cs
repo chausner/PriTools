@@ -3,19 +3,8 @@ using System.IO;
 
 namespace PriFormat;
 
-class SubStream : Stream
+class SubStream(Stream baseStream, long subStreamPosition, long subStreamLength) : Stream
 {
-    Stream baseStream;
-    long subStreamPosition;
-    long subStreamLength;
-
-    public SubStream(Stream baseStream, long subStreamPosition, long subStreamLength)
-    {
-        this.baseStream = baseStream;
-        this.subStreamPosition = subStreamPosition;
-        this.subStreamLength = subStreamLength;
-    }
-
     public long SubStreamPosition => subStreamPosition;
 
     public override bool CanRead => baseStream.CanRead;

@@ -9,7 +9,9 @@ public class DataItemSection : Section
 
     internal const string Identifier = "[mrm_dataitem] \0";
 
+#pragma warning disable CS8618
     internal DataItemSection(PriFile priFile) : base(Identifier, priFile)
+#pragma warning restore CS8618
     {
     }
 
@@ -22,7 +24,7 @@ public class DataItemSection : Section
         ushort numBlobs = binaryReader.ReadUInt16();
         uint totalDataLength = binaryReader.ReadUInt32();
 
-        List<ByteSpan> dataItems = new List<ByteSpan>(numStrings + numBlobs);
+        List<ByteSpan> dataItems = new(numStrings + numBlobs);
 
         long dataStartOffset = binaryReader.BaseStream.Position + 
             numStrings * 2 * sizeof(ushort) + numBlobs * 2 * sizeof(uint);

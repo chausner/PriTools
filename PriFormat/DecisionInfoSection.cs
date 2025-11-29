@@ -12,7 +12,9 @@ public class DecisionInfoSection : Section
 
     internal const string Identifier = "[mrm_decn_info]\0";
 
+#pragma warning disable CS8618
     internal DecisionInfoSection(PriFile priFile) : base(Identifier, priFile)
+#pragma warning restore CS8618
     {
     }
 
@@ -25,7 +27,7 @@ public class DecisionInfoSection : Section
         ushort numIndexTableEntries = binaryReader.ReadUInt16();
         ushort totalDataLength = binaryReader.ReadUInt16();
 
-        List<DecisionInfo> decisionInfos = new List<DecisionInfo>(numDecisions);
+        List<DecisionInfo> decisionInfos = new(numDecisions);
         for (int i = 0; i < numDecisions; i++)
         {
             ushort firstQualifierSetIndexIndex = binaryReader.ReadUInt16();
@@ -33,7 +35,7 @@ public class DecisionInfoSection : Section
             decisionInfos.Add(new DecisionInfo(firstQualifierSetIndexIndex, numQualifierSetsInDecision));
         }
 
-        List<QualifierSetInfo> qualifierSetInfos = new List<QualifierSetInfo>(numQualifierSets);
+        List<QualifierSetInfo> qualifierSetInfos = new(numQualifierSets);
         for (int i = 0; i < numQualifierSets; i++)
         {
             ushort firstQualifierIndexIndex = binaryReader.ReadUInt16();
@@ -41,7 +43,7 @@ public class DecisionInfoSection : Section
             qualifierSetInfos.Add(new QualifierSetInfo(firstQualifierIndexIndex, numQualifiersInSet));
         }
 
-        List<QualifierInfo> qualifierInfos = new List<QualifierInfo>(numQualifiers);
+        List<QualifierInfo> qualifierInfos = new(numQualifiers);
         for (int i = 0; i < numQualifiers; i++)
         {
             ushort index = binaryReader.ReadUInt16();
@@ -51,7 +53,7 @@ public class DecisionInfoSection : Section
             qualifierInfos.Add(new QualifierInfo(index, priority, fallbackScore));
         }
 
-        List<DistinctQualifierInfo> distinctQualifierInfos = new List<DistinctQualifierInfo>(numDistinctQualifiers);
+        List<DistinctQualifierInfo> distinctQualifierInfos = new(numDistinctQualifiers);
         for (int i = 0; i < numDistinctQualifiers; i++)
         {
             binaryReader.ReadUInt16();
@@ -69,7 +71,7 @@ public class DecisionInfoSection : Section
 
         long dataStartOffset = binaryReader.BaseStream.Position;
 
-        List<Qualifier> qualifiers = new List<Qualifier>(numQualifiers);
+        List<Qualifier> qualifiers = new(numQualifiers);
 
         for (int i = 0; i < numQualifiers; i++)
         {
@@ -89,11 +91,11 @@ public class DecisionInfoSection : Section
 
         Qualifiers = qualifiers;
 
-        List<QualifierSet> qualifierSets = new List<QualifierSet>(numQualifierSets);
+        List<QualifierSet> qualifierSets = new(numQualifierSets);
 
         for (int i = 0; i < numQualifierSets; i++)
         {
-            List<Qualifier> qualifiersInSet = new List<Qualifier>(qualifierSetInfos[i].NumQualifiersInSet);
+            List<Qualifier> qualifiersInSet = new(qualifierSetInfos[i].NumQualifiersInSet);
 
             for (int j = 0; j < qualifierSetInfos[i].NumQualifiersInSet; j++)
                 qualifiersInSet.Add(qualifiers[indexTable[qualifierSetInfos[i].FirstQualifierIndexIndex + j]]);
@@ -103,11 +105,11 @@ public class DecisionInfoSection : Section
 
         QualifierSets = qualifierSets;
 
-        List<Decision> decisions = new List<Decision>(numDecisions);
+        List<Decision> decisions = new(numDecisions);
 
         for (int i = 0; i < numDecisions; i++)
         {
-            List<QualifierSet> qualifierSetsInDecision = new List<QualifierSet>(decisionInfos[i].NumQualifierSetsInDecision);
+            List<QualifierSet> qualifierSetsInDecision = new(decisionInfos[i].NumQualifierSetsInDecision);
 
             for (int j = 0; j < decisionInfos[i].NumQualifierSetsInDecision; j++)
                 qualifierSetsInDecision.Add(qualifierSets[indexTable[decisionInfos[i].FirstQualifierSetIndexIndex + j]]);
@@ -120,55 +122,13 @@ public class DecisionInfoSection : Section
         return true;
     }
 
-    private struct DecisionInfo
-    {
-        public ushort FirstQualifierSetIndexIndex;
-        public ushort NumQualifierSetsInDecision;
+    private record struct DecisionInfo(ushort FirstQualifierSetIndexIndex, ushort NumQualifierSetsInDecision);
 
-        public DecisionInfo(ushort firstQualifierSetIndexIndex, ushort numQualifierSetsInDecision)
-        {
-            FirstQualifierSetIndexIndex = firstQualifierSetIndexIndex;
-            NumQualifierSetsInDecision = numQualifierSetsInDecision;
-        }
-    }
+    private record struct QualifierSetInfo(ushort FirstQualifierIndexIndex, ushort NumQualifiersInSet);
 
-    private struct QualifierSetInfo
-    {
-        public ushort FirstQualifierIndexIndex;
-        public ushort NumQualifiersInSet;
+    private record struct QualifierInfo(ushort Index, ushort Priority, ushort FallbackScore);
 
-        public QualifierSetInfo(ushort firstQualifierIndexIndex, ushort numQualifiersInSet)
-        {
-            FirstQualifierIndexIndex = firstQualifierIndexIndex;
-            NumQualifiersInSet = numQualifiersInSet;
-        }
-    }
-
-    private struct QualifierInfo
-    {
-        public ushort Index;
-        public ushort Priority;
-        public ushort FallbackScore;
-
-        public QualifierInfo(ushort index, ushort priority, ushort fallbackScore)
-        {
-            Index = index;
-            Priority = priority;
-            FallbackScore = fallbackScore;
-        }
-    }
-
-    private struct DistinctQualifierInfo
-    {
-        public QualifierType QualifierType;
-        public uint OperandValueOffset;
-
-        public DistinctQualifierInfo(QualifierType qualifierType, uint operandValueOffset)
-        {
-            QualifierType = qualifierType;
-            OperandValueOffset = operandValueOffset;
-        }
-    }
+    private record struct DistinctQualifierInfo(QualifierType QualifierType, uint OperandValueOffset);
 }
 
 public enum QualifierType
@@ -187,59 +147,8 @@ public enum QualifierType
     Custom
 }
 
-public class Qualifier
-{
-    public ushort Index { get; }
-    public QualifierType Type { get; }
-    public ushort Priority { get; }
-    public float FallbackScore { get; }
-    public string Value { get; }
+public record struct Qualifier(ushort Index, QualifierType Type, ushort Priority, float FallbackScore, string Value);
 
-    internal Qualifier(ushort index, QualifierType type, ushort priority, float fallbackScore, string value)
-    {
-        Index = index;
-        Type = type;
-        Priority = priority;
-        FallbackScore = fallbackScore;
-        Value = value;
-    }
+public record struct QualifierSet(ushort Index, IReadOnlyList<Qualifier> Qualifiers);
 
-    public override string ToString()
-    {
-        return $"Index: {Index} Type: {Type} Value: {Value} Priority: {Priority} FallbackScore: {FallbackScore}";
-    }
-}
-
-public class QualifierSet
-{
-    public ushort Index { get; }
-    public IReadOnlyList<Qualifier> Qualifiers { get; }
-
-    internal QualifierSet(ushort index, IReadOnlyList<Qualifier> qualifiers)
-    {
-        Index = index;
-        Qualifiers = qualifiers;
-    }
-
-    public override string ToString()
-    {
-        return $"Index: {Index} Qualifiers: {Qualifiers.Count}";
-    }
-}
-
-public class Decision
-{
-    public ushort Index { get; }
-    public IReadOnlyList<QualifierSet> QualifierSets { get; }
-
-    internal Decision(ushort index, IReadOnlyList<QualifierSet> qualifierSets)
-    {
-        Index = index;
-        QualifierSets = qualifierSets;
-    }
-
-    public override string ToString()
-    {
-        return $"Index: {Index} Qualifier sets: {QualifierSets.Count}";
-    }
-}
+public record struct Decision(ushort Index, IReadOnlyList<QualifierSet> QualifierSets);

@@ -18,7 +18,9 @@ public class PriDescriptorSection : Section
 
     internal const string Identifier = "[mrm_pridescex]\0";
 
+#pragma warning disable CS8618
     internal PriDescriptorSection(PriFile priFile) : base(Identifier, priFile)
+#pragma warning restore CS8618
     {
     }
 
@@ -39,35 +41,35 @@ public class PriDescriptorSection : Section
         ushort numDataItemSections = binaryReader.ReadUInt16();
         binaryReader.ExpectUInt16(0);
 
-        List<SectionRef<HierarchicalSchemaSection>> hierarchicalSchemaSections = new List<SectionRef<HierarchicalSchemaSection>>(numHierarchicalSchemaSections);
+        List<SectionRef<HierarchicalSchemaSection>> hierarchicalSchemaSections = new(numHierarchicalSchemaSections);
 
         for (int i = 0; i < numHierarchicalSchemaSections; i++)
             hierarchicalSchemaSections.Add(new SectionRef<HierarchicalSchemaSection>(binaryReader.ReadUInt16()));
 
         HierarchicalSchemaSections = hierarchicalSchemaSections;
 
-        List<SectionRef<DecisionInfoSection>> decisionInfoSections = new List<SectionRef<DecisionInfoSection>>(numDecisionInfoSections);
+        List<SectionRef<DecisionInfoSection>> decisionInfoSections = new(numDecisionInfoSections);
 
         for (int i = 0; i < numDecisionInfoSections; i++)
             decisionInfoSections.Add(new SectionRef<DecisionInfoSection>(binaryReader.ReadUInt16()));
 
         DecisionInfoSections = decisionInfoSections;
 
-        List<SectionRef<ResourceMapSection>> resourceMapSections = new List<SectionRef<ResourceMapSection>>(numResourceMapSections);
+        List<SectionRef<ResourceMapSection>> resourceMapSections = new(numResourceMapSections);
 
         for (int i = 0; i < numResourceMapSections; i++)
             resourceMapSections.Add(new SectionRef<ResourceMapSection>(binaryReader.ReadUInt16()));
 
         ResourceMapSections = resourceMapSections;
 
-        List<SectionRef<ReferencedFileSection>> referencedFileSections = new List<SectionRef<ReferencedFileSection>>(numReferencedFileSections);
+        List<SectionRef<ReferencedFileSection>> referencedFileSections = new(numReferencedFileSections);
 
         for (int i = 0; i < numReferencedFileSections; i++)
             referencedFileSections.Add(new SectionRef<ReferencedFileSection>(binaryReader.ReadUInt16()));
 
         ReferencedFileSections = referencedFileSections;
 
-        List<SectionRef<DataItemSection>> dataItemSections = new List<SectionRef<DataItemSection>>(numDataItemSections);
+        List<SectionRef<DataItemSection>> dataItemSections = new(numDataItemSections);
 
         for (int i = 0; i < numDataItemSections; i++)
             dataItemSections.Add(new SectionRef<DataItemSection>(binaryReader.ReadUInt16()));

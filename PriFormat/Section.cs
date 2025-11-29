@@ -40,8 +40,8 @@ public abstract class Section
 
         binaryReader.BaseStream.Seek(-8 - (SectionLength - 16 - 24), SeekOrigin.Current);
 
-        using (SubStream subStream = new SubStream(binaryReader.BaseStream,binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24))
-        using (BinaryReader subBinaryReader = new BinaryReader(subStream, Encoding.ASCII))
+        using (SubStream subStream = new(binaryReader.BaseStream,binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24))
+        using (BinaryReader subBinaryReader = new(subStream, Encoding.ASCII))
         {
             return ParseSectionContent(subBinaryReader);
         }
@@ -56,28 +56,18 @@ public abstract class Section
 
     internal static Section CreateForIdentifier(string sectionIdentifier, PriFile priFile)
     {
-        switch (sectionIdentifier)
+        return sectionIdentifier switch
         {
-            case PriDescriptorSection.Identifier:
-                return new PriDescriptorSection(priFile);
-            case HierarchicalSchemaSection.Identifier1:
-                return new HierarchicalSchemaSection(priFile, false);
-            case HierarchicalSchemaSection.Identifier2:
-                return new HierarchicalSchemaSection(priFile, true);
-            case DecisionInfoSection.Identifier:
-                return new DecisionInfoSection(priFile);
-            case ResourceMapSection.Identifier1:
-                return new ResourceMapSection(priFile, false);
-            case ResourceMapSection.Identifier2:
-                return new ResourceMapSection(priFile, true);
-            case DataItemSection.Identifier:
-                return new DataItemSection(priFile);
-            case ReverseMapSection.Identifier:
-                return new ReverseMapSection(priFile);
-            case ReferencedFileSection.Identifier:
-                return new ReferencedFileSection(priFile);
-            default:
-                return new UnknownSection(sectionIdentifier, priFile);
-        }
+            PriDescriptorSection.Identifier => new PriDescriptorSection(priFile),
+            HierarchicalSchemaSection.Identifier1 => new HierarchicalSchemaSection(priFile, false),
+            HierarchicalSchemaSection.Identifier2 => new HierarchicalSchemaSection(priFile, true),
+            DecisionInfoSection.Identifier => new DecisionInfoSection(priFile),
+            ResourceMapSection.Identifier1 => new ResourceMapSection(priFile, false),
+            ResourceMapSection.Identifier2 => new ResourceMapSection(priFile, true),
+            DataItemSection.Identifier => new DataItemSection(priFile),
+            ReverseMapSection.Identifier => new ReverseMapSection(priFile),
+            ReferencedFileSection.Identifier => new ReferencedFileSection(priFile),
+            _ => new UnknownSection(sectionIdentifier, priFile),
+        };
     }
 }

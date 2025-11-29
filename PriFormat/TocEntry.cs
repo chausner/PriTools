@@ -2,25 +2,16 @@
 
 namespace PriFormat;
 
-public class TocEntry
+public record class TocEntry
+(
+    string SectionIdentifier,
+    ushort Flags,
+    ushort SectionFlags,
+    uint SectionQualifier,
+    uint SectionOffset,
+    uint SectionLength
+)
 {
-    public string SectionIdentifier { get; }
-    public ushort Flags { get; }
-    public ushort SectionFlags { get; }
-    public uint SectionQualifier { get; }
-    public uint SectionOffset { get; }
-    public uint SectionLength { get; }
-
-    private TocEntry(string sectionIdentifier, ushort flags, ushort sectionFlags, uint sectionQualifier, uint sectionOffset, uint sectionLength)
-    {
-        SectionIdentifier = sectionIdentifier;
-        Flags = flags;
-        SectionFlags = sectionFlags;
-        SectionQualifier = sectionQualifier;
-        SectionOffset = sectionOffset;
-        SectionLength = sectionLength;
-    }
-
     internal static TocEntry Parse(BinaryReader binaryReader)
     {
         return new TocEntry(

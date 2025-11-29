@@ -12,13 +12,15 @@ public class PriFile
     public IReadOnlyList<TocEntry> TableOfContents { get; private set; }
     public IReadOnlyList<Section> Sections { get; private set; }
 
+#pragma warning disable CS8618
     private PriFile()
+#pragma warning restore CS8618
     {
     }
 
     public static PriFile Parse(Stream stream)
     {
-        PriFile priFile = new PriFile();
+        PriFile priFile = new();
 
         priFile.ParseInternal(stream);
 
@@ -27,82 +29,81 @@ public class PriFile
 
     private void ParseInternal(Stream stream)
     {
-        using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.ASCII, true))
+        using BinaryReader binaryReader = new(stream, Encoding.ASCII, true);
+
+        long fileStartOffset = binaryReader.BaseStream.Position;
+
+        string magic = new(binaryReader.ReadChars(8));
+
+        switch (magic)
         {
-            long fileStartOffset = binaryReader.BaseStream.Position;
-
-            string magic = new string(binaryReader.ReadChars(8));
-
-            switch (magic)
-            {
-                case "mrm_pri0":
-                case "mrm_pri1":
-                case "mrm_pri2":
-                case "mrm_pri3":
-                case "mrm_prif":
-                    Version = magic;
-                    break;
-                default:
-                    throw new InvalidDataException("Data does not start with a PRI file header.");
-            }
-
-            binaryReader.ExpectUInt16(0);
-            binaryReader.ExpectUInt16(1);
-            TotalFileSize = binaryReader.ReadUInt32();
-            uint tocOffset = binaryReader.ReadUInt32();
-            uint sectionStartOffset = binaryReader.ReadUInt32();
-            ushort numSections = binaryReader.ReadUInt16();
-
-            binaryReader.ExpectUInt16(0xFFFF);
-            binaryReader.ExpectUInt32(0);
-
-            binaryReader.BaseStream.Seek(fileStartOffset + TotalFileSize - 16, SeekOrigin.Begin);
-
-            binaryReader.ExpectUInt32(0xDEFFFADE);
-            binaryReader.ExpectUInt32(TotalFileSize);
-            binaryReader.ExpectString(magic);
-
-            binaryReader.BaseStream.Seek(tocOffset, SeekOrigin.Begin);
-
-            List<TocEntry> toc = new List<TocEntry>(numSections);
-
-            for (int i = 0; i < numSections; i++)
-                toc.Add(TocEntry.Parse(binaryReader));
-
-            TableOfContents = toc;
-
-            Section[] sections = new Section[numSections];
-
-            Sections = sections;
-
-            bool parseSuccess = false;
-            bool parseFailure = false;
-
-            do
-            {
-                for (int i = 0; i < sections.Length; i++)
-                    if (sections[i] == null)
-                    {
-                        binaryReader.BaseStream.Seek(sectionStartOffset + toc[i].SectionOffset, SeekOrigin.Begin);
-
-                        Section section = Section.CreateForIdentifier(toc[i].SectionIdentifier, this);
-
-                        if (section.Parse(binaryReader))
-                        {
-                            sections[i] = section;
-                            parseSuccess = true;
-                        }
-                        else
-                            parseFailure = true;
-                    }
-            } while (parseFailure && parseSuccess);
-
-            if (parseFailure)
-                throw new InvalidDataException();
+            case "mrm_pri0":
+            case "mrm_pri1":
+            case "mrm_pri2":
+            case "mrm_pri3":
+            case "mrm_prif":
+                Version = magic;
+                break;
+            default:
+                throw new InvalidDataException("Data does not start with a PRI file header.");
         }
+
+        binaryReader.ExpectUInt16(0);
+        binaryReader.ExpectUInt16(1);
+        TotalFileSize = binaryReader.ReadUInt32();
+        uint tocOffset = binaryReader.ReadUInt32();
+        uint sectionStartOffset = binaryReader.ReadUInt32();
+        ushort numSections = binaryReader.ReadUInt16();
+
+        binaryReader.ExpectUInt16(0xFFFF);
+        binaryReader.ExpectUInt32(0);
+
+        binaryReader.BaseStream.Seek(fileStartOffset + TotalFileSize - 16, SeekOrigin.Begin);
+
+        binaryReader.ExpectUInt32(0xDEFFFADE);
+        binaryReader.ExpectUInt32(TotalFileSize);
+        binaryReader.ExpectString(magic);
+
+        binaryReader.BaseStream.Seek(tocOffset, SeekOrigin.Begin);
+
+        List<TocEntry> toc = new(numSections);
+
+        for (int i = 0; i < numSections; i++)
+            toc.Add(TocEntry.Parse(binaryReader));
+
+        TableOfContents = toc;
+
+        Section[] sections = new Section[numSections];
+
+        Sections = sections;
+
+        bool parseSuccess = false;
+        bool parseFailure = false;
+
+        do
+        {
+            for (int i = 0; i < sections.Length; i++)
+                if (sections[i] == null)
+                {
+                    binaryReader.BaseStream.Seek(sectionStartOffset + toc[i].SectionOffset, SeekOrigin.Begin);
+
+                    Section section = Section.CreateForIdentifier(toc[i].SectionIdentifier, this);
+
+                    if (section.Parse(binaryReader))
+                    {
+                        sections[i] = section;
+                        parseSuccess = true;
+                    }
+                    else
+                        parseFailure = true;
+                }
+        } while (parseFailure && parseSuccess);
+
+        if (parseFailure)
+            throw new InvalidDataException();
     }
 
-    PriDescriptorSection priDescriptorSection;
+    PriDescriptorSection? priDescriptorSection;
 
     public PriDescriptorSection PriDescriptorSection
     {

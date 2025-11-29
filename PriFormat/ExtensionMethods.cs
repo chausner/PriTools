@@ -7,20 +7,20 @@ internal static class ExtensionMethods
 {
     public static string ReadString(this BinaryReader reader, Encoding encoding, int length)
     {
-        using (BinaryReader r = new BinaryReader(reader.BaseStream, encoding, true))
-            return new string(r.ReadChars(length));
+        using BinaryReader r = new(reader.BaseStream, encoding, true);
+
+        return new string(r.ReadChars(length));
     }
 
     public static string ReadNullTerminatedString(this BinaryReader reader, Encoding encoding)
     {
-        using (BinaryReader r = new BinaryReader(reader.BaseStream, encoding, true))
-        {
-            StringBuilder result = new StringBuilder();
-            char c;
-            while ((c = r.ReadChar()) != '\0')
-                result.Append(c);
-            return result.ToString();
-        }
+        using BinaryReader r = new(reader.BaseStream, encoding, true);
+
+        StringBuilder result = new();
+        char c;
+        while ((c = r.ReadChar()) != '\0')
+            result.Append(c);
+        return result.ToString();
     }
 
     public static void ExpectByte(this BinaryReader reader, byte expectedValue)

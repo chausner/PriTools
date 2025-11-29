@@ -6,7 +6,9 @@ public class UnknownSection : Section
 {
     public byte[] SectionContent { get; private set; }
 
+#pragma warning disable CS8618
     internal UnknownSection(string sectionIdentifier, PriFile priFile) : base(sectionIdentifier, priFile)
+#pragma warning restore CS8618
     {
     }
 

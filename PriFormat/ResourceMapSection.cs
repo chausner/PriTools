@@ -11,12 +11,14 @@ public class ResourceMapSection : Section
     public SectionRef<DecisionInfoSection> DecisionInfoSection { get; private set; }
     public IReadOnlyDictionary<ushort, CandidateSet> CandidateSets { get; private set; }
 
-    bool version2;
+    readonly bool version2;
 
     internal const string Identifier1 = "[mrm_res_map__]\0";
     internal const string Identifier2 = "[mrm_res_map2_]\0";
 
+#pragma warning disable CS8618
     internal ResourceMapSection(PriFile priFile, bool version2) : base(version2 ? Identifier2 : Identifier1, priFile)
+#pragma warning restore CS8618
     {
         this.version2 = version2;
     }
@@ -56,7 +58,7 @@ public class ResourceMapSection : Section
         byte[] schemaReferenceData = binaryReader.ReadBytes(hierarchicalSchemaReferenceLength);
 
         if (schemaReferenceData.Length != 0)
-            using (BinaryReader r = new BinaryReader(new MemoryStream(schemaReferenceData, false)))
+            using (BinaryReader r = new(new MemoryStream(schemaReferenceData, false)))
             {
                 ushort majorVersion = r.ReadUInt16();
                 ushort minorVersion = r.ReadUInt16();
@@ -65,7 +67,7 @@ public class ResourceMapSection : Section
                 uint numScopes = r.ReadUInt32();
                 uint numItems = r.ReadUInt32();
 
-                HierarchicalSchemaVersionInfo versionInfo = new HierarchicalSchemaVersionInfo(majorVersion, minorVersion, checksum, numScopes, numItems);
+                HierarchicalSchemaVersionInfo versionInfo = new(majorVersion, minorVersion, checksum, numScopes, numItems);
 
                 ushort stringDataLength = r.ReadUInt16();
                 r.ExpectUInt16(0);
@@ -79,7 +81,7 @@ public class ResourceMapSection : Section
                 HierarchicalSchemaReference = new HierarchicalSchemaReference(versionInfo, unknown1, unknown2, uniqueName);
             }
 
-        List<ResourceValueType> resourceValueTypeTable = new List<ResourceValueType>(resourceValueTypeTableSize);
+        List<ResourceValueType> resourceValueTypeTable = new(resourceValueTypeTableSize);
         for (int i = 0; i < resourceValueTypeTableSize; i++)
         {
             binaryReader.ExpectUInt32(4);
@@ -87,7 +89,7 @@ public class ResourceMapSection : Section
             resourceValueTypeTable.Add(resourceValueType);
         }
 
-        List<ItemToItemInfoGroup> itemToItemInfoGroups = new List<ItemToItemInfoGroup>();
+        List<ItemToItemInfoGroup> itemToItemInfoGroups = new();
         for (int i = 0; i < ItemToItemInfoGroupCount; i++)
         {
             ushort firstItem = binaryReader.ReadUInt16();
@@ -95,7 +97,7 @@ public class ResourceMapSection : Section
             itemToItemInfoGroups.Add(new ItemToItemInfoGroup(firstItem, itemInfoGroup));
         }
 
-        List<ItemInfoGroup> itemInfoGroups = new List<ItemInfoGroup>();
+        List<ItemInfoGroup> itemInfoGroups = new();
         for (int i = 0; i < itemInfoGroupCount; i++)
         {
             ushort groupSize = binaryReader.ReadUInt16();
@@ -103,7 +105,7 @@ public class ResourceMapSection : Section
             itemInfoGroups.Add(new ItemInfoGroup(groupSize, firstItemInfo));
         }
 
-        List<ItemInfo> itemInfos = new List<ItemInfo>();
+        List<ItemInfo> itemInfos = new();
         for (int i = 0; i < itemInfoCount; i++)
         {
             ushort decision = binaryReader.ReadUInt16();
@@ -114,7 +116,7 @@ public class ResourceMapSection : Section
         byte[] largeTable = binaryReader.ReadBytes((int)largeTableLength);
 
         if (largeTable.Length != 0)
-            using (BinaryReader r = new BinaryReader(new MemoryStream(largeTable, false)))
+            using (BinaryReader r = new(new MemoryStream(largeTable, false)))
             {
                 uint ItemToItemInfoGroupCountLarge = r.ReadUInt32();
                 uint itemInfoGroupCountLarge = r.ReadUInt32();
@@ -145,7 +147,7 @@ public class ResourceMapSection : Section
                     throw new InvalidDataException();
             }
 
-        List<CandidateInfo> candidateInfos = new List<CandidateInfo>((int)numCandidates);
+        List<CandidateInfo> candidateInfos = new((int)numCandidates);
         for (int i = 0; i < numCandidates; i++)
         {
             byte type = binaryReader.ReadByte();
@@ -171,7 +173,7 @@ public class ResourceMapSection : Section
 
         long stringDataStartOffset = binaryReader.BaseStream.Position;
 
-        Dictionary<ushort, CandidateSet> candidateSets = new Dictionary<ushort, CandidateSet>();
+        Dictionary<ushort, CandidateSet> candidateSets = new();
 
         for (int itemToItemInfoGroupIndex = 0; itemToItemInfoGroupIndex < itemToItemInfoGroups.Count; itemToItemInfoGroupIndex++)
         {
@@ -192,7 +194,7 @@ public class ResourceMapSection : Section
 
                 Decision decision = PriFile.GetSectionByRef(DecisionInfoSection).Decisions[decisionIndex];
 
-                List<Candidate> candidates = new List<Candidate>(decision.QualifierSets.Count);
+                List<Candidate> candidates = new(decision.QualifierSets.Count);
 
                 for (int i = 0; i < decision.QualifierSets.Count; i++)
                 {
@@ -212,7 +214,7 @@ public class ResourceMapSection : Section
                     }
                     else if (candidateInfo.Type == 0x00)
                     {
-                        ByteSpan data = new ByteSpan(sectionPosition + stringDataStartOffset + candidateInfo.DataOffset, candidateInfo.DataLength);
+                        ByteSpan data = new(sectionPosition + stringDataStartOffset + candidateInfo.DataOffset, candidateInfo.DataLength);
 
                         candidates.Add(new Candidate(decision.QualifierSets[i].Index, candidateInfo.ResourceValueType, data));
                     }
@@ -220,7 +222,7 @@ public class ResourceMapSection : Section
 
                 ushort resourceMapItemIndex = (ushort)(itemToItemInfoGroup.FirstItem + (itemInfoIndex - itemInfoGroup.FirstItemInfo));
 
-                CandidateSet candidateSet = new CandidateSet(
+                CandidateSet candidateSet = new(
                     new ResourceMapItemRef(SchemaSection, resourceMapItemIndex),
                     decisionIndex,
                     candidates);
@@ -234,41 +236,11 @@ public class ResourceMapSection : Section
         return true;
     }
 
-    private struct ItemToItemInfoGroup
-    {
-        public uint FirstItem;
-        public uint ItemInfoGroup;
+    private record struct ItemToItemInfoGroup(uint FirstItem, uint ItemInfoGroup);
 
-        public ItemToItemInfoGroup(uint firstItem, uint itemInfoGroup)
-        {
-            FirstItem = firstItem;
-            ItemInfoGroup = itemInfoGroup;
-        }
-    }
+    private record struct ItemInfoGroup(uint GroupSize, uint FirstItemInfo);
 
-    private struct ItemInfoGroup
-    {
-        public uint GroupSize;
-        public uint FirstItemInfo;
-
-        public ItemInfoGroup(uint groupSize, uint firstItemInfo)
-        {
-            GroupSize = groupSize;
-            FirstItemInfo = firstItemInfo;
-        }
-    }
-
-    private struct ItemInfo
-    {
-        public uint Decision;
-        public uint FirstCandidate;
-
-        public ItemInfo(uint decision, uint firstCandidate)
-        {
-            Decision = decision;
-            FirstCandidate = firstCandidate;
-        }
-    }
+    private record struct ItemInfo(uint Decision, uint FirstCandidate);
 
     private struct CandidateInfo
     {
