@@ -93,9 +93,7 @@ public class HierarchicalSchemaSection : Section
             byte flags = binaryReader.ReadByte();                
             uint nameOffset = binaryReader.ReadUInt16() | (uint)((flags & 0xF) << 16);
             ushort index = binaryReader.ReadUInt16();
-            bool isScope = (flags & 0x10) != 0;
-            bool nameInAscii = (flags & 0x20) != 0;
-            scopeAndItemInfos.Add(new ScopeAndItemInfo(parent, fullPathLength, isScope, nameInAscii, nameOffset, index));
+            scopeAndItemInfos.Add(new ScopeAndItemInfo(parent, fullPathLength, flags, nameOffset, index));
         }
 
         List<ScopeExInfo> scopeExInfos = new((int)numScopes);
@@ -201,11 +199,14 @@ public class HierarchicalSchemaSection : Section
     (
         ushort Parent,
         ushort FullPathLength,
-        bool IsScope,
-        bool NameInAscii,
+        byte Flags,
         uint NameOffset,
         ushort Index
-    );
+    )
+    {
+        public bool IsScope => (Flags & 0x10) != 0;
+        public bool NameInAscii => (Flags & 0x20) != 0;
+    }
 
     private record struct ScopeExInfo
     (

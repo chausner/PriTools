@@ -32,23 +32,27 @@ public class ReverseMapSection : Section
         binaryReader.ExpectUInt16(0);
         uint numEntries = binaryReader.ReadUInt32();
         uint numScopes = binaryReader.ReadUInt32();
+        if (numEntries != numScopes + numItems)
+            throw new InvalidDataException();
         binaryReader.ExpectUInt32(numItems);
         uint unicodeDataLength = binaryReader.ReadUInt32();
-        binaryReader.ReadUInt32();
+        binaryReader.ReadUInt32(); // meaning unknown
 
-        List<ScopeAndItemInfo> scopeAndItemInfo = new((int)(numScopes + numItems));
+        List<ScopeAndItemInfo> scopeAndItemInfos = new((int)(numScopes + numItems));
 
         for (int i = 0; i < numScopes + numItems; i++)
         {
             ushort parent = binaryReader.ReadUInt16();
             ushort fullPathLength = binaryReader.ReadUInt16();
-            uint hashCode = binaryReader.ReadUInt32();
-            uint nameOffset = binaryReader.ReadUInt16() | (((hashCode >> 24) & 0xF) << 16);
+            char uppercaseFirstChar = (char)binaryReader.ReadUInt16();
+            byte nameLength2 = binaryReader.ReadByte();
+            byte flags = binaryReader.ReadByte();                
+            uint nameOffset = binaryReader.ReadUInt16() | (uint)((flags & 0xF) << 16);
             ushort index = binaryReader.ReadUInt16();
-            scopeAndItemInfo.Add(new ScopeAndItemInfo(parent, fullPathLength, hashCode, nameOffset, index));
+            scopeAndItemInfos.Add(new ScopeAndItemInfo(parent, fullPathLength, flags, nameOffset, index));
         }
 
-        List<ScopeExInfo> scopeExInfo = new((int)numScopes);
+        List<ScopeExInfo> scopeExInfos = new((int)numScopes);
 
         for (int i = 0; i < numScopes; i++)
         {
@@ -56,14 +60,12 @@ public class ReverseMapSection : Section
             ushort childCount = binaryReader.ReadUInt16();
             ushort firstChildIndex = binaryReader.ReadUInt16();
             binaryReader.ExpectUInt16(0);
-            scopeExInfo.Add(new ScopeExInfo(scopeIndex, childCount, firstChildIndex));
+            scopeExInfos.Add(new ScopeExInfo(scopeIndex, childCount, firstChildIndex));
         }
 
         ushort[] itemIndexPropertyToIndex = new ushort[numItems];
-        for (int i = 0; i < numItems; i++)
-        {
-            itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();
-        }
+        for (int i = 0; i < numItems; i++)        
+            itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();        
 
         long unicodeDataOffset = binaryReader.BaseStream.Position;
         long asciiDataOffset = binaryReader.BaseStream.Position + unicodeDataLength * 2;
@@ -73,23 +75,25 @@ public class ReverseMapSection : Section
 
         for (int i = 0; i < numScopes + numItems; i++)
         {
-            bool nameInAscii = (scopeAndItemInfo[i].Flags & 0x20000000) != 0;
-            long pos = (nameInAscii ? asciiDataOffset : unicodeDataOffset) + (scopeAndItemInfo[i].NameOffset * (nameInAscii ? 1 : 2));
+            long pos;
+
+            if (scopeAndItemInfos[i].NameInAscii)
+                pos = asciiDataOffset + scopeAndItemInfos[i].NameOffset;
+            else
+                pos = unicodeDataOffset + scopeAndItemInfos[i].NameOffset * 2;
 
             binaryReader.BaseStream.Seek(pos, SeekOrigin.Begin);
 
             string name;
 
-            if (scopeAndItemInfo[i].FullPathLength != 0)
-                name = binaryReader.ReadNullTerminatedString(nameInAscii ? Encoding.ASCII : Encoding.Unicode);
+            if (scopeAndItemInfos[i].FullPathLength != 0)
+                name = binaryReader.ReadNullTerminatedString(scopeAndItemInfos[i].NameInAscii ? Encoding.ASCII : Encoding.Unicode);
             else
                 name = string.Empty;
 
-            ushort index = scopeAndItemInfo[i].Index;
+            ushort index = scopeAndItemInfos[i].Index;
 
-            bool isScope = (scopeAndItemInfo[i].Flags & 0x10000000) != 0;
-
-            if (isScope)
+            if (scopeAndItemInfos[i].IsScope)
             {
                 if (scopes[index] != null)
                     throw new InvalidDataException();
@@ -107,16 +111,12 @@ public class ReverseMapSection : Section
 
         for (int i = 0; i < numScopes + numItems; i++)
         {
-            ushort index = scopeAndItemInfo[i].Index;
+            ushort index = scopeAndItemInfos[i].Index;
 
-            bool isScope = (scopeAndItemInfo[i].Flags & 0x10000000) != 0;
-
-            ushort parent = scopeAndItemInfo[i].Parent;
-
-            parent = scopeAndItemInfo[parent].Index;
+            ushort parent = scopeAndItemInfos[scopeAndItemInfos[i].Parent].Index;
 
             if (parent != 0xFFFF)
-                if (isScope)
+                if (scopeAndItemInfos[i].IsScope)
                 {
                     if (parent != index)
                         scopes[index].Parent = scopes[parent];
@@ -127,18 +127,16 @@ public class ReverseMapSection : Section
 
         for (int i = 0; i < numScopes; i++)
         {
-            ResourceMapEntry[] children = new ResourceMapEntry[scopeExInfo[i].ChildCount];
+            List<ResourceMapEntry> children = new(scopeExInfos[i].ChildCount);
 
-            for (int j = 0; j < children.Length; j++)
+            for (int j = 0; j < scopeExInfos[i].ChildCount; j++)
             {
-                var saiInfo = scopeAndItemInfo[scopeExInfo[i].FirstChildIndex + j];
+                ScopeAndItemInfo saiInfo = scopeAndItemInfos[scopeExInfos[i].FirstChildIndex + j];
 
-                bool isScope = (saiInfo.Flags & 0x10000000) != 0;
-
-                if (isScope)
-                    children[j] = scopes[saiInfo.Index];
+                if (saiInfo.IsScope)
+                    children.Add(scopes[saiInfo.Index]);
                 else
-                    children[j] = items[saiInfo.Index];
+                    children.Add(items[saiInfo.Index]);
             }
 
             scopes[i].Children = children;
@@ -150,7 +148,23 @@ public class ReverseMapSection : Section
         return true;
     }
 
-    private record struct ScopeAndItemInfo(ushort Parent, ushort FullPathLength, uint Flags, uint NameOffset, ushort Index);
+    private record struct ScopeAndItemInfo
+    (
+        ushort Parent,
+        ushort FullPathLength,
+        byte Flags,
+        uint NameOffset,
+        ushort Index
+    )
+    {
+        public bool IsScope => (Flags & 0x10) != 0;
+        public bool NameInAscii => (Flags & 0x20) != 0;
+    }
 
-    private record struct ScopeExInfo(ushort ScopeIndex, ushort ChildCount, ushort FirstChildIndex);
+    private record struct ScopeExInfo
+    (
+        ushort ScopeIndex,
+        ushort ChildCount,
+        ushort FirstChildIndex
+    );
 }
