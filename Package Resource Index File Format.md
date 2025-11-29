@@ -237,7 +237,7 @@ Offset | Data Type | Description
 2      | uint16    | qualifier type
 4      | uint16    | unknown
 6      | uint16    | unknown
-8      | uint16    | offset of qualifier value in qualifier value block, in characters
+8      | uint32    | offset of qualifier value in qualifier value block, in characters
 
 > - **qualifier type**: valid types are
 >   - Language (0)
