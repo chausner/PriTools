@@ -3,5 +3,5 @@
   <Project Path="PriFormat/PriFormat.csproj" />
   <Project Path="PriInfo/PriInfo.csproj" />
   <Project Path="PriTest/PriTest.csproj" />
-  <Project Path="XbfAnalyzer/XbfFormat/XbfFormat.csproj" />
+  <Project Path="XbfTools/XbfFormat/XbfFormat.csproj" />
 </Solution>

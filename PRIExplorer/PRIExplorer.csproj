@@ -14,7 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PriFormat\PriFormat.csproj" />
-    <ProjectReference Include="..\XbfAnalyzer\XbfFormat\XbfFormat.csproj" />
+    <ProjectReference Include="..\XbfTools\XbfFormat\XbfFormat.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\blue-document-code.png" />

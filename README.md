@@ -7,8 +7,7 @@ Tools for parsing and exploring PRI (Package Resource Index) files
 This sample application allows to open and browse the contents of PRI files.
 It is also possible to export individual resources.
 
-The application leverages the [XbfAnalyzer](https://github.com/chausner/XbfAnalyzer)
-(originally by [misenhower](https://github.com/misenhower/XbfAnalyzer))
+The application leverages [XbfTools](https://github.com/chausner/XbfTools)
 to provide on-the-fly decompilation of XBF2 resources back to XAML.
 
 ## PriFormat
