@@ -1,0 +1,47 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: 10.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    - name: Publish
+      if: runner.os == 'Windows'
+      run: dotnet publish --no-build --configuration Release
+    - name: Upload published PRIExplorer
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v7
+      with:
+        name: PRIExplorer
+        path: .\PRIExplorer\bin\Release\net10.0-windows7.0\publish
+    - name: Upload published PriInfo
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v7
+      with:
+        name: PriInfo
+        path: .\PriInfo\bin\Release\net10.0\publish
+    - name: Upload published PriTest
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v7
+      with:
+        name: PriTest
+        path: .\PriTest\bin\Release\net10.0\publish
