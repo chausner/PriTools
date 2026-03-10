@@ -31,9 +31,7 @@
         </Grid.Background>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <ContentPresenter Content="{Binding ElementName=UserControl, Path=AdditionalContent}"
-                          HorizontalAlignment="Center" VerticalAlignment="Center" />
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
-        <!--<ContentPresenter Content="{Binding ElementName=UserControl, Path=AdditionalContent}"
-                          HorizontalAlignment="Center" VerticalAlignment="Center" />-->
     </Grid>
 </UserControl>
