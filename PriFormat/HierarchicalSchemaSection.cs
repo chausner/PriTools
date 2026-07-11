@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.IO;
+using System.IO.Hashing;
+using System.Linq;
 using System.Text;
 
 namespace PriFormat;
@@ -13,6 +16,8 @@ public class HierarchicalSchemaSection : Section
     public IReadOnlyList<ResourceMapItem> Items { get; private set; }
 
     readonly bool extendedVersion;
+    ushort[] scopeIndicesInFileOrder;
+    ushort[] itemIndicesInFileOrder;
 
     internal const string Identifier1 = "[mrm_hschema]  \0";
     internal const string Identifier2 = "[mrm_hschemaex] ";
@@ -33,6 +38,8 @@ public class HierarchicalSchemaSection : Section
             Name = null;                
             Scopes = []; 
             Items = [];
+            scopeIndicesInFileOrder = [];
+            itemIndicesInFileOrder = [];
             return true;
         }
 
@@ -188,9 +195,12 @@ public class HierarchicalSchemaSection : Section
 
         Scopes = scopes;
         Items = items;
-
-        //if (checksum != ComputeHierarchicalSchemaVersionInfoChecksum())
-        //    throw new Exception();
+        scopeIndicesInFileOrder = scopeExInfos
+            .Select(scopeExInfo => scopeAndItemInfos[scopeExInfo.ScopeIndex].Index)
+            .ToArray();
+        itemIndicesInFileOrder = itemIndexPropertyToIndex
+            .Select(nodeIndex => scopeAndItemInfos[nodeIndex].Index)
+            .ToArray();
 
         return true;
     }
@@ -215,53 +225,63 @@ public class HierarchicalSchemaSection : Section
         ushort FirstChildIndex
     );
 
-    // Checksum computation is buggy for some files
+    public uint ComputeHierarchicalSchemaVersionInfoChecksum()
+    {
+        Crc32 crc32 = new Crc32();
 
-    //private uint ComputeHierarchicalSchemaVersionInfoChecksum()
-    //{
-    //    CRC32 crc32 = new CRC32();
+        StringChecksum(crc32, UniqueName);
+        StringChecksum(crc32, Name);
+        crc32.Append(BitConverter.GetBytes(Version!.MajorVersion));
+        crc32.Append(BitConverter.GetBytes(Version.MinorVersion));
 
-    //    StringChecksum(crc32, UniqueName);
-    //    StringChecksum(crc32, Name);
-    //    crc32.TransformBlock(BitConverter.GetBytes(Version.MajorVersion), 0, 2, new byte[2], 0);
-    //    crc32.TransformBlock(BitConverter.GetBytes(Version.MinorVersion), 0, 2, new byte[2], 0);
+        crc32.Append(BitConverter.GetBytes(0));
+        crc32.Append(BitConverter.GetBytes(0));
+        crc32.Append(BitConverter.GetBytes(1));
 
-    //    crc32.TransformBlock(BitConverter.GetBytes(0), 0, 4, new byte[4], 0);
-    //    crc32.TransformBlock(BitConverter.GetBytes(0), 0, 4, new byte[4], 0);
-    //    crc32.TransformBlock(BitConverter.GetBytes(1), 0, 4, new byte[4], 0);
+        crc32.Append(BitConverter.GetBytes(Version.NumScopes));
+        foreach (ushort scopeIndex in scopeIndicesInFileOrder)
+            StringChecksum(crc32, Scopes[scopeIndex].FullName.Replace('\\', '/').TrimStart('/'));
 
-    //    crc32.TransformBlock(BitConverter.GetBytes(Scopes.Count), 0, 4, new byte[4], 0);
-    //    foreach (ResourceMapScope scope in Scopes)
-    //        StringChecksum(crc32, scope.FullName.Replace('\\', '/').TrimStart('/'));
+        crc32.Append(BitConverter.GetBytes(0));
+        crc32.Append(BitConverter.GetBytes(0));
+        crc32.Append(BitConverter.GetBytes(1));
 
-    //    crc32.TransformBlock(BitConverter.GetBytes(0), 0, 4, new byte[4], 0);
-    //    crc32.TransformBlock(BitConverter.GetBytes(0), 0, 4, new byte[4], 0);
-    //    crc32.TransformBlock(BitConverter.GetBytes(1), 0, 4, new byte[4], 0);
+        crc32.Append(BitConverter.GetBytes(Version.NumItems));
+        foreach (ushort itemIndex in itemIndicesInFileOrder)
+            StringChecksum(crc32, Items[itemIndex].FullName.Replace('\\', '/').TrimStart('/'));
 
-    //    crc32.TransformBlock(BitConverter.GetBytes(Items.Count), 0, 4, new byte[4], 0);
-    //    foreach (ResourceMapItem item in Items)
-    //        StringChecksum(crc32, item.FullName.Replace('\\', '/').TrimStart('/'));
+        return crc32.GetCurrentHashAsUInt32();
 
-    //    return crc32.Result;
-    //}
+        static void StringChecksum(Crc32 crc32, string? s)
+        {
+            if (s == null)
+            {
+                byte[] data = new byte[8];
+                crc32.Append(data);
+            }
+            else
+            {
+                byte[] data = Encoding.Unicode.GetBytes(ToLowerAscii(s) + '\0');
+                byte[] length = BitConverter.GetBytes(data.Length);
 
-    //private void StringChecksum(CRC32 crc32, string s)
-    //{
-    //    if (s == null)
-    //    {
-    //        byte[] data = new byte[8];
+                crc32.Append(length);
+                crc32.Append(data);
+            }
+        }
 
-    //        crc32.TransformBlock(data, 0, data.Length, new byte[data.Length], 0);
-    //    }
-    //    else
-    //    {
-    //        byte[] data = Encoding.Unicode.GetBytes(s.ToLowerInvariant() + '\0');
-    //        byte[] l = BitConverter.GetBytes(data.Length);
+        static string ToLowerAscii(string s)
+        {
+            StringBuilder result = new(s.Length);
 
-    //        crc32.TransformBlock(l, 0, l.Length, new byte[l.Length], 0);
-    //        crc32.TransformBlock(data, 0, data.Length, new byte[data.Length], 0);
-    //    }
-    //}
+            foreach (char c in s)
+                if (c is >= 'A' and <= 'Z')
+                    result.Append(char.ToLowerInvariant(c));
+                else
+                    result.Append(c);
+
+            return result.ToString();
+        }
+    }
 }
 
 public record HierarchicalSchemaVersionInfo

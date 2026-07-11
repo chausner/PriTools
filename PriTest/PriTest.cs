@@ -9,13 +9,22 @@ public class Program
     {
         if (args.Length == 0)
         {
-            Console.WriteLine("PriTest <one or more paths to .pri files or paths to folders containing .pri files>");
+            Console.WriteLine("PriTest [--validate-hschema-checksum] <one or more paths to .pri files or paths to folders containing .pri files>");
+            return;
+        }
+
+        bool validateHSchemaChecksum = args[0] == "--validate-hschema-checksum";
+        string[] pathArgs = validateHSchemaChecksum ? args[1..] : args[..];
+
+        if (pathArgs.Length == 0)
+        {
+            Console.WriteLine("No paths specified.");
             return;
         }
 
         List<string> paths = [];
 
-        foreach (string path in args)            
+        foreach (string path in pathArgs)
             if (File.Exists(path))
                 paths.Add(path);
             else if (Directory.Exists(path))
@@ -36,6 +45,9 @@ public class Program
 
                 if (unknownSections.Any())
                     throw new Exception(string.Format("Unknown sections: {0}", string.Join(' ', unknownSections.Select(s => s.SectionIdentifier))));
+
+                if (validateHSchemaChecksum)
+                    ValidateHSchemaChecksum(priFile);
             }
             catch (Exception e) when (!Debugger.IsAttached)
             {
@@ -57,5 +69,18 @@ public class Program
 
             Console.WriteLine();
         }
+    }
+
+    private static void ValidateHSchemaChecksum(PriFile priFile)
+    {
+        foreach (HierarchicalSchemaSection schema in priFile.Sections.OfType<HierarchicalSchemaSection>())
+            if (schema.Version is HierarchicalSchemaVersionInfo version)
+            {
+                uint computedChecksum = schema.ComputeHierarchicalSchemaVersionInfoChecksum();
+
+                if (version.Checksum != computedChecksum)
+                    throw new Exception(string.Format("Checksum mismatch: expected 0x{0:X8}, computed 0x{1:X8}",
+                        version.Checksum, computedChecksum));
+            }
     }
 }
