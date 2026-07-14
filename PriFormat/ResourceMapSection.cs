@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -9,6 +10,7 @@ public class ResourceMapSection : Section
     public HierarchicalSchemaReference HierarchicalSchemaReference { get; private set; }
     public SectionRef<HierarchicalSchemaSection> SchemaSection { get; private set; }
     public SectionRef<DecisionInfoSection> DecisionInfoSection { get; private set; }
+    public IReadOnlyList<EnvironmentReference> EnvironmentReferences { get; private set; } = [];
     public IReadOnlyDictionary<ushort, CandidateSet> CandidateSets { get; private set; }
 
     readonly bool version2;
@@ -54,6 +56,7 @@ public class ResourceMapSection : Section
             return false;
 
         byte[] environmentReferencesData = binaryReader.ReadBytes(environmentReferencesLength);
+        EnvironmentReferences = ParseEnvironmentReferences(environmentReferencesData, numEnvironmentReferences);
 
         byte[] schemaReferenceData = binaryReader.ReadBytes(hierarchicalSchemaReferenceLength);
 
@@ -172,6 +175,9 @@ public class ResourceMapSection : Section
         }
 
         long stringDataStartOffset = binaryReader.BaseStream.Position;
+        long stringDataExpectedEnd = stringDataStartOffset + dataLength;
+        if (stringDataExpectedEnd > binaryReader.BaseStream.Length)
+            throw new InvalidDataException();
 
         Dictionary<ushort, CandidateSet> candidateSets = new();
 
@@ -231,9 +237,44 @@ public class ResourceMapSection : Section
             }
         }
 
+        if (binaryReader.BaseStream.Position != stringDataStartOffset)
+            throw new InvalidDataException();
+
+        binaryReader.BaseStream.Seek(stringDataExpectedEnd, SeekOrigin.Begin);
+
+        if (binaryReader.BaseStream.Position != binaryReader.BaseStream.Length)
+            throw new InvalidDataException();
+
         CandidateSets = candidateSets;
 
         return true;
+    }
+
+    static IReadOnlyList<EnvironmentReference> ParseEnvironmentReferences(byte[] data, int expectedCount)
+    {
+        if (expectedCount == 0)
+        {
+            if (data.Length != 0)
+                throw new InvalidDataException();
+
+            return [];
+        }
+
+        if (data.Length != expectedCount * EnvironmentReference.RecordSize)
+            throw new InvalidDataException();
+
+        EnvironmentReference[] references = new EnvironmentReference[expectedCount];
+
+        using (BinaryReader reader = new BinaryReader(new MemoryStream(data, false)))
+        {
+            for (int i = 0; i < expectedCount; i++)
+                references[i] = EnvironmentReference.Read(reader);
+
+            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                throw new InvalidDataException();
+        }
+
+        return references;
     }
 
     private record struct ItemToItemInfoGroup(uint FirstItem, uint ItemInfoGroup);

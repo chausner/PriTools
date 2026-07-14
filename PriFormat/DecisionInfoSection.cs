@@ -56,12 +56,17 @@ public class DecisionInfoSection : Section
         List<DistinctQualifierInfo> distinctQualifierInfos = new(numDistinctQualifiers);
         for (int i = 0; i < numDistinctQualifiers; i++)
         {
-            binaryReader.ReadUInt16();
+            ushort attributeAtomIndex = binaryReader.ReadUInt16();
             QualifierType qualifierType = (QualifierType)binaryReader.ReadUInt16();
-            binaryReader.ReadUInt16();
-            binaryReader.ReadUInt16();
+            ushort conditionOperatorIndex = binaryReader.ReadUInt16();
+            ushort valueTypeIndex = binaryReader.ReadUInt16();
             uint operandValueOffset = binaryReader.ReadUInt32();
-            distinctQualifierInfos.Add(new DistinctQualifierInfo(qualifierType, operandValueOffset));
+            distinctQualifierInfos.Add(new DistinctQualifierInfo(
+                attributeAtomIndex,
+                qualifierType,
+                conditionOperatorIndex,
+                valueTypeIndex,
+                operandValueOffset));
         }
 
         ushort[] indexTable = new ushort[numIndexTableEntries];
@@ -83,7 +88,10 @@ public class DecisionInfoSection : Section
 
             qualifiers.Add(new Qualifier(
                 (ushort)i,
+                distinctQualifierInfo.AttributeAtomIndex,
                 distinctQualifierInfo.QualifierType,
+                distinctQualifierInfo.ConditionOperatorIndex,
+                distinctQualifierInfo.ValueTypeIndex,
                 qualifierInfos[i].Priority,
                 qualifierInfos[i].FallbackScore / 1000f,
                 value));
@@ -128,7 +136,12 @@ public class DecisionInfoSection : Section
 
     private record struct QualifierInfo(ushort Index, ushort Priority, ushort FallbackScore);
 
-    private record struct DistinctQualifierInfo(QualifierType QualifierType, uint OperandValueOffset);
+    private record struct DistinctQualifierInfo(
+        ushort AttributeAtomIndex,
+        QualifierType QualifierType,
+        ushort ConditionOperatorIndex,
+        ushort ValueTypeIndex,
+        uint OperandValueOffset);
 }
 
 public enum QualifierType
@@ -147,7 +160,15 @@ public enum QualifierType
     Custom
 }
 
-public record struct Qualifier(ushort Index, QualifierType Type, ushort Priority, float FallbackScore, string Value);
+public record struct Qualifier(
+    ushort Index,
+    ushort AttributeAtomIndex,
+    QualifierType Type,
+    ushort ConditionOperatorIndex,
+    ushort ValueTypeIndex,
+    ushort Priority,
+    float FallbackScore,
+    string Value);
 
 public record struct QualifierSet(ushort Index, IReadOnlyList<Qualifier> Qualifiers);
 

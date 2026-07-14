@@ -84,10 +84,11 @@ public class HierarchicalSchemaSection : Section
         binaryReader.ExpectUInt32(numScopes);
         binaryReader.ExpectUInt32(numItems);
         uint unicodeDataLength = binaryReader.ReadUInt32();
-        binaryReader.ReadUInt32(); // meaning unknown
+        uint asciiDataLength = binaryReader.ReadUInt32();
 
+        uint extendedMetadataLength = 0;
         if (extendedHNames)
-            binaryReader.ReadUInt32(); // meaning unknown
+            extendedMetadataLength = binaryReader.ReadUInt32();
 
         List<ScopeAndItemInfo> scopeAndItemInfos = new((int)(numScopes + numItems));
 
@@ -119,7 +120,18 @@ public class HierarchicalSchemaSection : Section
             itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();
 
         long unicodeDataOffset = binaryReader.BaseStream.Position;
-        long asciiDataOffset = binaryReader.BaseStream.Position + unicodeDataLength * 2;
+
+        // Skip Unicode name block
+        binaryReader.BaseStream.Seek(unicodeDataLength * 2, SeekOrigin.Current);
+
+        long asciiDataOffset = binaryReader.BaseStream.Position;
+
+        // Skip ASCII name block
+        binaryReader.BaseStream.Seek(asciiDataLength, SeekOrigin.Current);
+
+        // Skip extended metadata block
+        if (extendedHNames)
+            binaryReader.BaseStream.Seek(extendedMetadataLength, SeekOrigin.Current);
 
         ResourceMapScope[] scopes = new ResourceMapScope[numScopes];
         ResourceMapItem[] items = new ResourceMapItem[numItems];

@@ -124,7 +124,7 @@ Offset | Data Type            | Description
 2      | uint16               | length of unique name of resource map in characters, null-terminator included
 4      | uint16               | length of name of resource map in characters, null-terminator included
 6      | uint16               | unknown, zero
-8      | char[16]             | hname identifier
+8      | char[16]             | (extended layout only) hname identifier
 24     | HSCHEMA_VERSION_INFO | hierarchical schema version info
 44     | wcharz               | unique name of resource map
 44 + ? | wcharz               | name of resource map
@@ -134,12 +134,12 @@ Offset | Data Type            | Description
 50 + ? | uint32               | number of resource names, usually number of scopes + items
 54 + ? | uint32               | number of scopes
 58 + ? | uint32               | number of items
-62 + ? | uint32               | length of Unicode name block
-66 + ? | uint32               | unknown
-70 + ? | uint32               | unknown
+62 + ? | uint32               | length of Unicode name block (in UTF-16 code units)
+66 + ? | uint32               | length of ASCII name block in characters
+70 + ? | uint32               | (extended layout only) length of extended name-metadata block
 
 > - **hname identifier**: only present in the extended Hierarchical Schema Section. Observed values are "[def_hnames]   \0" and "[def_hnamesx]  \0".
-> - **unknown at 70 + ?**: only present in the extended Hierarchical Schema Section and if hname identifier is "[def_hnamesx]  \0".
+> - **length of extended name-metadata block:** only present in the extended Hierarchical Schema Section and if hname identifier is "[def_hnamesx]  \0".
 
 HSCHEMA_VERSION_INFO has the following structure:
 
@@ -193,6 +193,8 @@ Offset | Data Type | Description
 
 The Unicode name block and the ASCII name block follow.
 
+If the Hierarchical Schema Section is in the extended layout and the hname identifier is "[def_hnamesx]  \0", the extended name-metadata block follows.
+
 #### Decision Info Section
 
 The Decision Info Section has the section identifier "[mrm_decn_info]\0" and stores all resource qualifiers. Qualifiers that appear together for resource candidates (e.g. a candidate may have the qualifiers lang=de-DE and scale=100) are grouped into qualifier sets. A qualifier can be part of more than one qualifier set. Qualifier sets that are specified for different candidates of the same resource item (e.g. a resource item may have candidates for lang=de-DE;scale=100 and lang=en-US;scale=100) are grouped into decisions. A qualifier set can be part of more than one decision. Qualifiers and qualifier sets are referenced through their indices which are stored in a separate index table.
@@ -233,10 +235,10 @@ For each distinct qualifier follows:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
-0      | uint16    | unknown
+0      | uint16    | index of the qualifier within the environment reference qualifier table
 2      | uint16    | qualifier type
-4      | uint16    | unknown
-6      | uint16    | unknown
+4      | uint16    | index of the condition-operator within the environment reference condition-operator table
+6      | uint16    | index of the value type within the environment reference value-type table
 8      | uint32    | offset of qualifier value in qualifier value block, in characters
 
 > - **qualifier type**: valid types are
@@ -274,7 +276,28 @@ Offset | Data Type | Description
 24     | uint32    | length of embedded data block
 28     | uint32    | length of table extension block
 
-The block of environment references follows. It consists of a sequence of environment references, each 0x22C bytes long. The detailed structure of these is unknown. The number of environment references this block contains must be non-zero for section version 1 ("[mrm_res_map__]\0"), and zero for section version 2 ("[mrm_res_map2_]\0").
+The block of environment references follows. It consists of a sequence of fixed-size records, each 0x22C bytes long, with the following layout:
+
+Offset | Data Type | Description
+------ | --------- | -----------
+0      | wchar[0x102] | environment name (UTF-16, zero-terminated; buffer size 0x204 bytes)
+0x204  | uint16    | major version
+0x206  | uint16    | minor version
+0x208  | uint32    | version checksum
+0x20C  | uint16    | number of qualifier types
+0x20E  | uint16    | number of qualifiers
+0x210  | uint16    | number of item types
+0x212  | uint16    | number of resource value types
+0x214  | uint16    | number of value locators
+0x216  | uint16    | number of condition operators
+0x218  | uint32    | offset (from start of record) of qualifier-type table
+0x21C  | uint32    | offset of qualifier table
+0x220  | uint32    | offset of item-type table
+0x224  | uint32    | offset of resource value type table
+0x228  | uint32    | offset of value locator table
+0x22C  | uint32    | offset of condition-operator table
+
+These offsets let each environment reference embed its qualifier, item-type, and locator data inline. The number of environment references must be non-zero for section version 1 ("[mrm_res_map__]\0") and zero for section version 2 ("[mrm_res_map2_]\0").
 
 The hierarchical schema reference block follows. It has the following structure:
 
@@ -351,6 +374,8 @@ Offset | Data Type | Description
 0      | byte      | candidate type, zero or one
 
 Depending on the candidate type, the resource data is either stored in the embedded data block at the end of this section, or in a Data Item Section in the same or external PRI file.
+
+The embedded data block begins immediately after the candidate metadata and is exactly as long as specified by the "length of embedded data block" field in the section header. Offsets recorded in candidates of type 0 are relative to the start of this block. Even when all candidates point to external data items, the parser must still skip over (and optionally validate) the entire block length before it reaches the table extension block.
 
 If the candidate type is zero, the data that follows for the candidate is:
 
