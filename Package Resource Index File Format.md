@@ -280,22 +280,22 @@ The block of environment references follows. It consists of a sequence of fixed-
 
 Offset | Data Type | Description
 ------ | --------- | -----------
-0      | wchar[0x102] | environment name (UTF-16, zero-terminated; buffer size 0x204 bytes)
-0x204  | uint16    | major version
-0x206  | uint16    | minor version
-0x208  | uint32    | version checksum
-0x20C  | uint16    | number of qualifier types
-0x20E  | uint16    | number of qualifiers
-0x210  | uint16    | number of item types
-0x212  | uint16    | number of resource value types
-0x214  | uint16    | number of value locators
-0x216  | uint16    | number of condition operators
-0x218  | uint32    | offset (from start of record) of qualifier-type table
-0x21C  | uint32    | offset of qualifier table
-0x220  | uint32    | offset of item-type table
-0x224  | uint32    | offset of resource value type table
-0x228  | uint32    | offset of value locator table
-0x22C  | uint32    | offset of condition-operator table
+0      | wchar[0x100] | environment name (UTF-16, zero-terminated; buffer size 0x200 bytes)
+0x200  | uint16    | major version
+0x202  | uint16    | minor version
+0x204  | uint32    | version checksum
+0x208  | uint16    | number of qualifier types
+0x20A  | uint16    | number of qualifiers
+0x20C  | uint16    | number of item types
+0x20E  | uint16    | number of resource value types
+0x210  | uint16    | number of value locators
+0x212  | uint16    | number of condition operators
+0x214  | uint32    | offset (from start of record) of qualifier-type table
+0x218  | uint32    | offset of qualifier table
+0x21C  | uint32    | offset of item-type table
+0x220  | uint32    | offset of resource value type table
+0x224  | uint32    | offset of value locator table
+0x228  | uint32    | offset of condition-operator table
 
 These offsets let each environment reference embed its qualifier, item-type, and locator data inline. The number of environment references must be non-zero for section version 1 ("[mrm_res_map__]\0") and zero for section version 2 ("[mrm_res_map2_]\0").
 

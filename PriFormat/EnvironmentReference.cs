@@ -14,11 +14,10 @@ public record EnvironmentReference(
     uint ConditionOperatorTableOffset)
 {
     internal const int RecordSize = 0x22C;
-    const int NameBufferLengthBytes = 0x204;
 
     internal static EnvironmentReference Read(BinaryReader reader)
     {
-        byte[] nameBuffer = reader.ReadBytes(NameBufferLengthBytes);
+        byte[] nameBuffer = reader.ReadBytes(0x200);
         string name = Encoding.Unicode.GetString(nameBuffer);
         int terminatorIndex = name.IndexOf('\0');
         if (terminatorIndex >= 0)
