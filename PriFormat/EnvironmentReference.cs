@@ -17,8 +17,7 @@ public record EnvironmentReference(
 
     internal static EnvironmentReference Read(BinaryReader reader)
     {
-        byte[] nameBuffer = reader.ReadBytes(0x200);
-        string name = Encoding.Unicode.GetString(nameBuffer);
+        string name = reader.ReadString(Encoding.Unicode, 0x100);
         int terminatorIndex = name.IndexOf('\0');
         if (terminatorIndex >= 0)
             name = name[..terminatorIndex];
