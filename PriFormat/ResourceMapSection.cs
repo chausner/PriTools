@@ -24,10 +24,8 @@ public class ResourceMapSection : Section
         this.version2 = version2;
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
-        long sectionPosition = (binaryReader.BaseStream as SubStream)?.SubStreamPosition ?? 0;
-
         ushort environmentReferencesLength = binaryReader.ReadUInt16();
         ushort numEnvironmentReferences = binaryReader.ReadUInt16();
         if (!version2)
@@ -219,7 +217,7 @@ public class ResourceMapSection : Section
                     }
                     else if (candidateInfo.Type == 0x00)
                     {
-                        ByteSpan data = new(sectionPosition + stringDataStartOffset + candidateInfo.DataOffset, candidateInfo.DataLength);
+                        ByteSpan data = new(sectionContentPosition + stringDataStartOffset + candidateInfo.DataOffset, candidateInfo.DataLength);
 
                         candidates.Add(new Candidate(decision.QualifierSets[i].Index, candidateInfo.ResourceValueType, data));
                     }

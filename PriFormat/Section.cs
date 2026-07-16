@@ -24,6 +24,9 @@ public abstract class Section
 
     internal bool Parse(BinaryReader binaryReader)
     {
+        const long SectionHeaderSize = 16 + 4 + 2 + 2 + 4 + 4;
+        const long SectionFooterSize = 4 + 4;
+
         if (new string(binaryReader.ReadChars(16)) != SectionIdentifier)
             throw new InvalidDataException("Unexpected section identifier.");
 
@@ -33,21 +36,23 @@ public abstract class Section
         SectionLength = binaryReader.ReadUInt32();
         binaryReader.ExpectUInt32(0);
 
-        binaryReader.BaseStream.Seek(SectionLength - 16 - 24, SeekOrigin.Current);
+        long sectionContentPosition = binaryReader.BaseStream.Position;
+
+        binaryReader.BaseStream.Seek(SectionLength - SectionHeaderSize - SectionFooterSize, SeekOrigin.Current);
 
         binaryReader.ExpectUInt32(0xDEF5FADE);
         binaryReader.ExpectUInt32(SectionLength);
 
-        binaryReader.BaseStream.Seek(-8 - (SectionLength - 16 - 24), SeekOrigin.Current);
+        binaryReader.BaseStream.Seek(sectionContentPosition, SeekOrigin.Begin);
 
-        using (SubStream subStream = new(binaryReader.BaseStream,binaryReader.BaseStream.Position, (int)SectionLength - 16 - 24))
+        using (SubStream subStream = new(binaryReader.BaseStream, sectionContentPosition, (int)SectionLength - SectionHeaderSize - SectionFooterSize))
         using (BinaryReader subBinaryReader = new(subStream, Encoding.ASCII))
         {
-            return ParseSectionContent(subBinaryReader);
+            return ParseSectionContent(subBinaryReader, sectionContentPosition);
         }
     }
 
-    protected abstract bool ParseSectionContent(BinaryReader binaryReader);
+    protected abstract bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition);
 
     public override string ToString()
     {

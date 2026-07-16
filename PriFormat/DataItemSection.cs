@@ -15,10 +15,8 @@ public class DataItemSection : Section
     {
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
-        long sectionPosition = (binaryReader.BaseStream as SubStream)?.SubStreamPosition ?? 0;
-
         binaryReader.ExpectUInt32(0);
         ushort numStrings = binaryReader.ReadUInt16();
         ushort numBlobs = binaryReader.ReadUInt16();
@@ -33,14 +31,14 @@ public class DataItemSection : Section
         {
             ushort stringOffset = binaryReader.ReadUInt16();
             ushort stringLength = binaryReader.ReadUInt16();
-            dataItems.Add(new ByteSpan(sectionPosition + dataStartOffset + stringOffset, stringLength));
+            dataItems.Add(new ByteSpan(sectionContentPosition + dataStartOffset + stringOffset, stringLength));
         }
 
         for (int i = 0; i < numBlobs; i++)
         {
             uint blobOffset = binaryReader.ReadUInt32();
             uint blobLength = binaryReader.ReadUInt32();
-            dataItems.Add(new ByteSpan(sectionPosition + dataStartOffset + blobOffset, blobLength));
+            dataItems.Add(new ByteSpan(sectionContentPosition + dataStartOffset + blobOffset, blobLength));
         }
 
         DataItems = dataItems;

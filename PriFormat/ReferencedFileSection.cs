@@ -16,7 +16,7 @@ public class ReferencedFileSection : Section
     {
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
         ushort numRoots = binaryReader.ReadUInt16();
         ushort numFolders = binaryReader.ReadUInt16();

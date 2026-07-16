@@ -24,7 +24,7 @@ public class PriDescriptorSection : Section
     {
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
         PriFlags = (PriDescriptorFlags)binaryReader.ReadUInt16();
         ushort includedFileListSection = binaryReader.ReadUInt16();

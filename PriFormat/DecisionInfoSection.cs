@@ -18,7 +18,7 @@ public class DecisionInfoSection : Section
     {
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
         ushort numDistinctQualifiers = binaryReader.ReadUInt16();
         ushort numQualifiers = binaryReader.ReadUInt16();

@@ -12,7 +12,7 @@ public class UnknownSection : Section
     {
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
         int contentLength = (int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position);
 

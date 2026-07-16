@@ -29,7 +29,7 @@ public class HierarchicalSchemaSection : Section
         this.extendedVersion = extendedVersion;
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
         if (binaryReader.BaseStream.Length == 0)
         {

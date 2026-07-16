@@ -18,7 +18,7 @@ public class ReverseMapSection : Section
     {
     }
 
-    protected override bool ParseSectionContent(BinaryReader binaryReader)
+    protected override bool ParseSectionContent(BinaryReader binaryReader, long sectionContentPosition)
     {
         uint numItems = binaryReader.ReadUInt32();
         binaryReader.ExpectUInt32((uint)(binaryReader.BaseStream.Length - 8));
