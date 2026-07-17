@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -237,10 +238,7 @@ public class ResourceMapSection : Section
         if (binaryReader.BaseStream.Position != stringDataStartOffset)
             throw new InvalidDataException();
 
-        binaryReader.BaseStream.Seek(stringDataExpectedEnd, SeekOrigin.Begin);
-
-        if (binaryReader.BaseStream.Position % 8 != 0)
-            binaryReader.BaseStream.Seek(8 - (binaryReader.BaseStream.Position % 8), SeekOrigin.Current);
+        binaryReader.BaseStream.Seek(Math.Align(stringDataExpectedEnd, 8), SeekOrigin.Begin);
 
         if (binaryReader.BaseStream.Position != binaryReader.BaseStream.Length)
             throw new InvalidDataException();

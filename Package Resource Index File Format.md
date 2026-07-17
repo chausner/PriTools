@@ -135,11 +135,11 @@ Offset | Data Type            | Description
 54 + ? | uint32               | number of scopes
 58 + ? | uint32               | number of items
 62 + ? | uint32               | length of Unicode name block (in UTF-16 code units)
-66 + ? | uint32               | length of ASCII name block in characters
-70 + ? | uint32               | (extended layout only) length of extended name-metadata block
+66 + ? | uint32               | total length of all data starting from offset 46 + ? to the end of the ASCII name block plus any padding
+70 + ? | uint32               | (extended layout only) length of ASCII name block in characters
 
 > - **hname identifier**: only present in the extended Hierarchical Schema Section. Observed values are "[def_hnames]   \0" and "[def_hnamesx]  \0".
-> - **length of extended name-metadata block:** only present in the extended Hierarchical Schema Section and if hname identifier is "[def_hnamesx]  \0".
+> - **length of ASCII name block:** only present in the extended Hierarchical Schema Section and if hname identifier is "[def_hnamesx]  \0".
 
 HSCHEMA_VERSION_INFO has the following structure:
 
@@ -192,8 +192,6 @@ Offset | Data Type | Description
 0      | uint16    | item index
 
 The Unicode name block and the ASCII name block follow.
-
-If the Hierarchical Schema Section is in the extended layout and the hname identifier is "[def_hnamesx]  \0", the extended name-metadata block follows.
 
 #### Decision Info Section
 

@@ -78,17 +78,17 @@ public class HierarchicalSchemaSection : Section
             throw new InvalidDataException();
 
         binaryReader.ExpectUInt16(0);
+
+        long hNamesDataOffset = binaryReader.BaseStream.Position;
+
         ushort maxFullPathLength = binaryReader.ReadUInt16();
         binaryReader.ExpectUInt16(0);
         binaryReader.ExpectUInt32(numScopes + numItems);
         binaryReader.ExpectUInt32(numScopes);
         binaryReader.ExpectUInt32(numItems);
         uint unicodeDataLength = binaryReader.ReadUInt32();
-        uint asciiDataLength = binaryReader.ReadUInt32();
-
-        uint extendedMetadataLength = 0;
-        if (extendedHNames)
-            extendedMetadataLength = binaryReader.ReadUInt32();
+        uint totalHNamesLength = binaryReader.ReadUInt32();
+        uint asciiDataLength = extendedHNames ? binaryReader.ReadUInt32() : 0;
 
         List<ScopeAndItemInfo> scopeAndItemInfos = new((int)(numScopes + numItems));
 
@@ -129,9 +129,11 @@ public class HierarchicalSchemaSection : Section
         // Skip ASCII name block
         binaryReader.BaseStream.Seek(asciiDataLength, SeekOrigin.Current);
 
-        // Skip extended metadata block
-        if (extendedHNames)
-            binaryReader.BaseStream.Seek(extendedMetadataLength, SeekOrigin.Current);
+        if (Math.Align(binaryReader.BaseStream.Position - hNamesDataOffset, 8) != totalHNamesLength)
+            throw new InvalidDataException();
+
+        if (Math.Align(hNamesDataOffset + totalHNamesLength, 8) != binaryReader.BaseStream.Length)
+            throw new InvalidDataException();
 
         ResourceMapScope[] scopes = new ResourceMapScope[numScopes];
         ResourceMapItem[] items = new ResourceMapItem[numItems];

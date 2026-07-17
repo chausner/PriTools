@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace PriFormat;
@@ -47,6 +48,19 @@ internal static class ExtensionMethods
         {
             if (new string(reader.ReadChars(s.Length)) != s)
                 throw new InvalidDataException("Unexpected value read.");
+        }
+    }
+
+    extension(Math)
+    {
+        public static long Align(long value, long alignment)
+        {
+            long remainder = value % alignment;
+
+            if (remainder == 0)
+                return value;
+            else
+                return value + (alignment - remainder);
         }
     }
 }
