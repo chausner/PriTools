@@ -18,6 +18,6 @@ public class TextPreviewViewModel
         else
             encoding = Encoding.ASCII;
 
-         Text = encoding.GetString(data);
+        Text = encoding.GetString(data);
     }
 }

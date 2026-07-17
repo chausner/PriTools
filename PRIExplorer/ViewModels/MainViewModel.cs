@@ -160,12 +160,12 @@ public class MainViewModel : INotifyPropertyChanged
                         targetEntryCollection = Entries;
                     else
                         if (!entriesToViewModels.TryGetValue(scope.Parent, out parentViewModel))
-                    {
-                        parentMissing = true;
-                        continue;
-                    }
-                    else
-                        targetEntryCollection = parentViewModel.Children;
+                        {
+                            parentMissing = true;
+                            continue;
+                        }
+                        else
+                            targetEntryCollection = parentViewModel.Children;
                 }
 
                 EntryViewModel entry = new EntryViewModel(scope);
@@ -446,7 +446,7 @@ public class MainViewModel : INotifyPropertyChanged
                 TextBlock textBlock = new TextBlock();
 
                 textBlock.Margin = new Thickness(8);
-                textBlock.Text = ex.ToString();                    
+                textBlock.Text = ex.ToString();
 
                 previewContent = textBlock;
             }

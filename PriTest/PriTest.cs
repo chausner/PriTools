@@ -64,7 +64,7 @@ public class Program
         {
             Console.WriteLine("{0}:", errorGroup.Key);
 
-            foreach (var item in errorGroup.OrderBy(x => x.Path))                
+            foreach (var item in errorGroup.OrderBy(x => x.Path))
                 Console.WriteLine("  {0}", item.Path);
 
             Console.WriteLine();

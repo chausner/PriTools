@@ -82,7 +82,7 @@ public class DecisionInfoSection : Section
         {
             DistinctQualifierInfo distinctQualifierInfo = distinctQualifierInfos[qualifierInfos[i].Index];
 
-            binaryReader.BaseStream.Seek(dataStartOffset + distinctQualifierInfo.OperandValueOffset * 2, SeekOrigin.Begin);                
+            binaryReader.BaseStream.Seek(dataStartOffset + distinctQualifierInfo.OperandValueOffset * 2, SeekOrigin.Begin);
 
             string value = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
 

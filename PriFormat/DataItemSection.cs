@@ -24,7 +24,7 @@ public class DataItemSection : Section
 
         List<ByteSpan> dataItems = new(numStrings + numBlobs);
 
-        long dataStartOffset = binaryReader.BaseStream.Position + 
+        long dataStartOffset = binaryReader.BaseStream.Position +
             numStrings * 2 * sizeof(ushort) + numBlobs * 2 * sizeof(uint);
 
         for (int i = 0; i < numStrings; i++)

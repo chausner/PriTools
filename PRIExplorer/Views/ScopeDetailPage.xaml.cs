@@ -36,7 +36,7 @@ public partial class ScopeDetailPage : Page
         foreach (ResourceMapItem childItem in scope.Children.OfType<ResourceMapItem>())
         {
             string path;
-            
+
             if (dotAsPathSeparator)
                 path = pathPrefix == string.Empty ? childItem.Name : pathPrefix + "." + childItem.Name;
             else

@@ -46,7 +46,7 @@ public class ReverseMapSection : Section
             ushort fullPathLength = binaryReader.ReadUInt16();
             char uppercaseFirstChar = (char)binaryReader.ReadUInt16();
             byte nameLength2 = binaryReader.ReadByte();
-            byte flags = binaryReader.ReadByte();                
+            byte flags = binaryReader.ReadByte();
             uint nameOffset = binaryReader.ReadUInt16() | (uint)((flags & 0xF) << 16);
             ushort index = binaryReader.ReadUInt16();
             scopeAndItemInfos.Add(new ScopeAndItemInfo(parent, fullPathLength, flags, nameOffset, index));
@@ -64,8 +64,8 @@ public class ReverseMapSection : Section
         }
 
         ushort[] itemIndexPropertyToIndex = new ushort[numItems];
-        for (int i = 0; i < numItems; i++)        
-            itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();        
+        for (int i = 0; i < numItems; i++)
+            itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();
 
         long unicodeDataOffset = binaryReader.BaseStream.Position;
         long asciiDataOffset = binaryReader.BaseStream.Position + unicodeDataLength * 2;
