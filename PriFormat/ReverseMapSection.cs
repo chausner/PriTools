@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Text;
 
@@ -28,6 +29,8 @@ public class ReverseMapSection : Section
             mapping[i] = binaryReader.ReadUInt32();
         Mapping = mapping;
 
+        long hNamesDataOffset = binaryReader.BaseStream.Position;
+
         ushort maxFullPathLength = binaryReader.ReadUInt16();
         binaryReader.ExpectUInt16(0);
         uint numEntries = binaryReader.ReadUInt32();
@@ -36,7 +39,7 @@ public class ReverseMapSection : Section
             throw new InvalidDataException();
         binaryReader.ExpectUInt32(numItems);
         uint unicodeDataLength = binaryReader.ReadUInt32();
-        binaryReader.ReadUInt32(); // meaning unknown
+        uint totalHNamesLength = binaryReader.ReadUInt32();
 
         List<ScopeAndItemInfo> scopeAndItemInfos = new((int)(numScopes + numItems));
 
@@ -68,7 +71,23 @@ public class ReverseMapSection : Section
             itemIndexPropertyToIndex[i] = binaryReader.ReadUInt16();
 
         long unicodeDataOffset = binaryReader.BaseStream.Position;
-        long asciiDataOffset = binaryReader.BaseStream.Position + unicodeDataLength * 2;
+
+        // Skip Unicode name block
+        binaryReader.BaseStream.Seek(unicodeDataLength * 2, SeekOrigin.Current);
+
+        long asciiDataOffset = binaryReader.BaseStream.Position;
+
+        // Skip ASCII name block
+        long hNamesDataEnd = hNamesDataOffset + totalHNamesLength;
+        if (hNamesDataEnd < binaryReader.BaseStream.Position)
+            throw new InvalidDataException();
+        binaryReader.BaseStream.Seek(hNamesDataEnd, SeekOrigin.Begin);
+
+        if (Math.Align(binaryReader.BaseStream.Position - hNamesDataOffset, 8) != totalHNamesLength)
+            throw new InvalidDataException();
+
+        if (Math.Align(hNamesDataOffset + totalHNamesLength, 8) != binaryReader.BaseStream.Length)
+            throw new InvalidDataException();
 
         ResourceMapScope[] scopes = new ResourceMapScope[numScopes];
         ResourceMapItem[] items = new ResourceMapItem[numItems];
