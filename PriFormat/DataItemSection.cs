@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace PriFormat;
@@ -26,6 +27,9 @@ public class DataItemSection : Section
 
         long dataStartOffset = binaryReader.BaseStream.Position +
             numStrings * 2 * sizeof(ushort) + numBlobs * 2 * sizeof(uint);
+
+        if (Math.Align(dataStartOffset + totalDataLength, 8) != binaryReader.BaseStream.Length)
+            throw new InvalidDataException();
 
         for (int i = 0; i < numStrings; i++)
         {
