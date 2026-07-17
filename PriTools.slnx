@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Package Resource Index File Format.md" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="PRIExplorer/PRIExplorer.csproj" />
   <Project Path="PriFormat/PriFormat.csproj" />
   <Project Path="PriInfo/PriInfo.csproj" />
