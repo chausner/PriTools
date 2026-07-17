@@ -1,7 +1,9 @@
 # Package Resource Index File Format
 
 > [!NOTE]
-> The information in this document has been collected through analysis of files and trial-and-error, and is by no means guaranteed to be correct, complete, or up-to-date. Use at your own risk!
+> The information in this document has been collected through analysis of files and trial-and-error, 
+> and is by no means guaranteed to be correct, complete, or up-to-date.
+> Use at your own risk!
 
 ## Conventions and Data Types
 
@@ -17,11 +19,14 @@ wchar        | UTF-16LE Unicode character
 wcharz       | zero-terminated UTF-16LE Unicode string
 char[16]     | ASCII string with fixed length
 
-Unless noted otherwise, indices are zero-based. Bits are numbered from zero onwards starting with the least-significant bit.
+Unless noted otherwise, indices are zero-based.
+Bits are numbered from zero onwards starting with the least-significant bit.
 
 ## File Structure
 
-The overall file structure of Package Resource Index files consists of a header, a table of contents, a number of sections and a footer. The table of contents, every section and the footer must be aligned to a multiple of 8 bytes. Zero-padding bytes are inserted where necessary.
+The overall file structure of Package Resource Index files consists of a header, a table of contents, a number of sections and a footer.
+The table of contents, every section and the footer must be aligned to a multiple of 8 bytes.
+Zero-padding bytes are inserted where necessary.
 
 > Header  
 > Table of contents  
@@ -54,7 +59,9 @@ Offset | Data Type | Description
 
 ### Table of Contents
 
-The table of contents provides information about each section in the file. For each section, there is exactly one corresponding entry in the table of contents. Each entry has the following structure:
+The table of contents provides information about each section in the file.
+For each section, there is exactly one corresponding entry in the table of contents.
+Each entry has the following structure:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -67,7 +74,9 @@ Offset | Data Type | Description
 
 ### Sections
 
-Each section consists of a section header, the actual section data and a section footer. If the length of the section data is not a multiple of 8 bytes, appropriate padding is inserted before the section footer. The padding is not counted in any section length fields.
+Each section consists of a section header, the actual section data and a section footer.
+If the length of the section data is not a multiple of 8 bytes, appropriate padding is inserted before the section footer.
+The padding is not counted in any section length fields.
 
 The structure of each section header is as follows:
 
@@ -114,7 +123,9 @@ The section indices of all Hierarchical Schema Sections, Decision Info Sections,
 
 #### Hierarchical Schema Section
 
-The Hierarchical Schema Section exists in two versions, a compact one with the section identifier "[mrm_hschema]  \0" and an extended one with the section identifier "[mrm_hschemaex] ". The hierarchical schema consists of a file system-like structure of scopes and items, the items being the logical resources and the scopes describing a directory tree in which the items are organized.
+The Hierarchical Schema Section exists in two versions,
+a compact one with the section identifier "[mrm_hschema]  \0" and an extended one with the section identifier "[mrm_hschemaex] ".
+The hierarchical schema consists of a file system-like structure of scopes and items, the items being the logical resources and the scopes describing a directory tree in which the items are organized.
 
 In some files, this section is empty and does not contain any data apart from the common section header and footer.
 
@@ -157,7 +168,8 @@ Offset | Data Type | Description
 Names of scopes and items are stored in two blocks, a Unicode name block and an ASCII name block, depending on whether the name can be represented in ASCII or not.
 
 > [!NOTE]
-> In the following, any use of the term "index" will refer to the indices of scopes and items as they appear in the following table, while the term "index property" will refer to the property of the same name that each scope and item has.
+> In the following, any use of the term "index" will refer to the indices of scopes and items as they appear in the following table,
+> while the term "index property" will refer to the property of the same name that each scope and item has.
 
 For each resource name, i.e. scope or item, follows:
 
@@ -195,7 +207,12 @@ The Unicode name block and the ASCII name block follow.
 
 #### Decision Info Section
 
-The Decision Info Section has the section identifier "[mrm_decn_info]\0" and stores all resource qualifiers. Qualifiers that appear together for resource candidates (e.g. a candidate may have the qualifiers lang=de-DE and scale=100) are grouped into qualifier sets. A qualifier can be part of more than one qualifier set. Qualifier sets that are specified for different candidates of the same resource item (e.g. a resource item may have candidates for lang=de-DE;scale=100 and lang=en-US;scale=100) are grouped into decisions. A qualifier set can be part of more than one decision. Qualifiers and qualifier sets are referenced through their indices which are stored in a separate index table.
+The Decision Info Section has the section identifier "[mrm_decn_info]\0" and stores all resource qualifiers.
+Qualifiers that appear together for resource candidates (e.g. a candidate may have the qualifiers lang=de-DE and scale=100) are grouped into qualifier sets.
+A qualifier can be part of more than one qualifier set.
+Qualifier sets that are specified for different candidates of the same resource item (e.g. a resource item may have candidates for lang=de-DE;scale=100 and lang=en-US;scale=100) are grouped into decisions.
+A qualifier set can be part of more than one decision.
+Qualifiers and qualifier sets are referenced through their indices which are stored in a separate index table.
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -253,11 +270,14 @@ Offset | Data Type | Description
 >   - DeviceFamily (10)
 >   - Custom (11)
 
-The index table follows as an array of uint16s, then the qualifier value block follows. Qualifier values are stored as zero-terminated Unicode strings.
+The index table follows as an array of uint16s, then the qualifier value block follows.
+Qualifier values are stored as zero-terminated Unicode strings.
 
 #### Resource Map Section
 
-The Resource Map Section exists in two versions with the section identifiers "[mrm_res_map__]\0" and "[mrm_res_map2_]\0". It assigns to each resource item a decision and a set of candidates. It may contain embedded resource data directly in the section or reference data items in a Data Item Section.
+The Resource Map Section exists in two versions with the section identifiers "[mrm_res_map__]\0" and "[mrm_res_map2_]\0".
+It assigns to each resource item a decision and a set of candidates.
+It may contain embedded resource data directly in the section or reference data items in a Data Item Section.
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -274,7 +294,8 @@ Offset | Data Type | Description
 24     | uint32    | length of embedded data block
 28     | uint32    | length of table extension block
 
-The block of environment references follows. It consists of a sequence of fixed-size records, each 0x22C bytes long, with the following layout:
+The block of environment references follows.
+It consists of a sequence of fixed-size records, each 0x22C bytes long, with the following layout:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -295,7 +316,8 @@ Offset | Data Type | Description
 0x224  | uint32    | offset of value locator table
 0x228  | uint32    | offset of condition-operator table
 
-These offsets let each environment reference embed its qualifier, item-type, and locator data inline. The number of environment references must be non-zero for section version 1 ("[mrm_res_map__]\0") and zero for section version 2 ("[mrm_res_map2_]\0").
+These offsets let each environment reference embed its qualifier, item-type, and locator data inline.
+The number of environment references must be non-zero for section version 1 ("[mrm_res_map__]\0") and zero for section version 2 ("[mrm_res_map2_]\0").
 
 The hierarchical schema reference block follows. It has the following structure:
 
@@ -308,7 +330,8 @@ Offset | Data Type            | Description
 28     | uint32               | unknown
 32     | wcharz               | unique id
 
-The resource value type table follows. Each entry has the following structure:
+The resource value type table follows.
+Each entry has the following structure:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -324,9 +347,11 @@ Offset | Data Type | Description
 >   - AsciiPath (5)
 >   - Utf8Path (6)
 
-PRI file version "mrm_pri0" appears to have entries for the first three resource value types only. Later versions have entries for all seven types.
+PRI file version "mrm_pri0" appears to have entries for the first three resource value types only.
+Later versions have entries for all seven types.
 
-The item to iteminfo group table follows. Each entry has the following structure:
+The item to iteminfo group table follows.
+Each entry has the following structure:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -335,27 +360,38 @@ Offset | Data Type | Description
 
 > - **index of iteminfo group**: if this value is greater than or equal to the number of item info groups, it encodes a group containing only one iteminfo, namely the iteminfo at index (value - [number of item info groups])
 
-Only the index property of the first resource item is stored. All other resource items have consecutively increasing index properties. The number of resource items is determined by the number of iteminfos in the associated iteminfo group.
+Only the index property of the first resource item is stored.
+All other resource items have consecutively increasing index properties.
+The number of resource items is determined by the number of iteminfos in the associated iteminfo group.
 
-The iteminfo group table follows. Each entry has the following structure:
+The iteminfo group table follows.
+Each entry has the following structure:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
 0      | uint16    | number of iteminfos in this group
 2      | uint16    | index of the first iteminfo in this group
 
-Only the index of the first iteminfo is stored. All other iteminfos have consecutively increasing indices.
+Only the index of the first iteminfo is stored.
+All other iteminfos have consecutively increasing indices.
 
-The iteminfo table follows. Each entry maps a resource name to a decision and a set of candidates. The index that an entry appears in this table corresponds to the index property of the resource name it is associated with. Each entry has the following structure:
+The iteminfo table follows.
+Each entry maps a resource name to a decision and a set of candidates.
+The index that an entry appears in this table corresponds to the index property of the resource name it is associated with.
+Each entry has the following structure:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
 0      | uint16    | index of decision
 2      | uint16    | index of first candidate
 
-Only the index of the first candidate is stored. All other candidates have consecutively increasing indices. The number of candidates is determined by the number of qualifier sets in the decision.
+Only the index of the first candidate is stored.
+All other candidates have consecutively increasing indices.
+The number of candidates is determined by the number of qualifier sets in the decision.
 
-The table extension block follows. It allows storing entries of the three preceding tables with uint32 data types which would exceed the size of the uint16 data type. The block has the following structure:
+The table extension block follows.
+It allows storing entries of the three preceding tables with uint32 data types which would exceed the size of the uint16 data type.
+The block has the following structure:
 
 Offset | Data Type | Description
 ------ | --------- | -----------
@@ -363,7 +399,8 @@ Offset | Data Type | Description
 2      | uint32    | number of additional entries of the item info group table
 4      | uint32    | number of additional entries of the iteminfo table
 
-Entries for the three tables then follow in the same format as above with the same semantics but using uint32 data types instead of uint16 data types. These entries are to be appended to the respective tables.
+Entries for the three tables then follow in the same format as above with the same semantics but using uint32 data types instead of uint16 data types.
+These entries are to be appended to the respective tables.
 
 For each candidate follows:
 
@@ -373,7 +410,9 @@ Offset | Data Type | Description
 
 Depending on the candidate type, the resource data is either stored in the embedded data block at the end of this section, or in a Data Item Section in the same or external PRI file.
 
-The embedded data block begins immediately after the candidate metadata and is exactly as long as specified by the "length of embedded data block" field in the section header. Offsets recorded in candidates of type 0 are relative to the start of this block. Even when all candidates point to external data items, the parser must still skip over (and optionally validate) the entire block length before it reaches the table extension block.
+The embedded data block begins immediately after the candidate metadata and is exactly as long as specified by the "length of embedded data block" field in the section header.
+Offsets recorded in candidates of type 0 are relative to the start of this block.
+Even when all candidates point to external data items, the parser must still skip over (and optionally validate) the entire block length before it reaches the table extension block.
 
 If the candidate type is zero, the data that follows for the candidate is:
 
@@ -409,7 +448,8 @@ Offset | Data Type | Description
 6      | uint16    | number of stored blobs
 8      | uint32    | total length of stored data
 
-Data items are either strings (for short textual data) or blobs (for binary data). Data items are referenced from other sections by their index which is defined by the order in which they appear in the tables below (strings have lower indices than blobs).
+Data items are either strings (for short textual data) or blobs (for binary data).
+Data items are referenced from other sections by their index which is defined by the order in which they appear in the tables below (strings have lower indices than blobs).
 
 For each stored string follows:
 
