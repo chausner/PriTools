@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace PriFormat;
 
@@ -41,40 +42,25 @@ public class PriDescriptorSection : Section
         ushort numDataItemSections = binaryReader.ReadUInt16();
         binaryReader.ExpectUInt16(0);
 
-        List<SectionRef<HierarchicalSchemaSection>> hierarchicalSchemaSections = new(numHierarchicalSchemaSections);
+        HierarchicalSchemaSections = Enumerable.Range(0, numHierarchicalSchemaSections)
+            .Select(_ => new SectionRef<HierarchicalSchemaSection>(binaryReader.ReadUInt16()))
+            .ToArray();
 
-        for (int i = 0; i < numHierarchicalSchemaSections; i++)
-            hierarchicalSchemaSections.Add(new SectionRef<HierarchicalSchemaSection>(binaryReader.ReadUInt16()));
+        DecisionInfoSections = Enumerable.Range(0, numDecisionInfoSections)
+            .Select(_ => new SectionRef<DecisionInfoSection>(binaryReader.ReadUInt16()))
+            .ToArray();
 
-        HierarchicalSchemaSections = hierarchicalSchemaSections;
+        ResourceMapSections = Enumerable.Range(0, numResourceMapSections)
+            .Select(_ => new SectionRef<ResourceMapSection>(binaryReader.ReadUInt16()))
+            .ToArray();
 
-        List<SectionRef<DecisionInfoSection>> decisionInfoSections = new(numDecisionInfoSections);
+        ReferencedFileSections = Enumerable.Range(0, numReferencedFileSections)
+            .Select(_ => new SectionRef<ReferencedFileSection>(binaryReader.ReadUInt16()))
+            .ToArray();
 
-        for (int i = 0; i < numDecisionInfoSections; i++)
-            decisionInfoSections.Add(new SectionRef<DecisionInfoSection>(binaryReader.ReadUInt16()));
-
-        DecisionInfoSections = decisionInfoSections;
-
-        List<SectionRef<ResourceMapSection>> resourceMapSections = new(numResourceMapSections);
-
-        for (int i = 0; i < numResourceMapSections; i++)
-            resourceMapSections.Add(new SectionRef<ResourceMapSection>(binaryReader.ReadUInt16()));
-
-        ResourceMapSections = resourceMapSections;
-
-        List<SectionRef<ReferencedFileSection>> referencedFileSections = new(numReferencedFileSections);
-
-        for (int i = 0; i < numReferencedFileSections; i++)
-            referencedFileSections.Add(new SectionRef<ReferencedFileSection>(binaryReader.ReadUInt16()));
-
-        ReferencedFileSections = referencedFileSections;
-
-        List<SectionRef<DataItemSection>> dataItemSections = new(numDataItemSections);
-
-        for (int i = 0; i < numDataItemSections; i++)
-            dataItemSections.Add(new SectionRef<DataItemSection>(binaryReader.ReadUInt16()));
-
-        DataItemSections = dataItemSections;
+        DataItemSections = Enumerable.Range(0, numDataItemSections)
+            .Select(_ => new SectionRef<DataItemSection>(binaryReader.ReadUInt16()))
+            .ToArray();
 
         return true;
     }
