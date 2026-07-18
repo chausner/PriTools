@@ -105,15 +105,7 @@ public class PriFile
 
     PriDescriptorSection? priDescriptorSection;
 
-    public PriDescriptorSection PriDescriptorSection
-    {
-        get
-        {
-            priDescriptorSection ??= Sections.OfType<PriDescriptorSection>().Single();
-
-            return priDescriptorSection;
-        }
-    }
+    public PriDescriptorSection PriDescriptorSection => priDescriptorSection ??= Sections.OfType<PriDescriptorSection>().Single();
 
     public T GetSectionByRef<T>(SectionRef<T> sectionRef) where T : Section
     {
