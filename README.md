@@ -2,7 +2,7 @@
 
 Tools for parsing and exploring PRI (Package Resource Index) files
 
-## PRIExplorer
+## PriExplorer
 
 This sample application allows to open and browse the contents of PRI files.
 It is also possible to export individual resources.

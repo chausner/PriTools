@@ -29,12 +29,12 @@ jobs:
     - name: Publish
       if: runner.os == 'Windows'
       run: dotnet publish --no-build --configuration Release
-    - name: Upload published PRIExplorer
+    - name: Upload published PriExplorer
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v7
       with:
-        name: PRIExplorer
-        path: .\PRIExplorer\bin\Release\net10.0-windows7.0\publish
+        name: PriExplorer
+        path: .\PriExplorer\bin\Release\net10.0-windows7.0\publish
     - name: Upload published PriInfo
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v7

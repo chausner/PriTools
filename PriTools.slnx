@@ -3,7 +3,7 @@
     <File Path="Package Resource Index File Format.md" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="PRIExplorer/PRIExplorer.csproj" />
+  <Project Path="PriExplorer/PriExplorer.csproj" />
   <Project Path="PriFormat/PriFormat.csproj" />
   <Project Path="PriInfo/PriInfo.csproj" />
   <Project Path="PriTest/PriTest.csproj" />
