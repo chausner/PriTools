@@ -71,11 +71,8 @@ public class HierarchicalSchemaSection : Section
 
         Version = new HierarchicalSchemaVersionInfo(majorVersion, minorVersion, checksum, numScopes, numItems);
 
-        UniqueName = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
-        Name = binaryReader.ReadNullTerminatedString(Encoding.Unicode);
-
-        if (UniqueName.Length != uniqueNameLength - 1 || Name.Length != nameLength - 1)
-            throw new InvalidDataException();
+        UniqueName = binaryReader.ReadNullTerminatedString(Encoding.Unicode, uniqueNameLength);
+        Name = binaryReader.ReadNullTerminatedString(Encoding.Unicode, nameLength);
 
         binaryReader.ExpectUInt16(0);
 

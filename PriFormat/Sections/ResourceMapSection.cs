@@ -261,14 +261,11 @@ public class ResourceMapSection : Section
 
         HierarchicalSchemaVersionInfo versionInfo = new(majorVersion, minorVersion, checksum, numScopes, numItems);
 
-        ushort stringDataLength = reader.ReadUInt16();
+        ushort uniqueNameLength = reader.ReadUInt16();
         reader.ExpectUInt16(0);
         reader.ExpectUInt32(7);
         reader.ExpectUInt32(7);
-        string uniqueName = reader.ReadNullTerminatedString(Encoding.Unicode);
-
-        if (uniqueName.Length != stringDataLength - 1)
-            throw new InvalidDataException();
+        string uniqueName = reader.ReadNullTerminatedString(Encoding.Unicode, uniqueNameLength);
 
         return new HierarchicalSchemaReference(versionInfo, uniqueName);
     }

@@ -12,7 +12,11 @@ internal static class ExtensionMethods
         {
             using BinaryReader r = new(reader.BaseStream, encoding, true);
 
-            return new string(r.ReadChars(length));
+            char[] chars = r.ReadChars(length);
+            if (chars.Length != length)
+                throw new EndOfStreamException();
+
+            return new string(chars);
         }
 
         public string ReadNullTerminatedString(Encoding encoding)
@@ -20,10 +24,23 @@ internal static class ExtensionMethods
             using BinaryReader r = new(reader.BaseStream, encoding, true);
 
             StringBuilder result = new();
+
             char c;
             while ((c = r.ReadChar()) != '\0')
                 result.Append(c);
+
             return result.ToString();
+        }
+
+        public string ReadNullTerminatedString(Encoding encoding, int length)
+        {
+            string result = reader.ReadString(encoding, length);
+
+            int terminatorIndex = result.IndexOf('\0');
+            if (terminatorIndex != -1)
+                result = result[..terminatorIndex];
+
+            return result;
         }
 
         public void ExpectByte(byte expectedValue)
