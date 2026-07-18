@@ -117,21 +117,21 @@ public class PriFile
 
     public T GetSectionByRef<T>(SectionRef<T> sectionRef) where T : Section
     {
-        return (T)Sections[sectionRef.sectionIndex];
+        return (T)Sections[sectionRef.SectionIndex];
     }
 
     public ResourceMapItem GetResourceMapItemByRef(ResourceMapItemRef resourceMapItemRef)
     {
-        return GetSectionByRef(resourceMapItemRef.schemaSection).Items[resourceMapItemRef.itemIndex];
+        return GetSectionByRef(resourceMapItemRef.SchemaSection).Items[resourceMapItemRef.ItemIndex];
     }
 
     public ByteSpan GetDataItemByRef(DataItemRef dataItemRef)
     {
-        return GetSectionByRef(dataItemRef.dataItemSection).DataItems[dataItemRef.itemIndex];
+        return GetSectionByRef(dataItemRef.DataItemSection).DataItems[dataItemRef.ItemIndex];
     }
 
     public ReferencedFile GetReferencedFileByRef(ReferencedFileRef referencedFileRef)
     {
-        return GetSectionByRef(PriDescriptorSection.ReferencedFileSections.First()).ReferencedFiles[referencedFileRef.fileIndex];
+        return GetSectionByRef(PriDescriptorSection.ReferencedFileSections.First()).ReferencedFiles[referencedFileRef.FileIndex];
     }
 }

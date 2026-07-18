@@ -76,3 +76,11 @@ public abstract class Section
         };
     }
 }
+
+public record struct SectionRef<T>(int SectionIndex) where T : Section
+{
+    public override string ToString()
+    {
+        return $"Section {typeof(T).Name} at index {SectionIndex}";
+    }
+}

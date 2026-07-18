@@ -74,18 +74,3 @@ public enum PriDescriptorFlags : ushort
     IsDeploymentMergeResult = 4,
     IsAutomergeMergeResult = 8
 }
-
-public struct SectionRef<T> where T : Section
-{
-    internal int sectionIndex;
-
-    internal SectionRef(int sectionIndex)
-    {
-        this.sectionIndex = sectionIndex;
-    }
-
-    public override string ToString()
-    {
-        return $"Section {typeof(T).Name} at index {sectionIndex}";
-    }
-}

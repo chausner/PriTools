@@ -172,12 +172,4 @@ public sealed class ReferencedFile : ReferencedEntry
     }
 }
 
-public struct ReferencedFileRef
-{
-    internal int fileIndex;
-
-    internal ReferencedFileRef(int fileIndex)
-    {
-        this.fileIndex = fileIndex;
-    }
-}
+public record struct ReferencedFileRef(int FileIndex);

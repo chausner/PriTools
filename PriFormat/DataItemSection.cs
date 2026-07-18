@@ -51,19 +51,10 @@ public class DataItemSection : Section
     }
 }
 
-public struct DataItemRef
+public record struct DataItemRef(SectionRef<DataItemSection> DataItemSection, int ItemIndex)
 {
-    internal SectionRef<DataItemSection> dataItemSection;
-    internal int itemIndex;
-
-    internal DataItemRef(SectionRef<DataItemSection> dataItemSection, int itemIndex)
-    {
-        this.dataItemSection = dataItemSection;
-        this.itemIndex = itemIndex;
-    }
-
     public override string ToString()
     {
-        return $"Data item {itemIndex} in section {dataItemSection.sectionIndex}";
+        return $"Data item {ItemIndex} in section {DataItemSection.SectionIndex}";
     }
 }

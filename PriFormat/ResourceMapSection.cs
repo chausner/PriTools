@@ -371,30 +371,10 @@ public class Candidate
     }
 }
 
-public class HierarchicalSchemaReference
-{
-    public HierarchicalSchemaVersionInfo VersionInfo { get; }
-    public uint Unknown1 { get; }
-    public uint Unknown2 { get; }
-    public string UniqueName { get; }
+public record class HierarchicalSchemaReference(
+    HierarchicalSchemaVersionInfo VersionInfo,
+    uint Unknown1,
+    uint Unknown2,
+    string UniqueName);
 
-    internal HierarchicalSchemaReference(HierarchicalSchemaVersionInfo versionInfo, uint unknown1, uint unknown2, string uniqueName)
-    {
-        VersionInfo = versionInfo;
-        Unknown1 = unknown1;
-        Unknown2 = unknown2;
-        UniqueName = uniqueName;
-    }
-}
-
-public struct ResourceMapItemRef
-{
-    internal SectionRef<HierarchicalSchemaSection> schemaSection;
-    internal int itemIndex;
-
-    internal ResourceMapItemRef(SectionRef<HierarchicalSchemaSection> schemaSection, int itemIndex)
-    {
-        this.schemaSection = schemaSection;
-        this.itemIndex = itemIndex;
-    }
-}
+public record struct ResourceMapItemRef(SectionRef<HierarchicalSchemaSection> SchemaSection, int ItemIndex);
