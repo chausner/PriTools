@@ -226,24 +226,16 @@ public class ResourceMapSection : Section
         return true;
     }
 
-    static IReadOnlyList<EnvironmentReference> ParseEnvironmentReferences(byte[] data, int expectedCount)
+    private static EnvironmentReference[] ParseEnvironmentReferences(byte[] data, int count)
     {
-        if (expectedCount == 0)
-        {
-            if (data.Length != 0)
-                throw new InvalidDataException();
-
+        if (count == 0 && data.Length == 0)
             return [];
-        }
 
-        if (data.Length != expectedCount * EnvironmentReference.RecordSize)
-            throw new InvalidDataException();
-
-        EnvironmentReference[] references = new EnvironmentReference[expectedCount];
+        EnvironmentReference[] references = new EnvironmentReference[count];
 
         using (BinaryReader reader = new BinaryReader(new MemoryStream(data, false)))
         {
-            for (int i = 0; i < expectedCount; i++)
+            for (int i = 0; i < count; i++)
                 references[i] = EnvironmentReference.Read(reader);
 
             if (reader.BaseStream.Position != reader.BaseStream.Length)
@@ -253,7 +245,7 @@ public class ResourceMapSection : Section
         return references;
     }
 
-    private HierarchicalSchemaReference ParseHierarchicalSchemaReference(byte[] data)
+    private static HierarchicalSchemaReference ParseHierarchicalSchemaReference(byte[] data)
     {
         using BinaryReader reader = new(new MemoryStream(data, false));
 

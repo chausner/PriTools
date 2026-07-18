@@ -13,8 +13,6 @@ public record EnvironmentReference(
     uint ValueLocatorTableOffset,
     uint ConditionOperatorTableOffset)
 {
-    internal const int RecordSize = 0x22C;
-
     internal static EnvironmentReference Read(BinaryReader reader)
     {
         string name = reader.ReadString(Encoding.Unicode, 0x100);
