@@ -8,15 +8,12 @@ public class TextPreviewViewModel
 
     public TextPreviewViewModel(byte[] data)
     {
-        Encoding encoding;
-
-        if (data.Length >= 3 && data[0] == 0xEF && data[1] == 0xBB && data[2] == 0xBF)
-            encoding = Encoding.UTF8;
-        else if (data.Length >= 2 && data[0] == 0xEF && data[1] == 0xFF ||
-            data.Length >= 2 && data[0] == 0xFF && data[1] == 0xEF)
-            encoding = Encoding.Unicode;
-        else
-            encoding = Encoding.ASCII;
+        Encoding encoding = data switch
+        {
+            [0xEF, 0xBB, 0xBF, ..] => Encoding.UTF8,
+            [0xEF, 0xFF, ..] or [0xFF, 0xEF, ..] => Encoding.Unicode,
+            _ => Encoding.ASCII
+        };
 
         Text = encoding.GetString(data);
     }

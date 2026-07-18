@@ -21,11 +21,6 @@ public class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<EntryViewModel> Entries { get; private set; }
     public ObservableCollection<CandidateViewModel> Candidates { get; private set; }
 
-    object previewContent;
-
-    EntryViewModel selectedEntry;
-    CandidateViewModel selectedCandidate;
-
     public RelayCommand OpenCommand { get; }
     public RelayCommand CloseCommand { get; }
     public RelayCommand SetResourceRootPathCommand { get; }
@@ -235,10 +230,8 @@ public class MainViewModel : INotifyPropertyChanged
                 entry.Icon = "/Assets/document.png";
             else if (candidates.All(c => c.SourceNotFound || c.LocationNotFound))
                 entry.Icon = "/Assets/blue-document-attribute-x.png";
-            else if (candidates.All(
-                c => c.Candidate.Type == ResourceValueType.String ||
-                c.Candidate.Type == ResourceValueType.AsciiString ||
-                c.Candidate.Type == ResourceValueType.Utf8String))
+            else if (candidates.All(c => 
+                c.Candidate.Type is ResourceValueType.String or ResourceValueType.AsciiString or ResourceValueType.Utf8String))
             {
                 entry.Icon = "/Assets/blue-document-attribute-s.png";
                 entry.IsString = true;
@@ -300,12 +293,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     public EntryViewModel SelectedEntry
     {
-        get => selectedEntry;
+        get;
         set
         {
-            if (selectedEntry != value)
+            if (field != value)
             {
-                selectedEntry = value;
+                field = value;
                 SelectedEntryChanged();
             }
         }
@@ -313,12 +306,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     public CandidateViewModel SelectedCandidate
     {
-        get => selectedCandidate;
+        get;
         set
         {
-            if (selectedCandidate != value)
+            if (field != value)
             {
-                selectedCandidate = value;
+                field = value;
                 SelectedCandidateChanged();
             }
         }
@@ -326,12 +319,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     public object PreviewContent
     {
-        get => previewContent;
+        get;
         set
         {
-            if (previewContent != value)
+            if (field != value)
             {
-                previewContent = value;
+                field = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PreviewContent)));
             }
         }
@@ -339,7 +332,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     public void SelectedEntryChanged()
     {
-        if (selectedEntry == null)
+        if (SelectedEntry == null)
         {
             PreviewContent = null;
             return;
@@ -359,7 +352,7 @@ public class MainViewModel : INotifyPropertyChanged
         //    scopeDetailFrame.Navigate(null);
         //}
 
-        if (selectedEntry.ResourceMapEntry is ResourceMapItem resourceMapItem)
+        if (SelectedEntry.ResourceMapEntry is ResourceMapItem resourceMapItem)
         {
             GetCandidates(resourceMapItem);
 
@@ -372,10 +365,10 @@ public class MainViewModel : INotifyPropertyChanged
 
     public void SelectedCandidateChanged()
     {
-        if (selectedCandidate == null)
+        if (SelectedCandidate == null)
             return;
 
-        object data = selectedCandidate.GetData();
+        object data = SelectedCandidate.GetData();
 
         if (data == null)
         {
@@ -387,17 +380,17 @@ public class MainViewModel : INotifyPropertyChanged
 
         object previewContent = null;
 
-        switch (selectedCandidate.Candidate.Type)
+        switch (SelectedCandidate.Candidate.Type)
         {
             case ResourceValueType.Path:
             case ResourceValueType.AsciiPath:
             case ResourceValueType.Utf8Path:
                 string rootPath;
 
-                if (selectedCandidate.Candidate.SourceFile == null)
+                if (SelectedCandidate.Candidate.SourceFile == null)
                     rootPath = ResourceRootPath;
                 else
-                    rootPath = Path.GetDirectoryName(PriFile.GetReferencedFileByRef(selectedCandidate.Candidate.SourceFile.Value).FullName);
+                    rootPath = Path.GetDirectoryName(PriFile.GetReferencedFileByRef(SelectedCandidate.Candidate.SourceFile.Value).FullName);
 
                 string externalFilePath = Path.Combine(rootPath, (string)data);
 
@@ -418,25 +411,19 @@ public class MainViewModel : INotifyPropertyChanged
 
         if (previewContent == null)
         {
-            string itemName = selectedEntry?.ResourceMapEntry.Name ?? "";
+            string itemName = SelectedEntry?.ResourceMapEntry.Name;
+            string itemExtension = Path.GetExtension(itemName)?.ToLowerInvariant();
 
             try
             {
-                if (itemName.EndsWith(".xbf", StringComparison.OrdinalIgnoreCase))
+                if (itemExtension == ".xbf")
                     previewContent = new XbfPreviewPage(new XbfPreviewViewModel(byteData));
-                else if (itemName.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".ico", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".tif", StringComparison.OrdinalIgnoreCase) ||
-                    itemName.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase))
+                else if (itemExtension is ".bmp" or ".jpg" or ".jpeg" or ".png" or ".gif" or ".ico" or ".tif" or ".tiff")
                     previewContent = new ImagePreviewPage(new ImagePreviewViewModel(byteData));
-                else if ((byteData.Length >= 3 && byteData[0] == 0xEF && byteData[1] == 0xBB && byteData[2] == 0xBF) ||
-                    byteData.Length >= 2 && byteData[0] == 0xEF && byteData[1] == 0xFF ||
-                    byteData.Length >= 2 && byteData[0] == 0xFF && byteData[1] == 0xEF ||
-                    byteData.All(b => b >= 8 && b <= 127))
+                else if (byteData is [0xEF, 0xBB, 0xBF, ..] ||
+                    byteData is [0xEF, 0xFF, ..] ||
+                    byteData is [0xFF, 0xEF, ..] ||
+                    byteData.All(b => b is >= 8 and <= 127))
                     previewContent = new TextPreviewPage(new TextPreviewViewModel(byteData));
                 else
                     previewContent = new BinaryPreviewPage(new BinaryPreviewViewModel(byteData));

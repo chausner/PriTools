@@ -317,19 +317,17 @@ public abstract class ResourceMapEntry
         Name = name;
     }
 
-    string? fullName;
-
     public string FullName
     {
         get
         {
-            if (fullName == null)
+            if (field == null)
                 if (Parent == null)
-                    fullName = Name;
+                    field = Name;
                 else
-                    fullName = Parent.FullName + "\\" + Name;
+                    field = Parent.FullName + "\\" + Name;
 
-            return fullName;
+            return field;
         }
     }
 }

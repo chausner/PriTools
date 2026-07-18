@@ -72,9 +72,7 @@ public class CandidateViewModel
 
         qualifiers = decisionInfoSection.QualifierSets[candidate.QualifierSet].Qualifiers;
 
-        if (candidate.Type == ResourceValueType.AsciiPath ||
-            candidate.Type == ResourceValueType.Utf8Path ||
-            candidate.Type == ResourceValueType.Path)
+        if (candidate.Type is ResourceValueType.AsciiPath or ResourceValueType.Utf8Path or ResourceValueType.Path)
         {
             string path = (string)GetData();
 

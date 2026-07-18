@@ -103,9 +103,7 @@ public class PriFile
             throw new InvalidDataException();
     }
 
-    PriDescriptorSection? priDescriptorSection;
-
-    public PriDescriptorSection PriDescriptorSection => priDescriptorSection ??= Sections.OfType<PriDescriptorSection>().Single();
+    public PriDescriptorSection PriDescriptorSection => field ??= Sections.OfType<PriDescriptorSection>().Single();
 
     public T GetSectionByRef<T>(SectionRef<T> sectionRef) where T : Section
     {
