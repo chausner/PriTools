@@ -43,7 +43,7 @@ public class ResourceMapSection : Section
         ushort hierarchicalSchemaReferenceLength = binaryReader.ReadUInt16();
         DecisionInfoSection = new SectionRef<DecisionInfoSection>(binaryReader.ReadUInt16());
         ushort resourceValueTypeTableSize = binaryReader.ReadUInt16();
-        ushort ItemToItemInfoGroupCount = binaryReader.ReadUInt16();
+        ushort itemToItemInfoGroupCount = binaryReader.ReadUInt16();
         ushort itemInfoGroupCount = binaryReader.ReadUInt16();
         uint itemInfoCount = binaryReader.ReadUInt32();
         uint numCandidates = binaryReader.ReadUInt32();
@@ -68,15 +68,15 @@ public class ResourceMapSection : Section
             resourceValueTypeTable.Add(resourceValueType);
         }
 
-        List<ItemToItemInfoGroup> itemToItemInfoGroups = new();
-        for (int i = 0; i < ItemToItemInfoGroupCount; i++)
+        List<ItemToItemInfoGroup> itemToItemInfoGroups = new(itemToItemInfoGroupCount);
+        for (int i = 0; i < itemToItemInfoGroupCount; i++)
         {
             ushort firstItem = binaryReader.ReadUInt16();
             ushort itemInfoGroup = binaryReader.ReadUInt16();
             itemToItemInfoGroups.Add(new ItemToItemInfoGroup(firstItem, itemInfoGroup));
         }
 
-        List<ItemInfoGroup> itemInfoGroups = new();
+        List<ItemInfoGroup> itemInfoGroups = new(itemInfoGroupCount);
         for (int i = 0; i < itemInfoGroupCount; i++)
         {
             ushort groupSize = binaryReader.ReadUInt16();
@@ -84,7 +84,7 @@ public class ResourceMapSection : Section
             itemInfoGroups.Add(new ItemInfoGroup(groupSize, firstItemInfo));
         }
 
-        List<ItemInfo> itemInfos = new();
+        List<ItemInfo> itemInfos = new((int)itemInfoCount);
         for (int i = 0; i < itemInfoCount; i++)
         {
             ushort decision = binaryReader.ReadUInt16();
@@ -101,6 +101,7 @@ public class ResourceMapSection : Section
                 uint itemInfoGroupCountLarge = r.ReadUInt32();
                 uint itemInfoCountLarge = r.ReadUInt32();
 
+                itemToItemInfoGroups.EnsureCapacity(itemToItemInfoGroups.Count + (int)ItemToItemInfoGroupCountLarge);
                 for (int i = 0; i < ItemToItemInfoGroupCountLarge; i++)
                 {
                     uint firstItem = r.ReadUInt32();
@@ -108,6 +109,7 @@ public class ResourceMapSection : Section
                     itemToItemInfoGroups.Add(new ItemToItemInfoGroup(firstItem, itemInfoGroup));
                 }
 
+                itemInfoGroups.EnsureCapacity(itemInfoGroups.Count + (int)itemInfoGroupCountLarge);
                 for (int i = 0; i < itemInfoGroupCountLarge; i++)
                 {
                     uint groupSize = r.ReadUInt32();
@@ -115,6 +117,7 @@ public class ResourceMapSection : Section
                     itemInfoGroups.Add(new ItemInfoGroup(groupSize, firstItemInfo));
                 }
 
+                itemInfos.EnsureCapacity(itemInfos.Count + (int)itemInfoCountLarge);
                 for (int i = 0; i < itemInfoCountLarge; i++)
                 {
                     uint decision = r.ReadUInt32();
