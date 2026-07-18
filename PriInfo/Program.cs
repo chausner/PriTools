@@ -60,12 +60,10 @@ class Program
                             else
                                 byteSpan = candidate.Data.Value;
 
+                            byte[] data = new byte[byteSpan.Length];
+
                             stream.Seek(byteSpan.Offset, SeekOrigin.Begin);
-
-                            byte[] data;
-
-                            using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.Default, true))
-                                data = binaryReader.ReadBytes((int)byteSpan.Length);
+                            stream.ReadExactly(data);                           
 
                             switch (candidate.Type)
                             {

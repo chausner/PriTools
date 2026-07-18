@@ -119,10 +119,10 @@ public class CandidateViewModel
             else
                 byteSpan = Candidate.Data.Value;
 
-            priStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
+            data = new byte[byteSpan.Length];
 
-            using (BinaryReader binaryReader = new BinaryReader(priStream, Encoding.Default, true))
-                data = binaryReader.ReadBytes((int)byteSpan.Length);
+            priStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
+            priStream.ReadExactly(data);
         }
         else
         {
@@ -136,10 +136,10 @@ public class CandidateViewModel
                 PriFile sourcePriFile = PriFile.Parse(fileStream);
                 ByteSpan byteSpan = sourcePriFile.GetDataItemByRef(Candidate.DataItem.Value);
 
-                fileStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
+                data = new byte[byteSpan.Length];
 
-                using (BinaryReader binaryReader = new BinaryReader(fileStream, Encoding.Default, true))
-                    data = binaryReader.ReadBytes((int)byteSpan.Length);
+                fileStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
+                fileStream.ReadExactly(data);
             }
         }
 

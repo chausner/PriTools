@@ -83,12 +83,10 @@ public partial class ScopeDetailPage : Page
                     else
                         byteSpan = candidate.Data.Value;
 
-                    byte[] data;
+                    byte[] data = new byte[byteSpan.Length];
 
                     priStream.Seek(byteSpan.Offset, SeekOrigin.Begin);
-
-                    using (BinaryReader binaryReader = new BinaryReader(priStream, Encoding.Default, true))
-                        data = binaryReader.ReadBytes((int)byteSpan.Length);
+                    priStream.ReadExactly(data);
 
                     value = GetCandidateDataAsString(candidate, data);
                 }
