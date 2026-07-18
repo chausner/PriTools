@@ -326,8 +326,8 @@ Offset | Data Type            | Description
 0      | HSCHEMA_VERSION_INFO | hierarchical schema version info
 20     | uint16               | length of unique id in characters, null-terminator included
 22     | uint16               | unknown, zero
-24     | uint32               | unknown
-28     | uint32               | unknown
+24     | uint32               | unknown, 7
+28     | uint32               | unknown, 7
 32     | wcharz               | unique id
 
 The resource value type table follows.

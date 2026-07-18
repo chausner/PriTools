@@ -57,30 +57,8 @@ public class ResourceMapSection : Section
         EnvironmentReferences = ParseEnvironmentReferences(environmentReferencesData, numEnvironmentReferences);
 
         byte[] schemaReferenceData = binaryReader.ReadBytes(hierarchicalSchemaReferenceLength);
-
         if (schemaReferenceData.Length != 0)
-            using (BinaryReader r = new(new MemoryStream(schemaReferenceData, false)))
-            {
-                ushort majorVersion = r.ReadUInt16();
-                ushort minorVersion = r.ReadUInt16();
-                r.ExpectUInt32(0);
-                uint checksum = r.ReadUInt32();
-                uint numScopes = r.ReadUInt32();
-                uint numItems = r.ReadUInt32();
-
-                HierarchicalSchemaVersionInfo versionInfo = new(majorVersion, minorVersion, checksum, numScopes, numItems);
-
-                ushort stringDataLength = r.ReadUInt16();
-                r.ExpectUInt16(0);
-                uint unknown1 = r.ReadUInt32();
-                uint unknown2 = r.ReadUInt32();
-                string uniqueName = r.ReadNullTerminatedString(Encoding.Unicode);
-
-                if (uniqueName.Length != stringDataLength - 1)
-                    throw new InvalidDataException();
-
-                HierarchicalSchemaReference = new HierarchicalSchemaReference(versionInfo, unknown1, unknown2, uniqueName);
-            }
+            HierarchicalSchemaReference = ParseHierarchicalSchemaReference(schemaReferenceData);
 
         List<ResourceValueType> resourceValueTypeTable = new(resourceValueTypeTableSize);
         for (int i = 0; i < resourceValueTypeTableSize; i++)
@@ -275,6 +253,31 @@ public class ResourceMapSection : Section
         return references;
     }
 
+    private HierarchicalSchemaReference ParseHierarchicalSchemaReference(byte[] data)
+    {
+        using BinaryReader reader = new(new MemoryStream(data, false));
+
+        ushort majorVersion = reader.ReadUInt16();
+        ushort minorVersion = reader.ReadUInt16();
+        reader.ExpectUInt32(0);
+        uint checksum = reader.ReadUInt32();
+        uint numScopes = reader.ReadUInt32();
+        uint numItems = reader.ReadUInt32();
+
+        HierarchicalSchemaVersionInfo versionInfo = new(majorVersion, minorVersion, checksum, numScopes, numItems);
+
+        ushort stringDataLength = reader.ReadUInt16();
+        reader.ExpectUInt16(0);
+        reader.ExpectUInt32(7);
+        reader.ExpectUInt32(7);
+        string uniqueName = reader.ReadNullTerminatedString(Encoding.Unicode);
+
+        if (uniqueName.Length != stringDataLength - 1)
+            throw new InvalidDataException();
+
+        return new HierarchicalSchemaReference(versionInfo, uniqueName);
+    }
+
     private record struct ItemToItemInfoGroup(uint FirstItem, uint ItemInfoGroup);
 
     private record struct ItemInfoGroup(uint GroupSize, uint FirstItemInfo);
@@ -371,10 +374,6 @@ public class Candidate
     }
 }
 
-public record class HierarchicalSchemaReference(
-    HierarchicalSchemaVersionInfo VersionInfo,
-    uint Unknown1,
-    uint Unknown2,
-    string UniqueName);
+public record class HierarchicalSchemaReference(HierarchicalSchemaVersionInfo VersionInfo, string UniqueName);
 
 public record struct ResourceMapItemRef(SectionRef<HierarchicalSchemaSection> SchemaSection, int ItemIndex);
