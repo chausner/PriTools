@@ -130,17 +130,5 @@ public partial class ScopeDetailPage : Page
         return stringData;
     }
 
-    class StringResource
-    {
-        public string Key { get; }
-        public string Value { get; }
-        public string Qualifiers { get; }
-
-        public StringResource(string key, string value, string qualifiers)
-        {
-            Key = key;
-            Value = value;
-            Qualifiers = qualifiers;
-        }
-    }
+    private record StringResource(string Key, string Value, string Qualifiers);
 }
