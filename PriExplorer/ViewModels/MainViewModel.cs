@@ -85,17 +85,21 @@ public class MainViewModel : INotifyPropertyChanged
 
             PriFile = PriFile.Parse(PriStream);
         }
-        catch
+        catch (Exception ex)
         {
             ClosePriFile();
-            MessageBox.Show("Could not read file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"""
+                Failed to parse file. The file may either be corrupted, not a valid PRI file, or the file format is not supported by this application.
+                
+                {ex}
+                """, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
-        if (!PriFile.Sections.OfType<ResourceMapSection>().Any())
+        if (PriFile.PriDescriptorSection.PrimaryResourceMapSection == null)
         {
             ClosePriFile();
-            MessageBox.Show("Incompatible PRI file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Unsupported PRI file: file does not contain a primary resource map section.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
