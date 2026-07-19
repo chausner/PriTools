@@ -47,7 +47,7 @@ class Program
 
                     foreach (var candidate in candidateSet.Candidates)
                     {
-                        string value = null;
+                        string? value = null;
 
                         if (candidate.SourceFile != null)
                             value = string.Format("<external in {0}>", priFile.GetReferencedFileByRef(candidate.SourceFile.Value).FullName);
@@ -58,7 +58,7 @@ class Program
                             if (candidate.DataItem != null)
                                 byteSpan = priFile.GetDataItemByRef(candidate.DataItem.Value);
                             else
-                                byteSpan = candidate.Data.Value;
+                                byteSpan = candidate.Data!.Value;
 
                             byte[] data = new byte[byteSpan.Length];
 
