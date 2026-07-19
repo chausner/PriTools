@@ -14,9 +14,9 @@ namespace PriExplorer.ViewModels;
 
 public class MainViewModel : INotifyPropertyChanged
 {
-    public FileStream PriStream { get; private set; }
-    public PriFile PriFile { get; private set; }
-    public string ResourceRootPath { get; private set; }
+    public FileStream? PriStream { get; private set; }
+    public PriFile? PriFile { get; private set; }
+    public string? ResourceRootPath { get; private set; }
 
     public ObservableCollection<EntryViewModel> Entries { get; private set; }
     public ObservableCollection<CandidateViewModel> Candidates { get; private set; }
@@ -25,7 +25,7 @@ public class MainViewModel : INotifyPropertyChanged
     public RelayCommand CloseCommand { get; }
     public RelayCommand SetResourceRootPathCommand { get; }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public MainViewModel()
     {
@@ -133,7 +133,7 @@ public class MainViewModel : INotifyPropertyChanged
         Entries.Clear();
         Candidates.Clear();
 
-        ResourceMapSection primaryResourceMapSection = PriFile.GetSectionByRef(PriFile.PriDescriptorSection.PrimaryResourceMapSection.Value);
+        ResourceMapSection primaryResourceMapSection = PriFile!.GetSectionByRef(PriFile.PriDescriptorSection.PrimaryResourceMapSection!.Value);
         HierarchicalSchemaSection schemaSection = PriFile.GetSectionByRef(primaryResourceMapSection.SchemaSection);
 
         Dictionary<ResourceMapEntry, EntryViewModel> entriesToViewModels = new Dictionary<ResourceMapEntry, EntryViewModel>();
@@ -153,7 +153,7 @@ public class MainViewModel : INotifyPropertyChanged
                     targetEntryCollection = Entries;
                 else
                 {
-                    EntryViewModel parentViewModel;
+                    EntryViewModel? parentViewModel;
 
                     if (scope.Parent.FullName == string.Empty)
                         targetEntryCollection = Entries;
@@ -179,9 +179,9 @@ public class MainViewModel : INotifyPropertyChanged
 
         foreach (ResourceMapItem item in schemaSection.Items)
         {
-            EntryViewModel parentViewModel;
+            EntryViewModel? parentViewModel;
 
-            if (!entriesToViewModels.TryGetValue(item.Parent, out parentViewModel))
+            if (!entriesToViewModels.TryGetValue(item.Parent!, out parentViewModel))
                 continue;
 
             parentViewModel.Children.Add(new EntryViewModel(item));
@@ -195,9 +195,9 @@ public class MainViewModel : INotifyPropertyChanged
     private IEnumerable<Candidate> EnumerateCandidates(ResourceMapItem resourceMapItem)
     {
         ResourceMapSection primaryResourceMapSection =
-            PriFile.GetSectionByRef(PriFile.PriDescriptorSection.PrimaryResourceMapSection.Value);
+            PriFile!.GetSectionByRef(PriFile.PriDescriptorSection.PrimaryResourceMapSection!.Value);
 
-        CandidateSet candidateSet;
+        CandidateSet? candidateSet;
 
         if (primaryResourceMapSection.CandidateSets.TryGetValue(resourceMapItem.Index, out candidateSet))
             foreach (Candidate candidate in candidateSet.Candidates)
@@ -211,7 +211,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         foreach (Candidate candidate in EnumerateCandidates(resourceMapItem))
         {
-            CandidateViewModel candidateViewModel = new CandidateViewModel(PriFile, PriStream, ResourceRootPath, resourceMapItem, candidate);
+            CandidateViewModel candidateViewModel = new CandidateViewModel(PriFile!, PriStream!, ResourceRootPath!, resourceMapItem, candidate);
 
             Candidates.Add(candidateViewModel);
         }
@@ -228,7 +228,7 @@ public class MainViewModel : INotifyPropertyChanged
             ResourceMapItem resourceMapItem = (ResourceMapItem)entry.ResourceMapEntry;
 
             CandidateViewModel[] candidates = EnumerateCandidates(resourceMapItem)
-                .Select(candidate => new CandidateViewModel(PriFile, PriStream, ResourceRootPath, resourceMapItem, candidate)).ToArray();
+                .Select(candidate => new CandidateViewModel(PriFile!, PriStream!, ResourceRootPath!, resourceMapItem, candidate)).ToArray();
 
             if (candidates.Length == 0)
                 entry.Icon = "/Assets/document.png";
@@ -295,7 +295,7 @@ public class MainViewModel : INotifyPropertyChanged
                 strings.Add(child, (prefix != "" ? (prefix + ".") : "") + child.ResourceMapEntry.Name);
     }
 
-    public EntryViewModel SelectedEntry
+    public EntryViewModel? SelectedEntry
     {
         get;
         set
@@ -308,7 +308,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public CandidateViewModel SelectedCandidate
+    public CandidateViewModel? SelectedCandidate
     {
         get;
         set
@@ -321,7 +321,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public object PreviewContent
+    public object? PreviewContent
     {
         get;
         set
@@ -372,7 +372,7 @@ public class MainViewModel : INotifyPropertyChanged
         if (SelectedCandidate == null)
             return;
 
-        object data = SelectedCandidate.GetData();
+        object? data = SelectedCandidate.GetData();
 
         if (data == null)
         {
@@ -380,9 +380,9 @@ public class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        byte[] byteData = null;
+        byte[]? byteData = null;
 
-        object previewContent = null;
+        object? previewContent = null;
 
         switch (SelectedCandidate.Candidate.Type)
         {
@@ -392,9 +392,9 @@ public class MainViewModel : INotifyPropertyChanged
                 string rootPath;
 
                 if (SelectedCandidate.Candidate.SourceFile == null)
-                    rootPath = ResourceRootPath;
+                    rootPath = ResourceRootPath!;
                 else
-                    rootPath = Path.GetDirectoryName(PriFile.GetReferencedFileByRef(SelectedCandidate.Candidate.SourceFile.Value).FullName);
+                    rootPath = Path.GetDirectoryName(PriFile!.GetReferencedFileByRef(SelectedCandidate.Candidate.SourceFile.Value).FullName)!;
 
                 string externalFilePath = Path.Combine(rootPath, (string)data);
 
@@ -415,22 +415,22 @@ public class MainViewModel : INotifyPropertyChanged
 
         if (previewContent == null)
         {
-            string itemName = SelectedEntry?.ResourceMapEntry.Name;
-            string itemExtension = Path.GetExtension(itemName)?.ToLowerInvariant();
+            string? itemName = SelectedEntry?.ResourceMapEntry.Name;
+            string? itemExtension = Path.GetExtension(itemName)?.ToLowerInvariant();
 
             try
             {
                 if (itemExtension == ".xbf")
-                    previewContent = new XbfPreviewPage(new XbfPreviewViewModel(byteData));
+                    previewContent = new XbfPreviewPage(new XbfPreviewViewModel(byteData!));
                 else if (itemExtension is ".bmp" or ".jpg" or ".jpeg" or ".png" or ".gif" or ".ico" or ".tif" or ".tiff")
-                    previewContent = new ImagePreviewPage(new ImagePreviewViewModel(byteData));
+                    previewContent = new ImagePreviewPage(new ImagePreviewViewModel(byteData!));
                 else if (byteData is [0xEF, 0xBB, 0xBF, ..] ||
                     byteData is [0xEF, 0xFF, ..] ||
                     byteData is [0xFF, 0xEF, ..] ||
-                    byteData.All(b => b is >= 8 and <= 127))
-                    previewContent = new TextPreviewPage(new TextPreviewViewModel(byteData));
+                    byteData!.All(b => b is >= 8 and <= 127))
+                    previewContent = new TextPreviewPage(new TextPreviewViewModel(byteData!));
                 else
-                    previewContent = new BinaryPreviewPage(new BinaryPreviewViewModel(byteData));
+                    previewContent = new BinaryPreviewPage(new BinaryPreviewViewModel(byteData!));
             }
             catch (Exception ex)
             {

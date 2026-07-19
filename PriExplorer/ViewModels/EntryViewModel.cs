@@ -7,7 +7,7 @@ public class EntryViewModel
 {
     public ResourceMapEntry ResourceMapEntry { get; }
     public EntryType Type { get; }
-    public string Icon { get; set; }
+    public string? Icon { get; set; }
     public bool IsString { get; set; }
 
     public ObservableCollection<EntryViewModel> Children { get; }

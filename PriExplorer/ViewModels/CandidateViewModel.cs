@@ -31,16 +31,19 @@ public class CandidateViewModel
         }
     }
 
-    private string FullLocationPath
+    private string? FullLocationPath
     {
         get
         {
+            if (locationPath == null)
+                return null;
+
             string rootPath;
 
             if (Candidate.SourceFile == null)
                 rootPath = resourceRootPath;
             else
-                rootPath = Path.GetDirectoryName(priFile.GetReferencedFileByRef(Candidate.SourceFile.Value).FullName);
+                rootPath = Path.GetDirectoryName(priFile.GetReferencedFileByRef(Candidate.SourceFile.Value).FullName)!;
 
             return Path.Combine(rootPath, locationPath);
         }
@@ -49,7 +52,7 @@ public class CandidateViewModel
     public bool SourceNotFound { get; private set; }
     public bool LocationNotFound { get; private set; }
 
-    string locationPath;
+    string? locationPath;
 
     public string Location { get; }
 
@@ -74,7 +77,7 @@ public class CandidateViewModel
 
         if (candidate.Type is ResourceValueType.AsciiPath or ResourceValueType.Utf8Path or ResourceValueType.Path)
         {
-            string path = (string)GetData();
+            string? path = (string?)GetData();
 
             if (path != null)
             {
@@ -104,7 +107,7 @@ public class CandidateViewModel
         }
     }
 
-    public object GetData()
+    public object? GetData()
     {
         byte[] data;
 
@@ -115,7 +118,7 @@ public class CandidateViewModel
             if (Candidate.DataItem != null)
                 byteSpan = priFile.GetDataItemByRef(Candidate.DataItem.Value);
             else
-                byteSpan = Candidate.Data.Value;
+                byteSpan = Candidate.Data!.Value;
 
             data = new byte[byteSpan.Length];
 
@@ -132,7 +135,7 @@ public class CandidateViewModel
             using (FileStream fileStream = File.OpenRead(sourcePath))
             {
                 PriFile sourcePriFile = PriFile.Parse(fileStream);
-                ByteSpan byteSpan = sourcePriFile.GetDataItemByRef(Candidate.DataItem.Value);
+                ByteSpan byteSpan = sourcePriFile.GetDataItemByRef(Candidate.DataItem!.Value);
 
                 data = new byte[byteSpan.Length];
 
@@ -166,9 +169,7 @@ public class CandidateViewModel
 
     private void GoToLocationCommand_Execute()
     {
-        string fullLocationPath = FullLocationPath;
-
-        Process.Start("explorer.exe", string.Format("/select,\"{0}\"", fullLocationPath));
+        Process.Start("explorer.exe", string.Format("/select,\"{0}\"", FullLocationPath));
     }
 
     private bool SaveAsCommand_CanExecute()
@@ -178,14 +179,14 @@ public class CandidateViewModel
 
     private void SaveAsCommand_Execute()
     {
-        object data = GetData();
+        object? data = GetData();
 
         if (data == null)
             return;
 
-        byte[] byteData = null;
+        byte[]? byteData = null;
 
-        string externalFilePath = null;
+        string? externalFilePath = null;
 
         switch (Candidate.Type)
         {
@@ -202,7 +203,7 @@ public class CandidateViewModel
                 if (Candidate.SourceFile == null)
                     rootPath = resourceRootPath;
                 else
-                    rootPath = Path.GetDirectoryName(priFile.GetReferencedFileByRef(Candidate.SourceFile.Value).FullName);
+                    rootPath = Path.GetDirectoryName(priFile.GetReferencedFileByRef(Candidate.SourceFile.Value).FullName)!;
 
                 externalFilePath = Path.Combine(rootPath, (string)data);
                 break;
@@ -230,6 +231,6 @@ public class CandidateViewModel
         if (externalFilePath != null)
             File.Copy(externalFilePath, saveFileDialog.FileName, true);
         else
-            File.WriteAllBytes(saveFileDialog.FileName, byteData);
+            File.WriteAllBytes(saveFileDialog.FileName, byteData!);
     }
 }

@@ -56,12 +56,12 @@ public partial class ScopeDetailPage : Page
     private void AddStringResources(ResourceMapItem item, string path, List<StringResource> stringResources)
     {
         ResourceMapSection primaryResourceMapSection =
-            priFile.GetSectionByRef(priFile.PriDescriptorSection.PrimaryResourceMapSection.Value);
+            priFile.GetSectionByRef(priFile.PriDescriptorSection.PrimaryResourceMapSection!.Value);
 
         DecisionInfoSection decisionInfoSection =
             priFile.GetSectionByRef(priFile.PriDescriptorSection.DecisionInfoSections.First());
 
-        CandidateSet candidateSet;
+        CandidateSet? candidateSet;
 
         if (!primaryResourceMapSection.CandidateSets.TryGetValue(item.Index, out candidateSet))
             return;
@@ -81,7 +81,7 @@ public partial class ScopeDetailPage : Page
                     if (candidate.DataItem != null)
                         byteSpan = priFile.GetDataItemByRef(candidate.DataItem.Value);
                     else
-                        byteSpan = candidate.Data.Value;
+                        byteSpan = candidate.Data!.Value;
 
                     byte[] data = new byte[byteSpan.Length];
 
@@ -104,7 +104,7 @@ public partial class ScopeDetailPage : Page
 
     private string GetCandidateDataAsString(Candidate candidate, byte[] data)
     {
-        string stringData = null;
+        string? stringData = null;
 
         switch (candidate.Type)
         {
@@ -125,7 +125,7 @@ public partial class ScopeDetailPage : Page
                 return "(embedded)";
         }
 
-        stringData = stringData.TrimEnd('\0');
+        stringData = stringData!.TrimEnd('\0');
 
         return stringData;
     }

@@ -5,9 +5,9 @@ namespace PriExplorer.ViewModels;
 
 public class RelayCommand : ICommand
 {
-    public event EventHandler CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged;
 
-    Func<bool> canExecute;
+    Func<bool>? canExecute;
     Action execute;
 
     public RelayCommand(Action execute)
@@ -21,7 +21,7 @@ public class RelayCommand : ICommand
         this.execute = execute;
     }
 
-    public bool CanExecute(object parameter)
+    public bool CanExecute(object? parameter)
     {
         if (canExecute != null)
             return canExecute();
@@ -29,7 +29,7 @@ public class RelayCommand : ICommand
             return true;
     }
 
-    public void Execute(object parameter)
+    public void Execute(object? parameter)
     {
         execute();
     }
@@ -42,33 +42,33 @@ public class RelayCommand : ICommand
 
 class RelayCommand<T> : ICommand
 {
-    public event EventHandler CanExecuteChanged;
+    public event EventHandler? CanExecuteChanged;
 
-    Predicate<T> canExecute;
-    Action<T> execute;
+    Predicate<T?>? canExecute;
+    Action<T?> execute;
 
-    public RelayCommand(Action<T> execute)
+    public RelayCommand(Action<T?> execute)
     {
         this.execute = execute;
     }
 
-    public RelayCommand(Predicate<T> canExecute, Action<T> execute)
+    public RelayCommand(Predicate<T?> canExecute, Action<T?> execute)
     {
         this.canExecute = canExecute;
         this.execute = execute;
     }
 
-    public bool CanExecute(object parameter)
+    public bool CanExecute(object? parameter)
     {
         if (canExecute != null)
-            return canExecute((T)parameter);
+            return canExecute((T?)parameter);
         else
             return true;
     }
 
-    public void Execute(object parameter)
+    public void Execute(object? parameter)
     {
-        execute((T)parameter);
+        execute((T?)parameter);
     }
 
     public void RaiseCanExecuteChanged()
